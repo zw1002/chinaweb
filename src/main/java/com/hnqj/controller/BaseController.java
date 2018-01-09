@@ -17,8 +17,6 @@ import javax.servlet.http.HttpSession;
  */
 public class BaseController {
     protected final Log logger = LogFactory.getLog(getClass());
-    @Autowired
-    UserinfoServices userinfoServices;
     /**
      * 获取Session
      *
