@@ -45,7 +45,7 @@
                    </form>
                </ul>
            </div><!-- wid470px -->
-            <p class="login_lj">还没有账号，<a href="regist.jsp">立即注册</a></p>
+            <p class="login_lj">还没有账号，<a href="#" onclick="toRegister()">立即注册</a></p>
                 <div class="ffl_txt"><p>其他账户登录</p></div>
                 <div class="other_img">
                    <ul >
@@ -110,6 +110,10 @@
                 }
             }
         })
+    }
+    //跳转到注册页面
+    function toRegister(){
+        document.location.href = '<%=basePath%>/signin/register.do';
     }
     //跳转到首页
     function toIndex(){

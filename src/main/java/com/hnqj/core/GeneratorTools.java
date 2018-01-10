@@ -15,7 +15,7 @@ public class GeneratorTools {
     private String pa = ",";
 
 
-    private String path = "I:\\chinawedding\\chinawedding\\src\\main\\java\\com\\hnqj";
+    private String path = "I:\\chinaweb\\src\\main\\java\\com\\hnqj";
 
     private void getServiceImpl(String bean) {
             String service = bean + "Services";
@@ -147,6 +147,8 @@ public class GeneratorTools {
 
     public static void main(String[] agrs) {
         GeneratorTools generator= new GeneratorTools();
+        /*
+        generator.getServiceImpl("Account");
         generator.getServiceImpl("Advert");
         generator.getServiceImpl("Cashrecord");
         generator.getServiceImpl("Changelog");
@@ -155,14 +157,22 @@ public class GeneratorTools {
         generator.getServiceImpl("Comment");
         generator.getServiceImpl("Dealrecord");
         generator.getServiceImpl("Dealuidchild");
+        generator.getServiceImpl("Dict");
+        generator.getServiceImpl("Distribution");
         generator.getServiceImpl("Distrirecord");
         generator.getServiceImpl("Findimg");
+        generator.getServiceImpl("FocusOther");
         generator.getServiceImpl("Groomapply");
+        generator.getServiceImpl("Integral");
         generator.getServiceImpl("Leavemsg");
+        generator.getServiceImpl("Limit");
         generator.getServiceImpl("Merchcycle");
         generator.getServiceImpl("Merchdown");
         generator.getServiceImpl("Notify");
         generator.getServiceImpl("Playimg");
+        generator.getServiceImpl("Proportions");
+        generator.getServiceImpl("Props");
+        generator.getServiceImpl("PropsImage");
         generator.getServiceImpl("Releaseadvert");
         generator.getServiceImpl("Shoppingcart");
         generator.getServiceImpl("Sysconfig");
@@ -173,5 +183,8 @@ public class GeneratorTools {
         generator.getServiceImpl("Userlevel");
         generator.getServiceImpl("Worklabel");
         generator.getServiceImpl("Works");
+        generator.getServiceImpl("Userinfo");
+        */
+        generator.getServiceImpl("Merch");
     }
 }
