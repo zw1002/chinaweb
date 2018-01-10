@@ -24,7 +24,34 @@
 		  })
 	  
 	  })
-
+  //跳转到首页
+  function toIndex(){
+      document.location.href = '<%=basePath%>/signin/index.do';
+  }
+  //跳转到设计页面
+  function toDesign(){
+      document.location.href = '<%=basePath%>/design/toDesign.do';
+  }
+  //跳转到摄影图库页面
+  function toPhotography(){
+      document.location.href = '<%=basePath%>/photography/toPhotography.do';
+  }
+  //跳转到婚秀页面
+  function toWedding(){
+      document.location.href = '<%=basePath%>/wedding/toWedding.do';
+  }
+  //跳转到道具页面
+  function toMultimedia(){
+      document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
+  }
+  //跳转到免费下载页面
+  function toFree(){
+      document.location.href = '<%=basePath%>/free/toFree.do';
+  }
+  //跳转到求助求图页面
+  function toHelp(){
+      document.location.href = '<%=basePath%>/help/toHelp.do';
+  }
 </script>
 </head>
 
@@ -48,7 +75,7 @@
       </div><!-- top_line -->
       
       <div class="top_wid logo_con">
-         <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
+          <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="ss_bg fl">
             <input name="" type="text" placeholder="请输入搜索内容"  class="inp_txt">
             <input type="submit" value="搜 索" class="ss_btn" /> 
@@ -61,16 +88,15 @@
       </div><!-- top_wid -->
       
       <div class="nav">
-        <ul class="clearfix">
-          <li ><a  href="index.jsp">首 页 </a> <p class="point_d"></p></li>
-          <li><a  href="design.jsp">设 计</a> <p class="point_d"></p></li>
-          
-          <li><a class="active" href="photography.jsp">摄影图库</a> <p class="point_d"></p></li>
-          <li><a href="multimedia.jsp">道具新品</a> <p class="point_d"></p></li>
-          <li><a  href="wedding.jsp">婚 秀</a> <p class="point_d"></p></li>
-         <li><a href="help.jsp">求图求助</a> <p class="point_d"></p></li>
-         <li><a href="free.jsp">免费下载</a> <p class="point_d"></p></li>
-        </ul>
+          <ul class="clearfix">
+              <li><a href="#" onclick="toIndex()">首 页 </a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toDesign()">设 计</a> <p class="point_d"></p></li>
+              <li><a class="active" href="#" onclick="toPhotography()">摄影图库</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toMultimedia()">道具新品</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toWedding()">婚 秀</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toHelp()">求图求助</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toFree()">免费下载</a> <p class="point_d"></p></li>
+          </ul>
       </div><!-- nav -->
       
       
@@ -281,10 +307,10 @@
 				</div>
 			
 		</main>
-		<script src="js/<%=basePath%>/static/imagesloaded.pkgd.min.js"></script>
-		<script src="js/masonry.pkgd.min.js"></script>
-		<script src="js/anime.min.js"></script>
-		<script src="js/main.js"></script>
+		<script src="<%=basePath%>/static/js/imagesloaded.pkgd.min.js"></script>
+		<script src="<%=basePath%>/static/js/masonry.pkgd.min.js"></script>
+		<script src="<%=basePath%>/static/js/anime.min.js"></script>
+		<script src="<%=basePath%>/static/js/main.js"></script>
          
          
                     <div id="pages" class="pages_box"></div>

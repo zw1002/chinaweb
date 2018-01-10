@@ -111,7 +111,7 @@
             }
         })
     }
-    //跳转到登录页面
+    //跳转到首页
     function toIndex(){
         document.location.href = '<%=basePath%>/signin/index.do';
     }

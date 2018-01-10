@@ -27,13 +27,14 @@
                 </div>
                 <!-- 登录后 -->
                 <div id="backLogin" class="top_pos" style="display:none;">
+                    <a href="#" onclick="toMember()">会员中心</a>
                     <!--<a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.html" class="sc_icon">我要上传</a>|<a href="collection_2.html">我的收藏（<span class="col_f00">2</span>）</a>-->
                 </div>
             </div>
         </div><!-- top_line -->
 
         <div class="top_wid logo_con">
-            <a href="index.html" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
+            <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
             <div class="ss_bg fl">
                 <input name="" type="text" placeholder="请输入搜索内容"  class="inp_txt">
                 <input type="submit" value="搜 索" class="ss_btn" />
@@ -47,14 +48,13 @@
 
         <div class="nav">
             <ul class="clearfix">
-                <li ><a class="active" href="index.html">首 页 </a> <p class="point_d"></p></li>
-                <li><a href="design.html">设 计</a> <p class="point_d"></p></li>
-
-                <li><a href="photography.html">摄影图库</a> <p class="point_d"></p></li>
-                <li><a href="multimedia.html">道具新品</a> <p class="point_d"></p></li>
-                <li><a href="wedding.html">婚 秀</a> <p class="point_d"></p></li>
-                <li><a href="help.html">求图求助</a> <p class="point_d"></p></li>
-                <li><a href="free.html">免费下载</a> <p class="point_d"></p></li>
+                <li><a class="active" href="#" onclick="toIndex()">首 页 </a> <p class="point_d"></p></li>
+                <li><a href="#" onclick="toDesign()">设 计</a> <p class="point_d"></p></li>
+                <li><a href="#" onclick="toPhotography()">摄影图库</a> <p class="point_d"></p></li>
+                <li><a href="#" onclick="toMultimedia()">道具新品</a> <p class="point_d"></p></li>
+                <li><a href="#" onclick="toWedding()">婚 秀</a> <p class="point_d"></p></li>
+                <li><a href="#" onclick="toHelp()">求图求助</a> <p class="point_d"></p></li>
+                <li><a href="#" onclick="toFree()">免费下载</a> <p class="point_d"></p></li>
             </ul>
         </div><!-- nav -->
 
@@ -91,6 +91,7 @@
         var firstname="${userinfo.getFristname()}";
         if(firstname != ""){
             $("#beferLogin").css("display","none");
+            $("#backLogin").css("display","block");
         }
     });
     //跳转到注册页面
@@ -100,6 +101,38 @@
     //跳转到登录页面
     function toLogin(){
         document.location.href = '<%=basePath%>/signin/login.do';
+    }
+    //跳转到首页
+    function toIndex(){
+        document.location.href = '<%=basePath%>/signin/index.do';
+    }
+    //跳转到设计页面
+    function toDesign(){
+        document.location.href = '<%=basePath%>/design/toDesign.do';
+    }
+    //跳转到摄影图库页面
+    function toPhotography(){
+        document.location.href = '<%=basePath%>/photography/toPhotography.do';
+    }
+    //跳转到婚秀页面
+    function toWedding(){
+        document.location.href = '<%=basePath%>/wedding/toWedding.do';
+    }
+    //跳转到道具页面
+    function toMultimedia(){
+        document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
+    }
+    //跳转到免费下载页面
+    function toFree(){
+        document.location.href = '<%=basePath%>/free/toFree.do';
+    }
+    //跳转到求助求图页面
+    function toHelp(){
+        document.location.href = '<%=basePath%>/help/toHelp.do';
+    }
+    //跳转到会员中心页面
+    function toMember(){
+        document.location.href = '<%=basePath%>/member/toMember.do';
     }
 </script>
 
@@ -133,7 +166,7 @@
 
 <!-- 设计 -->
 <div class="wrap">
-    <div class="tit_pic"><a href="design.html"><img src="<%=basePath%>/static/images/tit_pic1.png" height="70" width="207" /></a></div>
+    <div class="tit_pic"><a href="#" onclick="toDesign()"><img src="<%=basePath%>/static/images/tit_pic1.png" height="70" width="207" /></a></div>
 
     <div class="hei380px">
 
@@ -261,7 +294,7 @@
 <!-- 摄影图库 -->
 <div class="bg_hs">
     <div class="wrap">
-        <div class="tit_pic"><a href="photography.html"><img src="<%=basePath%>/static/images/tit_pic3.png" height="70" width="287" /></a></div>
+        <div class="tit_pic"><a href="#" onclick="toPhotography()"><img src="<%=basePath%>/static/images/tit_pic3.png" height="70" width="287" /></a></div>
 
         <div class="hei380px">
 
@@ -413,7 +446,7 @@
 
 <!-- 婚秀 -->
 <div class="wrap">
-    <div class="tit_pic"><a href="wedding.html"><img src="<%=basePath%>/static/images/tit_pic5.png" height="70" width="260" /></a></div>
+    <div class="tit_pic"><a href="#" onclick="toWedding()"><img src="<%=basePath%>/static/images/tit_pic5.png" height="70" width="260" /></a></div>
 
     <div class="hei380px">
 
@@ -469,7 +502,7 @@
 
 
         <div class="sj_fr">
-            <div class="hong_tit col_hx"><h2>婚秀排行榜</h2> <a href="wedding.html">更多 ></a></div>
+            <div class="hong_tit col_hx"><h2>婚秀排行榜</h2> <a href="#" onclick="toWedding()">更多 ></a></div>
 
             <div class="phb_con" id="hxphb">
                 <div class="hd">
@@ -542,7 +575,7 @@
 <!-- 道具新品 -->
 <div class="bg_hs">
     <div class="wrap">
-        <div class="tit_pic"><a href="multimedia.html"><img src="<%=basePath%>/static/images/tit_pic4.png" height="70" width="284" /></a></div>
+        <div class="tit_pic"><a href="#" onclick="toMultimedia()"><img src="<%=basePath%>/static/images/tit_pic4.png" height="70" width="284" /></a></div>
 
         <div class="hei380px">
 
@@ -591,7 +624,7 @@
 
 
             <div class="sj_fr">
-                <div class="hong_tit xp_titd col_djxp"><h2>新品发布</h2> <a href="multimedia.html">更多 ></a></div>
+                <div class="hong_tit xp_titd col_djxp"><h2>新品发布</h2> <a href="#" onclick="toMultimedia()">更多 ></a></div>
                 <div class="xpfb_img"> <a href="javascript:"><img src="<%=basePath%>/static/images/xpfb_pic.png" /></a></div>
             </div><!-- sj_fr -->
 
