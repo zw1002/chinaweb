@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mybatis/mapperfile.Userinfo">
-  <resultMap id="BaseResultMap" type="com.hnqj.model.Userinfo">
+<mapper namespace="UserinfoMapper">
+  <resultMap id="BaseResultMap" type="Userinfo">
     <id column="uid" jdbcType="VARCHAR" property="uid" />
     <result column="fristname" jdbcType="VARCHAR" property="fristname" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
     <result column="iccode" jdbcType="VARCHAR" property="iccode" />
     <result column="usrpicurl" jdbcType="VARCHAR" property="usrpicurl" />
-    <result column="idpic" jdbcType="LONGVARCHAR" property="idpic" />
-    <result column="idpicback" jdbcType="LONGVARCHAR" property="idpicback" />
+    <result column="idpic" jdbcType="VARCHAR" property="idpic" />
+    <result column="idpicback" jdbcType="VARCHAR" property="idpicback" />
   </resultMap>
   <sql id="Base_Column_List">
     uid, fristname, telephone, iccode, usrpicurl,idpic, idpicback
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_userinfo
@@ -23,7 +23,7 @@
     delete from tb_userinfo
     where uid = #{uid,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="pd">
+  <insert id="addUserinfo" parameterType="pd">
     insert into tb_userinfo (uid, fristname, telephone,
       iccode, usrpicurl, idpic, idpicback)
     values (#{uid,jdbcType=VARCHAR}, #{fristname,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
@@ -35,8 +35,14 @@
       telephone = #{telephone,jdbcType=VARCHAR},
       iccode = #{iccode,jdbcType=VARCHAR},
       usrpicurl = #{usrpicurl,jdbcType=VARCHAR},
-      idpic = #{idpic,jdbcType=LONGVARCHAR},
-      idpicback = #{idpicback,jdbcType=LONGVARCHAR}
+      idpic = #{idpic,jdbcType=VARCHAR},
+      idpicback = #{idpicback,jdbcType=VARCHAR}
     where uid = #{uid,jdbcType=VARCHAR}
   </update>
+  <!--登录时通过帐号密码查找用户-->
+  <select id="getUserInfo" parameterType="pd" resultMap="BaseResultMap">
+    select * from tb_userinfo where uid in (
+    select userid from tb_account  where account = #{account,jdbcType=VARCHAR} and passwd = #{passwd,jdbcType=VARCHAR}
+    )
+  </select>
 </mapper>

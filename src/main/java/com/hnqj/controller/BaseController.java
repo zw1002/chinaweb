@@ -35,7 +35,7 @@ public class BaseController {
     public Userinfo getUser() {
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) ra).getRequest();
-        Userinfo user = (Userinfo) request.getSession().getAttribute("user");
+        Userinfo user = (Userinfo) request.getSession().getAttribute("userinfo");
         return user;
     }
 

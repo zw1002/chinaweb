@@ -21,18 +21,14 @@
         <div class="top_line">
             <div class="top_wid">
                 欢迎来到婚秀中国网
-
                 <!-- 登录前 -->
-                <div class="top_pos">
+                <div id="beferLogin" class="top_pos">
                     <a href="#" onclick="toLogin()">登录</a>|<a href="#" onclick="toRegister()">注册</a>
                 </div>
-
                 <!-- 登录后 -->
-                <div class="top_pos" style="display:none;">
-                    <a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.html" class="sc_icon">我要上传</a>|<a href="collection_2.html">我的收藏（<span class="col_f00">2</span>）</a>
+                <div id="backLogin" class="top_pos" style="display:none;">
+                    <!--<a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.html" class="sc_icon">我要上传</a>|<a href="collection_2.html">我的收藏（<span class="col_f00">2</span>）</a>-->
                 </div>
-
-
             </div>
         </div><!-- top_line -->
 
@@ -90,6 +86,13 @@
 </div>
 <script type="text/javascript">
     jQuery(".turn_pic").slide({ titCell:".hd ul", mainCell:".bd ul", effect:"fold", autoPlay:true, autoPage:true, delayTime:500, trigger:"click",interTime:4000,mouseOverStop:false});
+    $(document).ready(function () {
+        //隐藏注册/按钮登录
+        var firstname="${userinfo.getFristname()}";
+        if(firstname != ""){
+            $("#beferLogin").css("display","none");
+        }
+    });
     //跳转到注册页面
     function toRegister(){
         document.location.href = '<%=basePath%>/signin/register.do';

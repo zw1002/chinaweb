@@ -1,6 +1,6 @@
 
 /*-- 首页 --*/
-
+.error{color: red;}
 .turn_pic{ width:100%; height:520px;  position:relative;}
 .turn_pic .bd{ margin:0 auto; position:relative; z-index:0; overflow:hidden; }
 .turn_pic .bd ul{ width:100% !important; }
@@ -168,7 +168,7 @@ a.grid__link{ background-color:#000;}
 .wid780px{ width:760px; background-color:#fff; padding:15px;}
 
 .del_txt{ height:32px; position:relative; line-height:32px; margin-bottom:10px;}
-.del_txt h2{ font-size:18px; h teight:32px; line-height:32px; color:#333; width:95%; overflow:hidden; text-align:center;}
+.del_txt h2{ font-size:18px; height:32px; line-height:32px; color:#333; width:95%; overflow:hidden; text-align:center;}
 a.icon_fdj{ background:url(../images/icon_fd.png) no-repeat center center; height:30px; width:30px; display:block; position:absolute; top:1px; right:2px;}
 a.icon_fdj:hover{background:url(../images/icon_fd2.png) no-repeat center center;}
 
@@ -505,7 +505,7 @@ a.cjfl_fr{width:120px; height:30px; line-height:30px; text-align:center; border-
 
 .login_box ul li{ margin-bottom:12px; height:42px; position:relative;}
 .inp_bg{ border:1px solid #e1e1e1; height:40px; border-radius:4px;}
-.inp_bg input{ border:none; height:38px; font-size:16px; color:#333; background:none; text-indent:1em; width:100%;}
+.inp_bg input{ border:none; height:38px; font-size:16px; color:#333; background:none; text-indent:1em; width:80%;}
 
 a.yzm_btn{ background-color:#f1f1f1; border:1px solid #e1e1e1; height:40px; border-radius:4px; width:40%; position:absolute; top:0px; right:0px; display:block; text-decoration:none; font-size:16px; line-height:40px; text-align:center;}
 a.yzm_btn img{ height:40px; width:100%;}

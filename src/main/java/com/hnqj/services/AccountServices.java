@@ -21,14 +21,14 @@ protected final Log logger = LogFactory.getLog(getClass());
 
 	public int addAccount(PageData pageData) {
 	 logger.info("增加Account");
-	 int iFlag =0; 
-	 try { 
+	 int iFlag =0;
+	 try {
 		iFlag = (int) daoSupport.insert("AccountMapper.addAccount",pageData);
-	 }catch (Exception e){ 
-	 e.printStackTrace(); 
-	 iFlag=0; 
+	 }catch (Exception e){
+	 e.printStackTrace();
+	 iFlag=0;
 	}
-	 return iFlag; 
+	 return iFlag;
 	}
 	public int delAccountByFid(String fid) {
 	 logger.info("删除Account");
@@ -84,5 +84,17 @@ protected final Log logger = LogFactory.getLog(getClass());
 	 accountList=null; 
 	}
 	 return accountList; 
+	}
+
+	public Account getAccountforAccount(String acount) {
+		logger.info("通过账号查询Account");
+		Account	account=null;
+		try {
+			account = (Account) daoSupport.findForObject("AccountMapper.getAccountforAccount",acount);
+		}catch (Exception e){
+			e.printStackTrace();
+			account=null;
+		}
+		return account;
 	}
 }

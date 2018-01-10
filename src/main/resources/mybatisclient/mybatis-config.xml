@@ -16,5 +16,37 @@
     
     <typeAliases>
         <typeAlias type="com.hnqj.core.PageData" alias="pd"/>
+        <typeAlias type="com.hnqj.model.Account" alias="Account"/>
+        <typeAlias type="com.hnqj.model.Advert" alias="Advert"/>
+        <typeAlias type="com.hnqj.model.Cashrecord" alias="Cashrecord"/>
+        <typeAlias type="com.hnqj.model.Changelog" alias="Changelog"/>
+        <typeAlias type="com.hnqj.model.Client" alias="Client"/>
+        <typeAlias type="com.hnqj.model.Collection" alias="Collectionss"/>
+        <typeAlias type="com.hnqj.model.Comment" alias="Comment"/>
+        <typeAlias type="com.hnqj.model.Dealrecord" alias="Dealrecord"/>
+        <typeAlias type="com.hnqj.model.Dict" alias="Dict"/>
+        <typeAlias type="com.hnqj.model.Distribution" alias="Distribution"/>
+        <typeAlias type="com.hnqj.model.Distrirecord" alias="Distrirecord"/>
+        <typeAlias type="com.hnqj.model.Findimg" alias="Findimg"/>
+        <typeAlias type="com.hnqj.model.FocusOther" alias="FocusOther"/>
+        <typeAlias type="com.hnqj.model.Groomapply" alias="Groomapply"/>
+        <typeAlias type="com.hnqj.model.Integral" alias="Integral"/>
+        <typeAlias type="com.hnqj.model.Leavemsg" alias="Leavemsg"/>
+        <typeAlias type="com.hnqj.model.Limit" alias="Limit"/>
+        <typeAlias type="com.hnqj.model.Merch" alias="Merch"/>
+        <typeAlias type="com.hnqj.model.Merchcycle" alias="Merchcycle"/>
+        <typeAlias type="com.hnqj.model.Merchdown" alias="Merchdown"/>
+        <typeAlias type="com.hnqj.model.Playimg" alias="Playimg"/>
+        <typeAlias type="com.hnqj.model.Releaseadvert" alias="Releaseadvert"/>
+        <typeAlias type="com.hnqj.model.Sysconfig" alias="Sysconfig"/>
+        <typeAlias type="com.hnqj.model.Syslog" alias="Syslog"/>
+        <typeAlias type="com.hnqj.model.Template" alias="Template"/>
+        <typeAlias type="com.hnqj.model.Train" alias="Train"/>
+        <typeAlias type="com.hnqj.model.Unsubscribe" alias="Unsubscribe"/>
+        <typeAlias type="com.hnqj.model.Userinfo" alias="Userinfo"/>
+        <typeAlias type="com.hnqj.model.Works" alias="Works"/>
+        <typeAlias type="com.hnqj.model.Proportions" alias="Proportions"/>
+        <typeAlias type="com.hnqj.model.Props" alias="Props"/>
+        <typeAlias type="com.hnqj.model.PropsImage" alias="PropsImage"/>
     </typeAliases>
 </configuration>

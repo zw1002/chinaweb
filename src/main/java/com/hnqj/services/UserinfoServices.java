@@ -20,16 +20,10 @@ protected final Log logger = LogFactory.getLog(getClass());
 
 	private DaoSupportImpl daoSupport; 
 
-	public int addUserinfo(PageData pageData) {
+	public int addUserinfo(PageData pageData) throws Exception {
 	 logger.info("增加Userinfo");
-	 int iFlag =0; 
-	 try { 
-		iFlag = (int) daoSupport.insert("UserinfoMapper.addUserinfo",pageData);
-	 }catch (Exception e){ 
-	 e.printStackTrace(); 
-	 iFlag=0; 
-	}
-	 return iFlag; 
+	 int iFlag = (int) daoSupport.insert("UserinfoMapper.addUserinfo",pageData);
+	 return iFlag;
 	}
 	public int delUserinfoByFid(String fid) {
 	 logger.info("删除Userinfo");
@@ -85,5 +79,17 @@ protected final Log logger = LogFactory.getLog(getClass());
 	 userinfoList=null; 
 	}
 	 return userinfoList; 
+	}
+
+	public Userinfo getUserInfo(PageData pageData) {
+		logger.info("登录校验");
+		Userinfo userinfo=null;
+		try {
+			userinfo = (Userinfo) daoSupport.findForObject("UserinfoMapper.getUserInfo",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			userinfo=null;
+		}
+		return userinfo;
 	}
 }

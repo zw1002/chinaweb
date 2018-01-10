@@ -75,4 +75,7 @@
 				}});]]>
   </description>
   <!-- 欢迎页面 -->
+  <welcome-file-list>
+    <welcome-file>/WEB-INF/viewsclient/index.jsp</welcome-file>
+  </welcome-file-list>
 </web-app>

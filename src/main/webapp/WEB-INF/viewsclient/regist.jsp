@@ -9,29 +9,26 @@
 <title>婚秀中国网</title>
 <link href="<%=basePath%>/static/css/global.css" rel="stylesheet" type="text/css" />
 <link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
-
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
-
+<!--校验-->
+<script type="text/javascript" src="<%=basePath%>/static/js/jquery.validate.js"></script>
+<script type="text/javascript" src="<%=basePath%>/static/js/jquery.validate.min.js"></script>
+<!--消息提醒-->
+    <script src="<%=basePath%>/static/js/jquery.noty.packaged.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/static/js/showinfo.js"></script>
 </head>
-
 <body>
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
          <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
-         
          <h2 class="titddd fl">新用户注册</h2>
-        
-          
       </div><!-- top_wid -->
-
       </div><!-- top -->
    </header>
-   
-   <div class="bg_f5 pad_topd"> 
+   <div class="bg_f5 pad_topd">
      <div class="login_wid">
-        
         <div class="wid470px">
            <div class="reg_nav">
               <ul class="">
@@ -39,14 +36,13 @@
                  <li>手机快速注册</li>
                  <div class="clear"></div>
               </ul>
-           
            </div>
-           
            <div class="regist_con">
-           
                <ul>
+                   <form id="userform" method="post" action="">
                    <div class="login_box">
                       <ul>
+                          <!--
                           <li style="height:24px; padding:0 15px;">
                            <table width="100%">
                               <tr>
@@ -56,26 +52,24 @@
                               </tr>
                            </table>                        
                           </li>
-                          <li><div class="inp_bg"><input name="" type="text" placeholder="用户名"></div></li>
-                          <li><div class="inp_bg"><input name=""  type="password" placeholder="密码"></div></li>
-                          <li><div class="inp_bg"><input name="" type="password" placeholder="重复密码"></div></li>
+                          -->
+                          <li><div class="inp_bg"><input id="fristname" name="fristname" type="text" placeholder="用户名"></div></li>
+                          <li><div class="inp_bg"><input id="account" name="account" type="text" placeholder="账号"></div></li>
+                          <li><div class="inp_bg"><input id="password" name="password"  type="password" placeholder="密码"></div></li>
+                          <li><div class="inp_bg"><input id="passwords" name="passwords" type="password" placeholder="重复密码"></div></li>
+                          <!--
                           <li><div class="inp_bg"><input name="" type="text" placeholder="邮箱"></div></li>
                           <li><div class="inp_bg"><input name="" type="text"  placeholder="QQ"></div></li>
                           <li><div class="inp_bg" style="width:55%;"><input name="" type="text" placeholder="手机验证码"></div>
                           <a href="javascript:" class="yzm_btn">获取验证码</a>
-                          
                           </li>
+                          -->
                           <input name="bb" type="checkbox" class="fx_wid" value="" checked>阅读并同意《婚秀中国网服务协议》《委托代收付款协议》
                           <input type="submit" value="注册并登录" class="login_btn" />
-                          
-                         
-                   
                       </ul>
                    </div>
-           
+                </form>
                </ul>
-               
-               
                <ul>
                    <div class="login_box">
                       <ul>
@@ -89,8 +83,7 @@
                            </table>      
                           </li>
                           <li><div class="inp_bg"><input name="" type="text" placeholder="手机号"></div></li>
-          
-                          <li><div class="inp_bg"><input name="" type="text" placeholder="昵称"></div></li>
+                          <li><div class="inp_bg"><input name="" type="text" placeholder="用户名"></div></li>
                           <li><div class="inp_bg" style="width:55%;"><input name="" type="text" placeholder="图行验证码"></div>
                           <a href="javascript:" class="yzm_btn"><img src="<%=basePath%>/static/images/yzm_img.png" /></a>
                           <li><div class="inp_bg" style="width:55%;"><input name="" type="text" placeholder="手机验证码"></div>
@@ -98,24 +91,13 @@
                           
                           </li>
                           <input name="bb" type="checkbox" class="fx_wid" value="" checked>阅读并同意《婚秀中国网服务协议》《委托代收付款协议》
-                          <input type="submit" value="注册并登录" class="login_btn" />
-                          
-                         
-                   
+                          <input type="text" id="submitBtns" value="注册并登录" class="login_btn" />
                       </ul>
                    </div>
-           
                </ul>
-               
-               
-               
            </div><!-- wid470px -->
-           
-           
-            <p class="login_lj">已拥有账号？去<a href="login.jsp">登录</a></p>
-                
+            <p class="login_lj">已拥有账号？去<a href="#" onclick="toLogin()">登录</a></p>
                 <div class="ffl_txt"><p>其他账户登录</p></div>
-                
                 <div class="other_img">
                    <ul >
                       <li><a href="javascript:"><img src="<%=basePath%>/static/images/share_icon1.png" /></a></li>
@@ -124,22 +106,93 @@
                       <div class="clear"></div>
                    </ul>
                 </div>
-           
-        
-        
-        
         </div><!-- wid470px -->
-        
-        <script type="text/javascript">
-jQuery(".wid470px").slide({titCell:".reg_nav li",mainCell:".regist_con", trigger:"click"})
- </script>
+<script type="text/javascript">
+    jQuery(".wid470px").slide({titCell:".reg_nav li",mainCell:".regist_con", trigger:"click"});
+    $(document).ready(function () {
+        //校验
+        var validate = $("#userform").validate({
+            debug: true, //调试模式取消submit的默认提交功能
+            //errorClass: "label.error", //默认为错误的样式类为：error
+            focusInvalid: false, //当为false时，验证无效时，没有焦点响应
+            onkeyup: false,
+            submitHandler: function(){   //表单提交句柄,为一回调函数，带一个参数：form
+                ordinarySubmit();
+            },
+            rules:{
+                fristname:{
+                    required:true
+                },
+                account:{
+                    required:true,
+                    remote: {
+                        url: "<%=basePath%>/signin/checkAccount.do",     //后台处理程序
+                        type: "post",               //数据发送方式
+                        dataType: "json",           //接受数据格式
+                        data: {                     //要传递的数据
+                            account: function() {
+                            return $("#account").val();
+                            }
+                        }
+                    }
+                },
+                password:{
+                    required:true
+                },
+                passwords:{
+                    equalTo:"#password"
+                }
+            },
+            messages:{
+                fristname:{
+                    required:"*必填"
+                },
+                account:{
+                    required:"*必填",
+                    remote:"*账号已注册"
+                },
+                password:{
+                    required: "*不能为空"
+                },
+                passwords:{
+                    equalTo:"*密码不一致"
+                }
+            }
 
-       
-     
-   
+        });
+    });
+    //普通注册提交
+    function ordinarySubmit(){
+        var fristname=$("#fristname").val();
+        var account=$("#account").val();
+        var password=$("#password").val();
+        $.ajax({
+            url:"<%=basePath%>/signin/registerSubmit.do",
+            type:"POST",
+            data:{
+                fristname:fristname,
+                account:account,
+                password:password
+            },
+            success:function(data){
+                alert("www");
+                alert(data);
+                if(data!=="failed"){
+                    successInfo("注册成功，三秒后跳转到登录页面");
+                    setTimeout("toLogin()","3000");  //3000毫秒后执行函数，只执行一次。
+                }else{
+                    errorInfo("注册失败");
+                }
+            }
+        })
+    }
+    //跳转到登录页面
+    function toLogin(){
+        document.location.href = '<%=basePath%>/signin/login.do';
+    }
+</script>
    </div><!-- wrap -->
-    </div><!-- bg_f5 -->
-    
+</div><!-- bg_f5 -->
    <!-- 公共底部 -->
    <footer>
      <div class="wrap">
