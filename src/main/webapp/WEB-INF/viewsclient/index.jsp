@@ -57,43 +57,70 @@
                 <li><a href="#" onclick="toFree()">免费下载</a> <p class="point_d"></p></li>
             </ul>
         </div><!-- nav -->
-
-
-
     </div><!-- top -->
 </header>
-
-
 <!-- 图片轮播 -->
 <div class="turn_pic">
     <div class="bd">
         <ul>
-            <li style="background:url(<%=basePath%>/static/images/banner_pic.png) no-repeat top center; width:100%; height:520px;"><a href="javascript:"></a></li>
-            <li style="background:url(<%=basePath%>/static/images/banner_pic.png) no-repeat top center; width:100%; height:520px;"><a  href="javascript:"></a></li>
-            <li style="background:url(<%=basePath%>/static/images/banner_pic.png) no-repeat top center; width:100%; height:520px;"><a  href="javascript:"></a></li>
         </ul>
-
     </div>
     <div class="hd">
         <ul>
             <li class="pngbg"></li>
         </ul>
     </div>
-
-
 </div>
 
 </div>
 <script type="text/javascript">
-    jQuery(".turn_pic").slide({ titCell:".hd ul", mainCell:".bd ul", effect:"fold", autoPlay:true, autoPage:true, delayTime:500, trigger:"click",interTime:4000,mouseOverStop:false});
+    var flag=1;
     $(document).ready(function () {
-        //隐藏注册/按钮登录
+        //隐藏注册/按钮登录    显示个人中心/个人空间
         var firstname="${userinfo.getFristname()}";
         if(firstname != ""){
             $("#beferLogin").css("display","none");
             $("#backLogin").css("display","block");
         }
+        //轮播图---有问题--图片全填充，会向下平铺，失去特效
+        $.ajax({
+            url:"<%=basePath%>/index/getPlayImg.do",
+            type:"POST",
+            success:function(data){
+                var msg=eval("("+data+")");
+                var str="";
+                for(var i=0;i<msg.length;i++){
+                    str += "<li style='background:url(<%=basePath%>"+msg[i].imgurl+") center top no-repeat; width: 1349px; height: 520px;'><a href='javascript:'></a></li>";
+                }
+                $(".bd ul").append(str);
+                jQuery(".turn_pic").slide({ titCell:".hd ul", mainCell:".bd ul", effect:"fold", autoPlay:true, autoPage:true, delayTime:500, trigger:"click",interTime:4000,mouseOverStop:false});
+            }
+        });
+        getTransaction();
+        //重启效果
+        jQuery(".txtMarquee-left").slide({mainCell:".bd ul",autoPlay:true,effect:"leftMarquee",vis:4,interTime:50});
+        setInterval("getTransaction()", 10000); //每隔10秒刷新交易动态
     });
+    //交易动态
+    function getTransaction(){
+        $(".infoList").html("");
+        $.ajax({
+            url:"<%=basePath%>/index/getTransaction.do",
+            type:"POST",
+            success:function(data){
+                var msg=eval("("+data+")");
+                var str="";
+                for(var i=0;i<msg.length;i++){
+                    str += "<li><a onclick='toDesignDel()' id='"+msg[i].worksid+"' href='javascript:' target='_blank'>"+msg[i].worksname+"<span class='col_f00'>￥"+msg[i].worksprice+"</span>    8分钟前</a></li>";
+                }
+                $(".infoList").append(str);
+                if(flag == 1){
+                    jQuery(".txtMarquee-left").slide({mainCell:".bd ul",autoPlay:true,effect:"leftMarquee",vis:4,interTime:50});
+                }
+                flag=flag+1;
+            }
+        });
+    }
     //跳转到注册页面
     function toRegister(){
         document.location.href = '<%=basePath%>/signin/register.do';
@@ -109,6 +136,10 @@
     //跳转到设计页面
     function toDesign(){
         document.location.href = '<%=basePath%>/design/toDesign.do';
+    }
+    //跳转到设计明细页面
+    function toDesignDel(){
+        document.location.href = '<%=basePath%>/design/toDesignDel.do';
     }
     //跳转到摄影图库页面
     function toPhotography(){
@@ -146,6 +177,7 @@
         <div class="jy_tit"><img src="<%=basePath%>/static/images/jydt_tit.png" height="25" width="77" /></div>
         <div class="bd">
             <ul class="infoList">
+                <!--
                 <li><a href="javascript:" target="_blank">韩式婚纱背景设计<span class="col_f00">￥40</span>    8分钟前</a></li>
                 <li><a href="javascript:" target="_blank">简约3D风给 <span class="col_f00">￥50</span> 12分钟前    </a></li
                 ><li><a href="javascript:" target="_blank">中式婚礼背景设计<span class="col_f00">￥50</span> 13分钟前</a></li>
@@ -154,20 +186,11 @@
                 <li><a href="javascript:" target="_blank">简约3D风给 <span class="col_f00">￥50</span> 12分钟前    </a></li
                 ><li><a href="javascript:" target="_blank">中式婚礼背景设计<span class="col_f00">￥50</span> 13分钟前</a></li>
                 <li><a href="javascript:" target="_blank">中式婚礼背景设计<span class="col_f00">￥50</span> 13分钟前</a></li>
-
+                -->
             </ul>
         </div>
     </div>
-
-    <script type="text/javascript">
-        jQuery(".txtMarquee-left").slide({mainCell:".bd ul",autoPlay:true,effect:"leftMarquee",vis:4,interTime:50});
-    </script>
-
-
-
 </div><!-- hei50px -->
-
-
 <!-- 设计 -->
 <div class="wrap">
     <div class="tit_pic"><a href="#" onclick="toDesign()"><img src="<%=basePath%>/static/images/tit_pic1.png" height="70" width="207" /></a></div>

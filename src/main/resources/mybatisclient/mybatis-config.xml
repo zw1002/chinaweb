@@ -24,6 +24,7 @@
         <typeAlias type="com.hnqj.model.Collection" alias="Collectionss"/>
         <typeAlias type="com.hnqj.model.Comment" alias="Comment"/>
         <typeAlias type="com.hnqj.model.Dealrecord" alias="Dealrecord"/>
+        <typeAlias type="com.hnqj.model.Dealuidchild" alias="Dealuidchild"/>
         <typeAlias type="com.hnqj.model.Dict" alias="Dict"/>
         <typeAlias type="com.hnqj.model.Distribution" alias="Distribution"/>
         <typeAlias type="com.hnqj.model.Distrirecord" alias="Distrirecord"/>
