@@ -7,6 +7,7 @@
 <head>
 <meta charset="utf-8">
 <title>婚秀中国网</title>
+    <link rel="icon" href="<%=basePath%>/static/images/ico.ico" type="image/x-icon"/>
 <link href="<%=basePath%>/static/css/global.css" rel="stylesheet" type="text/css" />
 <link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
 <link href="<%=basePath%>/static/css/laypage.css" rel="stylesheet" type="text/css" />
