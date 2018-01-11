@@ -56,7 +56,7 @@ protected final Log logger = LogFactory.getLog(getClass());
 	 logger.info("通过ID查询Works");
 	Works	works=null;
 	 try { 
-		works = (Works) daoSupport.findForObject("WorksMapper.getWorksForId",fid);
+		works = (Works) daoSupport.findForObject("WorksMapper.selectByPrimaryKey",fid);
 	 }catch (Exception e){ 
 	 e.printStackTrace(); 
 	 works=null; 

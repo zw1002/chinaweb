@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mybatis/mapperfile.Dict">
+<mapper namespace="DictMapper">
   <resultMap id="BaseResultMap" type="com.hnqj.model.Dict">
     <!--
       WARNING - @mbg.generated
@@ -32,6 +32,29 @@
     <include refid="Base_Column_List" />
     from tb_dict
     where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getDictForId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    *
+    from tb_dict
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <!--分页查询所有父节点-->
+  <select id="getAllDict" resultMap="BaseResultMap">
+    select * from tb_dict where parentid = #{parentId} LIMIT #{offset},#{limit}
+  </select>
+  <!--根据树ID查询所有-->
+  <select id="selectDictList" resultMap="BaseResultMap">
+    select * from tb_dict where parentid = #{parentId}
+  </select>
+  <!--根据类型名称查询所有子类-->
+  <select id="selectFilterDictList" resultMap="BaseResultMap">
+    select * from tb_dict where parentid = (select DISTINCT uid from tb_dict where keyname=#{keyname,jdbcType=VARCHAR})
+  </select>
+  <!--查询所有-->
+  <select id="selectDictLists" resultMap="BaseResultMap">
+    select * from tb_dict
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--

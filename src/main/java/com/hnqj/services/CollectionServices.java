@@ -23,7 +23,7 @@ protected final Log logger = LogFactory.getLog(getClass());
 	 logger.info("增加Collection");
 	 int iFlag =0; 
 	 try { 
-		iFlag = (int) daoSupport.insert("CollectionMapper.addCollection",pageData);
+		iFlag = (int) daoSupport.insert("CollectionMapper.insert",pageData);
 	 }catch (Exception e){ 
 	 e.printStackTrace(); 
 	 iFlag=0; 
@@ -40,6 +40,18 @@ protected final Log logger = LogFactory.getLog(getClass());
 	 iFlag=0; 
 	}
 	 return iFlag; 
+	}
+
+	public int delCollectionByUseridandWorksID(PageData pageData) {
+		logger.info("删除delCollectionByUseridandWorksID");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.delete("CollectionMapper.deleteByUidAndWorksid",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
 	}
 	public int updateCollection(PageData pageData) {
 	 logger.info("修改Collection");

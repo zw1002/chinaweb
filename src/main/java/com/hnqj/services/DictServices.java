@@ -75,14 +75,30 @@ protected final Log logger = LogFactory.getLog(getClass());
 	 return dictList; 
 	}
 	public List<Dict> selectDictList() {
-	 logger.info("查询所有Dict");
-	List<Dict>	dictList=null;
-	 try { 
-		dictList = (List<Dict>) daoSupport.findForList("DictMapper.selectDictList",null);
-	 }catch (Exception e){ 
-	 e.printStackTrace(); 
-	 dictList=null; 
+		logger.info("查询所有Dict");
+		List<Dict>	dictList=null;
+		try {
+			dictList = (List<Dict>) daoSupport.findForList("DictMapper.selectDictLists",null);
+		}catch (Exception e){
+			e.printStackTrace();
+			dictList=null;
+		}
+		return dictList;
 	}
-	 return dictList; 
+	/**
+	 * 获取指定类型的子类列表
+	 * @param typeName
+	 * @return 返回子类列表
+	 */
+	public List<Dict> selectFilterDictList(String typeName) {
+		logger.info("查询指定类型的子类列表");
+		List<Dict>	dictList=null;
+		try {
+			dictList = (List<Dict>) daoSupport.findForList("DictMapper.selectFilterDictList",typeName);
+		}catch (Exception e){
+			e.printStackTrace();
+			dictList=null;
+		}
+		return dictList;
 	}
 }
