@@ -1,7 +1,9 @@
 package com.hnqj.controller;
+import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
 import com.hnqj.model.Dealuidchild;
 import com.hnqj.model.Playimg;
+import com.hnqj.model.Works;
 import com.hnqj.services.DealuidchildServices;
 import com.hnqj.services.PlayimgServices;
 import com.hnqj.services.WorksServices;
@@ -11,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 首页控制层
@@ -24,7 +29,8 @@ public class IndexController extends BaseController{
     PlayimgServices playimgServices;
     @Autowired
     DealuidchildServices dealuidchildServices;
-
+    @Autowired
+    WorksServices worksServices;
     /**
      * 获取首页轮播图
      * @param request
@@ -62,6 +68,7 @@ public class IndexController extends BaseController{
         }
         return null;
     }
+
 
 
 }

@@ -85,4 +85,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return worksList; 
 	}
+
+	public List<Works> getWorksForTypeAndCount(PageData pageData) {
+		logger.info("根据类别和个数查询Works");
+		List<Works>	worksList=null;
+		try {
+			worksList = (List<Works>) daoSupport.findForList("WorksMapper.getWorksForTypeAndCount",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			worksList=null;
+		}
+		return worksList;
+	}
 }

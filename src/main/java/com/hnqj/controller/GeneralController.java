@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 通用接口控制层
@@ -122,6 +120,37 @@ public class GeneralController extends BaseController{
         }
         catch(Exception ex){
             logger.error("AddCancelWorksCollection e="+ex.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+    /**
+     * 设计等推荐接口
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getRecommendWorks.do")
+    public String getRecommendWorks(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getRecommendWorks");
+        String type = request.getParameter("type") == null ? "" : request.getParameter("type");
+        String count = request.getParameter("count") == null ? "" : request.getParameter("count");
+        List<Map<String, String>> hashMaps=new ArrayList<>();
+        try{
+            PageData pageData = new PageData();
+            pageData.put("type",type);
+            pageData.put("count",count);
+            List<Works> worksList=worksServices.getWorksForTypeAndCount(pageData);
+            for(Works works:worksList){
+                Map<String, String> map = new HashMap<>();
+                map.put("uid",works.getUid());
+                map.put("worksname",works.getWorksname());
+                map.put("samllurl",works.getSamllurl());
+                hashMaps.add(map);
+            }
+            ResultUtils.write(response,hashMaps);
+        }catch (Exception e){
+            logger.error("getRecommendWorks e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;
