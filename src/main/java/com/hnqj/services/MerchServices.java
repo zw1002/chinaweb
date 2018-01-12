@@ -56,7 +56,7 @@ protected final Log logger = LogFactory.getLog(getClass());
 	 logger.info("通过ID查询Merch");
 	Merch	merch=null;
 	 try { 
-		merch = (Merch) daoSupport.findForObject("MerchMapper.getMerchForId",fid);
+		merch = (Merch) daoSupport.findForObject("MerchMapper.selectByPrimaryKey",fid);
 	 }catch (Exception e){ 
 	 e.printStackTrace(); 
 	 merch=null; 

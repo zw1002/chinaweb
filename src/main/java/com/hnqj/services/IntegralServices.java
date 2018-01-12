@@ -56,12 +56,24 @@ protected final Log logger = LogFactory.getLog(getClass());
 	 logger.info("通过ID查询Integral");
 	Integral	integral=null;
 	 try { 
-		integral = (Integral) daoSupport.findForObject("IntegralMapper.getIntegralForId",fid);
+		integral = (Integral) daoSupport.findForObject("IntegralMapper.selectByPrimaryKey",fid);
 	 }catch (Exception e){ 
 	 e.printStackTrace(); 
 	 integral=null; 
 	}
 	 return integral; 
+	}
+
+	public Integral getIntegralforNum(int grandnum) {
+		logger.info("通过积分查询店铺等级getIntegralforNum");
+		Integral	integral=null;
+		try {
+			integral = (Integral) daoSupport.findForObject("IntegralMapper.selectGradeBynum",grandnum);
+		}catch (Exception e){
+			e.printStackTrace();
+			integral=null;
+		}
+		return integral;
 	}
 	public List<Integral> getAllIntegral(PageData pageData) {
 	 logger.info("分页查询Integral");
