@@ -14,13 +14,12 @@
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
 <script src="<%=basePath%>/static/js/fs_forse.js"></script>
-
 </head>
-
 <body>
+<!--获取作品ID-->
+<input id="uid" name="uid" type="hidden" value="<%= request.getAttribute("uid")%>"/>
    <header>
      <div class="top">
-     
       <div class="top_line">
          <div class="top_wid">
             欢迎来到婚秀中国网
@@ -28,59 +27,45 @@
             <div class="top_pos"  style="display:none;">
               <a href="login.jsp">登录</a>|<a href="regist.jsp">注册</a>
             </div>
-            
             <!-- 登录后 -->
             <div class="top_pos">
               <a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.jsp" class="sc_icon">我要上传</a>|<a href="collection_2.jsp">我的收藏（<span class="col_f00">2</span>）</a>
             </div>
          </div>
       </div><!-- top_line -->
-      
       <div class="top_wid logo_con">
          <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="ss_bg fl">
             <input name="" type="text" placeholder="请输入搜索内容"  class="inp_txt">
             <input type="submit" value="搜 索" class="ss_btn" /> 
          </div>
-         
          <div class="phone_fr">
             <h2>400-879-51747</h2>
             <p>24小时服务热线</p>
          </div>
       </div><!-- top_wid -->
-      
       <div class="nav">
-        <ul class="clearfix">
-          <li ><a class="" href="index.jsp">首 页 </a> <p class="point_d"></p></li>
-          <li><a href="design.jsp" >设 计</a> <p class="point_d"></p></li>
-          
-          <li><a href="photography.jsp" >摄影图库</a> <p class="point_d"></p></li>
-          <li><a href="multimedia.jsp" class="active">道具新品</a> <p class="point_d"></p></li>
-          <li><a href="wedding.jsp" >婚 秀</a> <p class="point_d"></p></li>
-         <li><a href="help.jsp">求图求助</a> <p class="point_d"></p></li>
-         <li><a href="free.jsp">免费下载</a> <p class="point_d"></p></li>
-        </ul>
+          <ul class="clearfix">
+              <li><a href="#" onclick="toIndex()">首 页 </a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toDesign()">设 计</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toPhotography()">摄影图库</a> <p class="point_d"></p></li>
+              <li><a class="active" href="#" onclick="toMultimedia()">道具新品</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toWedding()">婚 秀</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toHelp()">求图求助</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toFree()">免费下载</a> <p class="point_d"></p></li>
+          </ul>
       </div><!-- nav -->
-      
-      
-      
       </div><!-- top -->
    </header>
-   
-   <div class="bg_f5"> 
+   <div class="bg_f5">
      <div class="wrap">
-     
      <div class="mbx_box"><a  href="index.jsp">首页</a> > <a href="javascript:">道具新品</a> > <a href="javascript:">中式设计</a> > 欧式米黄色婚礼背景</div>
-     
      <div class="wed_del">
-        
        <div class="wid780px fl">
          <div class="del_txt">
            <h2>欧式米黄色婚礼背景</h2>   <a href="javascript:" title="查看大图" class="icon_fdj" style="display:none;" ></a>
          </div>
-         
          <div class="gallery" >
-         
             <div class="turn_pic2">
                 <div class="bd" id="gallery">
                     <ul>
@@ -92,7 +77,6 @@
                         <li> <a href="<%=basePath%>/static/images/pbl_12.png" title="点击查看大图" alt=""  ><img src="<%=basePath%>/static/images/pbl_12.png" /></a></li>
 				</ul>
                 </div>
-                
                 <div class="hd">
 				<ul>
 					<li><img src="<%=basePath%>/static/images/hlx_big.png" /></li>
@@ -103,21 +87,63 @@
                     <li><img src="<%=basePath%>/static/images/pbl_12.png" /></li> 
 				</ul>
 			</div>
-                
             </div>
-            
-            <script type="text/javascript">jQuery(".turn_pic2").slide({ mainCell:".bd ul",effect:"left",autoPlay:true });</script>
-
-         
-            
+            <script type="text/javascript">
+                jQuery(".turn_pic2").slide({ mainCell:".bd ul",effect:"left",autoPlay:true });
+                $(document).ready(function () {
+                    //获取摄影信息
+                    getMultimediaDel();
+                });
+                function getMultimediaDel(){
+                    //作品ID
+                    var uid=$("#uid").val();
+                    $.ajax({
+                        url: "<%=basePath%>/general/getWorkDetails.do",
+                        type: "POST",
+                        data:{
+                            uid:uid
+                        },
+                        success: function (data) {
+                            var msg = eval("(" + data + ")");
+                            alert(data);
+                        }
+                    });
+                }
+                //跳转到首页
+                function toIndex(){
+                    document.location.href = '<%=basePath%>/signin/index.do';
+                }
+                //跳转到设计页面
+                function toDesign(){
+                    document.location.href = '<%=basePath%>/design/toDesign.do';
+                }
+                //跳转到摄影图库页面
+                function toPhotography(){
+                    document.location.href = '<%=basePath%>/photography/toPhotography.do';
+                }
+                //跳转到婚秀页面
+                function toWedding(){
+                    document.location.href = '<%=basePath%>/wedding/toWedding.do';
+                }
+                //跳转到道具页面
+                function toMultimedia(){
+                    document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
+                }
+                //跳转到免费下载页面
+                function toFree(){
+                    document.location.href = '<%=basePath%>/free/toFree.do';
+                }
+                //跳转到求助求图页面
+                function toHelp(){
+                    document.location.href = '<%=basePath%>/help/toHelp.do';
+                }
+            </script>
             <div class="botm_js">
               婚秀中国网正版图库 &nbsp; &nbsp;  &nbsp; &nbsp;  编号：1025808214 &nbsp; &nbsp;  &nbsp; &nbsp;   会员：甜心卡布奇诺
               <a href="javascript:" class="jb_icon">举报</a>
             </div>
          </div>
-
        </div><!-- wid780px -->
-       
        <div class="wid400px fr">
          <div class="ty_box">
              <div class="xx_tabd">
@@ -127,30 +153,22 @@
                       <td> <a href="homepage.jsp">yizhouerig</a>    普通会员 <img src="<%=basePath%>/static/images/icon_dj.png" height="15" width="22" />
                       <p>交易：130 &nbsp; &nbsp;|&nbsp; &nbsp;作品数量：200</p>
                       </h2>
-                      
                       </td>
-                     
                   </tr>
                </table>
                 <div class="dp_boxd"><a href="#">收藏店铺</a> <a href="#">进入店铺</a></div>
              </div>
-             
              <h2>婚庆场景设计模板</h2>
              <p><span class="col_f00">[原创设计]</span> AI矢量图，可任意设置精度，拉大，可做喷绘，写真，内送PSD分层文件放心下载</p>
              <div class="jg_ttx">
               价格：<b class="col_f00">100元</b>  <a href="javascript:" class="sh_pos">贴心售后></a>
              </div> 
-             
              <div class="buy_btn">
                <a href="javascript:" class="fl">我要购买</a>
                <a href="javascript:" class="wydz fr"><img src="<%=basePath%>/static/images/icon_dz.png" /> 我要定制</a>
              </div>
-             
              <p class="small_txt"><span class="yzx_icon">已下载：6541</span><span class="ll_icon">浏览：8454</span><span class="sc_icon">收藏：4554</span></p>
-                
          </div><!-- ty_box -->
-         
-         
          <div class="ty_box">
               <div class="jj_tabd">
                 <table width="100%">

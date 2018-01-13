@@ -183,7 +183,7 @@ a.icon_fdj:hover{background:url(../images/icon_fd2.png) no-repeat center center;
 .turn_pic2 .hd ul li.on{ background:url("../images/icoUp.gif") no-repeat center 0; }
 .turn_pic2 .hd ul li.on img{ border-color:#f60;  }
 .turn_pic2 .bd li{ vertical-align:middle; position:relative; }
-.turn_pic2 .bd img{ width:100%; height:600px; display:block;  }
+.turn_pic2 .bd img{ width:100%; height:720px; display:block;  }
 
 .turn_pic2 .hd ul li .bofang_icon{ background-size:36px 36px;  position:absolute; top:50%; left:50%; margin-left:-18px; margin-top:-18px; height:36px; width:36px;}
 

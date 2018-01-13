@@ -100,4 +100,15 @@
       LIMIT #{offset},#{count}
     </if>
   </select>
+  <!--会员作品推荐-->
+  <select id="getWorksForMerchId" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where merchid = #{merchid}
+    order by downcount desc
+    <if test="count != null and count != ''">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
 </mapper>

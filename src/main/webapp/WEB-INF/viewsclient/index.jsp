@@ -103,6 +103,7 @@
         //获取设计推荐作品
         recommendWorks("00");
         recommendWorks("10");
+        recommendWorks("20");
         recommendWorks("30");
     });
     //交易动态
@@ -140,17 +141,21 @@
                 var str="";
                 for(var i=0;i<msg.length;i++){
                     if(type == "00"){
-                        str += "<li><a href='#' onclick='toDesignDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                        str = "<li><a href='#' onclick='toDesignDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
                                 +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
                         $("#design").append(str);
                     }else if(type == "10"){
-                        str += "<li><a href='#' onclick='toPhotographyDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                        str = "<li><a href='#' onclick='toPhotographyDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
                                 +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
                         $("#photography").append(str);
-                    }else{
-                        str += "<li><a href='#' onclick='toWeddingDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                    }else if(type == "30"){
+                        str = "<li><a href='#' onclick='toWeddingDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
                                 +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
                         $("#wedding").append(str);
+                    }else{
+                        str = "<li><a href='#' onclick='toMultimediaDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                                +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
+                        $("#multimedia").append(str);
                     }
                 }
             }
@@ -195,6 +200,10 @@
     //跳转到道具页面
     function toMultimedia(){
         document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
+    }
+    //跳转到道具页面
+    function toMultimediaDel(uid){
+        document.location.href = '<%=basePath%>/multimedia/toMultimediaDel.do';
     }
     //跳转到免费下载页面
     function toFree(){
@@ -645,12 +654,10 @@
 <div class="bg_hs">
     <div class="wrap">
         <div class="tit_pic"><a href="#" onclick="toMultimedia()"><img src="<%=basePath%>/static/images/tit_pic4.png" height="70" width="284" /></a></div>
-
         <div class="hei380px">
-
-
             <div class="design_list da_img">
-                <ul class="clearfix">
+                <ul class="clearfix" id="multimedia">
+                    <!--
                     <li><a href="media_del.html"><img src="<%=basePath%>/static/images/dmtk_pic1.png" />
                         <div class="botm_txtd">
                             <p>我是标题</p>
@@ -686,7 +693,7 @@
                             <p>我是标题</p>
                         </div>
                     </a></li>
-
+-->
 
                 </ul>
             </div><!-- design_list -->

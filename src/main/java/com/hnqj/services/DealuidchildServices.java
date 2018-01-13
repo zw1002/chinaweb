@@ -85,4 +85,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return dealuidchildList; 
 	}
+
+	public List<Dealuidchild> getDealuidchildForRankings(PageData pageData) {
+		logger.info("交易、婚秀排行榜");
+		List<Dealuidchild>	dealuidchildList=null;
+		try {
+			dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.getDealuidchildForRankings",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			dealuidchildList=null;
+		}
+		return dealuidchildList;
+	}
 }

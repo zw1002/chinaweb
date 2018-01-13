@@ -27,4 +27,27 @@
     order by addtime desc
     LIMIT 1,10
   </select>
+  <!--交易、婚秀排行榜-->
+  <select id="getDealuidchildForRankings" parameterType="pd" resultMap="BaseResultMap">
+    <if test="type != null and type != ''">
+      SELECT worksid,sum(worksprice) as price
+      FROM tb_dealuidchild where uid in (
+      select dealuid from tb_dealuidchild where worksid in(
+      select uid from tb_works where uid in(
+      select worksid from tb_dealuidchild) and workstype like '3%')
+      )
+      group by worksid order by price desc
+      <if test="count != null and count != ''">
+        LIMIT #{offset},#{count}
+      </if>
+    </if>
+    <if test="type = null and type = ''">
+      SELECT worksid,sum(worksprice) as price
+      FROM tb_dealuidchild
+      group by worksid order by price desc
+      <if test="count != null and count != ''">
+        LIMIT #{offset},#{count}
+      </if>
+    </if>
+  </select>
 </mapper>

@@ -2,10 +2,7 @@ package com.hnqj.controller;
 
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
-import com.hnqj.model.Dict;
-import com.hnqj.model.Integral;
-import com.hnqj.model.Merch;
-import com.hnqj.model.Works;
+import com.hnqj.model.*;
 import com.hnqj.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.*;
+
+import static com.hnqj.core.ResultUtils.toDateJson;
 
 /**
  * 通用接口控制层
@@ -34,6 +33,10 @@ public class GeneralController extends BaseController{
     MerchServices merchServices;
     @Autowired
     IntegralServices integralServices;
+    @Autowired
+    LeavemsgServices leavemsgServices;
+    @Autowired
+    DealuidchildServices dealuidchildServices;
     /**
      * 获取分类接口
      * @param request
@@ -84,14 +87,14 @@ public class GeneralController extends BaseController{
             Works relWorks = worksServices.getWorksforId(worksID);
             if(relWorks!=null)
             {
-                Map<String, String> map = new HashMap<>();
+                Map<String, Object> map = new HashMap<>();
                 map.put("uid",relWorks.getUid());
                 map.put("worksurl",relWorks.getWorksurl());
                 map.put("worksname",relWorks.getWorksname());
                 map.put("favcount",relWorks.getFavcount().toString());
                 map.put("downcount",relWorks.getDowncount().toString());
                 map.put("price",relWorks.getPrice().toString());
-                map.put("uptime",relWorks.getUptime().toString());
+                map.put("uptime",relWorks.getUptime());
                 map.put("dpinum",relWorks.getDpinum());
                 map.put("imgsize",relWorks.getImgsize().toString());
                 map.put("imgformart",relWorks.getImgformart());
@@ -103,10 +106,18 @@ public class GeneralController extends BaseController{
                 map.put("count",merchModel.getDealnums().toString());
                 //根据积分查询等级
                 Integral integral = integralServices.getIntegralforNum(merchModel.getDealnums());
-                map.put("grade",integral.getGrade().toString());
+                if(integral.getGrade() == 1){
+                    map.put("grade","初级店铺");
+                }else if(integral.getGrade() == 2){
+                    map.put("grade","中级店铺");
+                }else if(integral.getGrade() == 3){
+                    map.put("grade","高级店铺");
+                }else{
+                    map.put("grade","特级店铺");
+                }
                 map.put("workremark",relWorks.getWorkremark());
                 map.put("worklabel",relWorks.getWorklabel());
-                ResultUtils.write(response,map);
+                ResultUtils.write(response,toDateJson(map));
             }
             else
                 ResultUtils.writeFailed(response);
@@ -187,6 +198,122 @@ public class GeneralController extends BaseController{
                 map.put("uid",works.getUid());
                 map.put("worksname",works.getWorksname());
                 map.put("samllurl",works.getSamllurl());
+                hashMaps.add(map);
+            }
+            ResultUtils.write(response,hashMaps);
+        }catch (Exception e){
+            logger.error("getRecommendWorks e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 会员作品推荐
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getUserInfoWorks.do")
+    public String getUserInfoWorks(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getUserInfoWorks");
+        int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
+        int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
+        String merchId = request.getParameter("merchId") == null ? "" : request.getParameter("merchId");
+        List<Map<String, String>> hashMaps=new ArrayList<>();
+        try{
+            PageData pageData = new PageData();
+            pageData.put("offset",offset);
+            pageData.put("count",count);
+            pageData.put("merchid",merchId);
+            List<Works> worksList=worksServices.getWorksForMerchId(pageData);
+            for(Works works:worksList){
+                Map<String, String> map = new HashMap<>();
+                map.put("uid",works.getUid());
+                map.put("worksname",works.getWorksname());
+                map.put("samllurl",works.getSamllurl());
+                hashMaps.add(map);
+            }
+            ResultUtils.write(response,hashMaps);
+        }catch (Exception e){
+            logger.error("getUserInfoWorks e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 举报投诉
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/addComplaint.do")
+    public String addComplaint(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("addComplaint");
+        String merchId = request.getParameter("merchId") == null ? "" : request.getParameter("merchId");
+        String workid = request.getParameter("workid") == null ? "" : request.getParameter("workid");
+        String userid=getUser().getUid();
+        String msgContent = request.getParameter("msgContent") == null ? "" : request.getParameter("msgContent");
+        PageData pageData = new PageData();
+        pageData.put("workid",workid);
+        pageData.put("userid",userid);
+        pageData.put("merchid",merchId);
+        pageData.put("msgContent",msgContent);
+        pageData.put("replycontent",0);
+        pageData.put("msgtime",new Date());
+        pageData.put("uid",UUID.randomUUID().toString());
+        try{
+            leavemsgServices.addLeavemsg(pageData);
+            ResultUtils.writeSuccess(response);
+        }catch (Exception e){
+            logger.error("addComplaint e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 投诉受理
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/acceptComplaint.do")
+    public String acceptComplaint(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("acceptComplaint");
+        String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
+        try{
+            leavemsgServices.updateLeavemsgStatu(uid);
+            ResultUtils.writeSuccess(response);
+        }catch (Exception e){
+            logger.error("acceptComplaint e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 交易、婚秀排行榜
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/tradeRankings.do")
+    public String tradeRankings(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("tradeRankings");
+        String type = request.getParameter("type") == null ? "" : request.getParameter("type");
+        int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
+        int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
+        List<Map<String, String>> hashMaps=new ArrayList<>();
+        try{
+            PageData pageData = new PageData();
+            pageData.put("type",type);
+            pageData.put("offset",offset);
+            pageData.put("count",count);
+            List<Dealuidchild> dealuidchildList=dealuidchildServices.getDealuidchildForRankings(pageData);
+            for(Dealuidchild dealuidchild:dealuidchildList){
+                Map<String, String> map = new HashMap<>();
                 hashMaps.add(map);
             }
             ResultUtils.write(response,hashMaps);

@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ page language="java" pageEncoding="UTF-8"
          contentType="text/html;charset=UTF-8" %>
 <%
@@ -9,17 +8,134 @@
 <head>
 <meta charset="utf-8">
 <title>婚秀中国网</title>
-    <link rel="icon" href="<%=basePath%>/static/images/ico.ico" type="image/x-icon"/>
+<link rel="icon" href="<%=basePath%>/static/images/ico.ico" type="image/x-icon"/>
 <link href="<%=basePath%>/static/css/global.css" rel="stylesheet" type="text/css" />
 <link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet"  href="<%=basePath%>/static/css/fsgallery.css" media="all" />
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
-<script src="js/fs_forse.js"></script>
 </head>
 <body>
 <!--获取作品ID-->
 <input id="uid" name="uid" type="hidden" value="<%= request.getAttribute("uid")%>"/>
+<input id="merchid" name="merchid" type="hidden"/>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //获取作品信息
+        getDisginDel();
+        //感兴趣
+        interested();
+        //会员作品推荐
+        getUserInfoWorks();
+    });
+    function getDisginDel(){
+        //作品ID
+        var uid=$("#uid").val();
+        $.ajax({
+            url: "<%=basePath%>/general/getWorkDetails.do",
+            type: "POST",
+            async:false,
+            data:{
+                uid:uid
+            },
+            success: function (data) {
+                var msg = eval("(" + data + ")");
+                var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.worksurl+"' title='点击查看大图' alt=''  ><img src='<%=basePath%>"+msg.worksurl+"' /></a></li>";
+                $("#gallery ul").append(str);
+                $("#title").text(msg.worksname);
+                var stt='<tr> <td width="50"><div class="tx_img"><a href="homepage.jsp"><img src="<%=basePath%>/static/images/head_img.png" /></a></div></td>'
+                        +'<td> <a href="#" id='+msg.uid+'>'+msg.merchname+'</a>'+msg.grade+' <img src="<%=basePath%>/static/images/icon_dj.png" height="15" width="22" />'
+                        +'<p>交易：'+msg.count+' &nbsp; &nbsp;|&nbsp; &nbsp;作品数量：'+msg.workcount+'</p> </td> </tr>';
+                $("#merchMessage").append(stt);
+                $("#downCount").text("下载量:"+msg.downcount);
+                $("#favcount").text("收藏量:"+msg.favcount);
+                $("#imgformart").text("格式:"+msg.imgformart);
+                $("#imgsize").text("大小:"+msg.imgsize);
+                $("#dpinum").text("分辨率:"+msg.dpinum);
+                $("#uptime").text("发布时间:"+msg.uptime);
+                $("#merchid").val(msg.userid);
+            }
+        });
+    }
+    //感兴趣推荐
+    function interested(){
+        var type="00";
+        var count=6;
+        $.ajax({
+            url: "<%=basePath%>/general/getRecommendWorks.do",
+            type: "POST",
+            async: false,
+            data: {
+                type:type,
+                count: count
+            },
+            success: function (data) {
+                var msg = eval("(" + data + ")");
+                var str="";
+                for(var i=0;i<msg.length;i++) {
+                    str += "<li><a href='#' onclick='toDesignDel(" + msg[i].uid + ")'><img src='<%=basePath%>" + msg[i].samllurl + "'/>"
+                            + "<div class='botm_txtd'><p>" + msg[i].worksname + "</p> </div> </a></li>";
+                }
+                $("#interested").append(str);
+            }
+        });
+    }
+    //会员作品推荐
+    function getUserInfoWorks(){
+        var count=2;
+        var merchId=$("#merchid").val();
+        $.ajax({
+            url: "<%=basePath%>/general/getUserInfoWorks.do",
+            type: "POST",
+            async: false,
+            data: {
+                count: count,
+                merchId: merchId
+            },
+            success: function (data) {
+                var msg = eval("(" + data + ")");
+                var str="";
+                for(var i=0;i<msg.length;i++) {
+                    str += "<li><a href='#' onclick='toDesignDel(" + msg[i].uid + ")'><img src='<%=basePath%>" + msg[i].samllurl + "'/>"
+                            + "<div class='botm_txtd'><p>" + msg[i].worksname + "</p> </div> </a></li>";
+                }
+                $("#userInfoWorks").append(str);
+            }
+        });
+    }
+    //跳转到首页
+    function toIndex(){
+        document.location.href = '<%=basePath%>/signin/index.do';
+    }
+    //跳转到设计页面
+    function toDesign(){
+        document.location.href = '<%=basePath%>/design/toDesign.do';
+    }
+    //跳转到设计页面
+    function toDesignDel(uid){
+        document.location.href = '<%=basePath%>/design/toDesignDel.do?uid='+uid;
+    }
+    //跳转到摄影图库页面
+    function toPhotography(){
+        document.location.href = '<%=basePath%>/photography/toPhotography.do';
+    }
+    //跳转到婚秀页面
+    function toWedding(){
+        document.location.href = '<%=basePath%>/wedding/toWedding.do';
+    }
+    //跳转到道具页面
+    function toMultimedia(){
+        document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
+    }
+    //跳转到免费下载页面
+    function toFree(){
+        document.location.href = '<%=basePath%>/free/toFree.do';
+    }
+    //跳转到求助求图页面
+    function toHelp(){
+        document.location.href = '<%=basePath%>/help/toHelp.do';
+    }
+</script>
    <header>
      <div class="top">
       <div class="top_line">
@@ -61,87 +177,22 @@
    </header>
    <div class="bg_f5">
      <div class="wrap">
-     <div class="mbx_box"><a  href="index.jsp">首页</a> > <a href="javascript:">设 计</a> > <a href="javascript:">中式设计</a> > 欧式米黄色婚礼背景</div>
+     <div class="mbx_box"><a  href="index.jsp">首页</a> > <a href="javascript:">设 计</a> > </div>
      <div class="wed_del">
        <div class="wid780px fl">
          <div class="del_txt">
-           <h2>欧式米黄色婚礼背景</h2>   <a href="javascript:" title="查看大图" class="icon_fdj" style="display:none;" ></a>
+           <h2 id="title"></h2></a>
          </div>
          <div class="gallery" >
             <div class="turn_pic2">
                 <div class="bd" id="gallery">
                     <ul>
-                        <li> <a href="<%=basePath%>/static/images/hlx_big.png" title="点击查看大图" alt=""  ><img src="<%=basePath%>/static/images/hlx_big.png" /></a><div class="zplx_top"><img src="<%=basePath%>/static/images/icon_yc.png" height="73" width="76" /></div></li>
-                        <li> <a href="<%=basePath%>/static/images/sytk_pic8.png" title="点击查看大图" alt=""  ><img src="<%=basePath%>/static/images/sytk_pic8.png" /></a><div class="zplx_top"><img src="<%=basePath%>/static/images/icon_gx.png" height="73" width="76" /></div></li>
-                        <li> <a href="<%=basePath%>/static/images/hlx_big.png" title="点击查看大图" alt=""  ><img src="<%=basePath%>/static/images/hlx_big.png" /></a></li>
-                        <li> <a href="<%=basePath%>/static/images/pbl_8.png" title="点击查看大图" alt=""  ><img src="<%=basePath%>/static/images/pbl_8.png" /></a></li>
-                        <li> <a href="<%=basePath%>/static/images/sytk_pic3.png" title="点击查看大图" alt=""  ><img src="<%=basePath%>/static/images/sytk_pic3.png" /></a></li>
-                        <li> <a href="<%=basePath%>/static/images/pbl_12.png" title="点击查看大图" alt=""  ><img src="<%=basePath%>/static/images/pbl_12.png" /></a></li>
-				</ul>
+                    </ul>
                 </div>
-                <div class="hd">
-				<ul>
-					<li><img src="<%=basePath%>/static/images/hlx_big.png" /></li>
-					<li><img src="<%=basePath%>/static/images/sytk_pic8.png" /></li>
-					<li><img src="<%=basePath%>/static/images/hlx_big.png" /></li>
-					<li><img src="<%=basePath%>/static/images/pbl_8.png" /></li>
-                    <li><img src="<%=basePath%>/static/images/sytk_pic3.png" /></li> 
-                    <li><img src="<%=basePath%>/static/images/pbl_12.png" /></li> 
-				</ul>
-			</div>
             </div>
-            <script type="text/javascript">
-                jQuery(".turn_pic2").slide({ mainCell:".bd ul",effect:"left",autoPlay:true });
-                $(document).ready(function () {
-                    //获取作品信息
-                    getDisginDel();
-                });
-                function getDisginDel(){
-                    //作品ID
-                    var uid=$("#uid").val();
-                    $.ajax({
-                        url: "<%=basePath%>/general/getWorkDetails.do",
-                        type: "POST",
-                        data:{
-                            uid:uid
-                        },
-                        success: function (data) {
-                            var msg = eval("(" + data + ")");
-                            alert(data);
-                        }
-                    });
-                }
-                //跳转到首页
-                function toIndex(){
-                    document.location.href = '<%=basePath%>/signin/index.do';
-                }
-                //跳转到设计页面
-                function toDesign(){
-                    document.location.href = '<%=basePath%>/design/toDesign.do';
-                }
-                //跳转到摄影图库页面
-                function toPhotography(){
-                    document.location.href = '<%=basePath%>/photography/toPhotography.do';
-                }
-                //跳转到婚秀页面
-                function toWedding(){
-                    document.location.href = '<%=basePath%>/wedding/toWedding.do';
-                }
-                //跳转到道具页面
-                function toMultimedia(){
-                    document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
-                }
-                //跳转到免费下载页面
-                function toFree(){
-                    document.location.href = '<%=basePath%>/free/toFree.do';
-                }
-                //跳转到求助求图页面
-                function toHelp(){
-                    document.location.href = '<%=basePath%>/help/toHelp.do';
-                }
-            </script>
+
             <div class="botm_js">
-              婚秀中国网正版图库 &nbsp; &nbsp;  &nbsp; &nbsp;  编号：1025808214 &nbsp; &nbsp;  &nbsp; &nbsp;   会员：甜心卡布奇诺
+              婚秀中国网正版图库 &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;
               <a href="javascript:" class="jb_icon">举报</a>
             </div>
          </div>
@@ -149,14 +200,8 @@
        <div class="wid400px fr">
          <div class="ty_box">
              <div class="xx_tabd">
-               <table width="100%">
-                  <tr>
-                      <td width="50"><div class="tx_img"><a href="homepage.jsp"><img src="<%=basePath%>/static/images/head_img.png" /></a></div></td>
-                      <td> <a href="homepage.jsp">yizhouerig</a>    普通会员 <img src="<%=basePath%>/static/images/icon_dj.png" height="15" width="22" />
-                      <p>交易：130 &nbsp; &nbsp;|&nbsp; &nbsp;作品数量：200</p>
-                      </h2>
-                      </td>
-                  </tr>
+               <table width="100%" id="merchMessage">
+
                </table>
                 <div class="dp_boxd"><a href="#">收藏店铺</a> <a href="#">进入店铺</a></div>
              </div>
@@ -169,7 +214,7 @@
                <a href="javascript:" class="fl">我要购买</a>
                <a href="javascript:" class="wydz fr"><img src="<%=basePath%>/static/images/icon_dz.png" /> 我要定制</a>
              </div>
-             <p class="small_txt"><span class="yzx_icon">已下载：6541</span><span class="ll_icon">浏览：8454</span><span class="sc_icon">收藏：4554</span></p>
+             <p class="small_txt"><span class="yzx_icon" id="downCount"></span><span class="ll_icon">浏览：8454</span><span class="sc_icon" id="favcount"></span></p>
          </div><!-- ty_box -->
          <div class="ty_box">
               <div class="jj_tabd">
@@ -178,15 +223,15 @@
                       <td colspan="2">编号：13452373</td>
                    </tr>
                    <tr>
-                      <td>格式：<img src="<%=basePath%>/static/images/icon_gs.png" height="20" width="36" /></td>
-                      <td>分辨率：300DPI  </td>
+                      <td id="imgformart"></td>
+                      <td id="dpinum"></td>
                    </tr>
                    <tr>
-                      <td>大小：70.89MB</td>
+                      <td id="imgsize"></td>
                       <td> 像素：4960X3781PX</td>
                    </tr>
                    <tr>
-                      <td  colspan="2">发布时间：2017/8/21</td>
+                      <td  colspan="2" id="uptime"></td>
                    </tr>
                    <tr>
                       <td  colspan="2"><p class="fl">分享到：</p>
@@ -199,19 +244,9 @@
               </div> 
          </div><!-- ty_box -->
          <div class="ty_box">
-             <div class="tit_zptj"><h2>会员作品推荐</h2> <a href="javascript:">更多>> </a> </div>
+             <div class="tit_zptj"><h2>会员作品推荐</h2></div>
              <div class="zp_tj da_img">
-              <ul class="clearfix">
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/hlxa_pic5.png" />
-                <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div> 
-               </a></li>
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/hlxa_pic3.png" />
-               <div class="botm_txtd">
-                   <p>我是标题我是标题我是标题我是标题我是标题我是标题</p>
-                </div> 
-               </a></li>
+              <ul class="clearfix" id="userInfoWorks">
                </ul>
              </div> 
          </div><!-- ty_box -->
@@ -219,39 +254,8 @@
        <div class="clear"></div>
      </div><!-- wed_del -->
      <div class="gxq_box da_img">
-        <div class="gxq_tit"><h2>您可能还感兴趣的</h2> <a href="javascript:">更多>> </a></div>
-        <ul class="clearfix">
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/sjtka_pic1.png" />
-                <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div> 
-               </a></li>
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/sjtka_pic2.png" />
-               <div class="botm_txtd">
-                   <p>我是标题我是标题我是标题我是标题我是标题我是标题</p>
-                </div> 
-               </a></li>
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/sjtka_pic3.png" />
-               <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div> 
-               </a></li>
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/sjtka_pic4.png" />
-               <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div> 
-               </a></li>
-               <li class="long_wid"><a href="design.jsp"><img src="<%=basePath%>/static/images/dmt_pic1.png" />
-               <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div> 
-               </a></li>
-              
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/sjtka_pic6.png" />
-               <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div> 
-               </a></li>
+        <div class="gxq_tit"><h2>您可能还感兴趣的</h2></div>
+        <ul class="clearfix" id="interested">
            </ul>
      </div>
          <p class="sm_txt">【声明】婚秀中国网是正版商业图库，所有原创作品（含预览图）均受著作权 发保护，著作权及相关权利归上传用户所有，未经许可任何人不得擅自使用，否则将依法处理</p>

@@ -85,4 +85,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return leavemsgList; 
 	}
+
+	public int updateLeavemsgStatu(String uid) {
+		logger.info("投诉受理");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("LeavemsgMapper.updateLeavemsgStatu",uid);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
 }

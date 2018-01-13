@@ -97,4 +97,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return worksList;
 	}
+
+	public List<Works> getWorksForMerchId(PageData pageData) {
+		logger.info("会员作品推荐");
+		List<Works>	worksList=null;
+		try {
+			worksList = (List<Works>) daoSupport.findForList("WorksMapper.getWorksForMerchId",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			worksList=null;
+		}
+		return worksList;
+	}
 }
