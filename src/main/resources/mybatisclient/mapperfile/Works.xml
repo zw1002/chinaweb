@@ -90,10 +90,14 @@
     select
     <include refid="Base_Column_List" />
     from tb_works
-    where workstype=#{type}
-    <if test="count != null and count != ''">
-      and LIMIT 1,#{count}
-    </if>
+    where workstype in(
+    select keyvalue from tb_dict where parentid=(
+    select uid from tb_dict where keyvalue = #{type}
+    )
+    )
     order by downcount desc
+    <if test="count != null and count != ''">
+      LIMIT #{offset},#{count}
+    </if>
   </select>
 </mapper>

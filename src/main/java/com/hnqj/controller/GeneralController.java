@@ -125,7 +125,8 @@ public class GeneralController extends BaseController{
         return null;
     }
     /**
-     * 设计等推荐接口
+     * 首页设计、摄影、婚秀、新品推荐接口（获取八个）
+     通用于——设计、摄影等详情页面（不限），感兴趣推荐图片（获取四个）
      * @param request
      * @param response
      * @return
@@ -134,11 +135,13 @@ public class GeneralController extends BaseController{
     public String getRecommendWorks(HttpServletRequest request, HttpServletResponse response) {
         logger.info("getRecommendWorks");
         String type = request.getParameter("type") == null ? "" : request.getParameter("type");
-        String count = request.getParameter("count") == null ? "" : request.getParameter("count");
+        int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
+        int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
         List<Map<String, String>> hashMaps=new ArrayList<>();
         try{
             PageData pageData = new PageData();
             pageData.put("type",type);
+            pageData.put("offset",offset);
             pageData.put("count",count);
             List<Works> worksList=worksServices.getWorksForTypeAndCount(pageData);
             for(Works works:worksList){

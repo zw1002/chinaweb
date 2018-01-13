@@ -100,6 +100,10 @@
         //重启效果
         jQuery(".txtMarquee-left").slide({mainCell:".bd ul",autoPlay:true,effect:"leftMarquee",vis:4,interTime:50});
         setInterval("getTransaction()", 10000); //每隔10秒刷新交易动态
+        //获取设计推荐作品
+        recommendWorks("00");
+        recommendWorks("10");
+        recommendWorks("30");
     });
     //交易动态
     function getTransaction(){
@@ -121,6 +125,37 @@
             }
         });
     }
+    //设计等推荐作品接口
+    function recommendWorks(type){
+        var count=8;
+        $.ajax({
+            url: "<%=basePath%>/general/getRecommendWorks.do",
+            type: "POST",
+            data:{
+                type:type,
+                count:count
+            },
+            success: function (data) {
+                var msg=eval("("+data+")");
+                var str="";
+                for(var i=0;i<msg.length;i++){
+                    if(type == "00"){
+                        str += "<li><a href='#' onclick='toDesignDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                                +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
+                        $("#design").append(str);
+                    }else if(type == "10"){
+                        str += "<li><a href='#' onclick='toPhotographyDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                                +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
+                        $("#photography").append(str);
+                    }else{
+                        str += "<li><a href='#' onclick='toWeddingDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                                +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
+                        $("#wedding").append(str);
+                    }
+                }
+            }
+        });
+    }
     //跳转到注册页面
     function toRegister(){
         document.location.href = '<%=basePath%>/signin/register.do';
@@ -138,16 +173,24 @@
         document.location.href = '<%=basePath%>/design/toDesign.do';
     }
     //跳转到设计明细页面
-    function toDesignDel(){
-        document.location.href = '<%=basePath%>/design/toDesignDel.do';
+    function toDesignDel(uid){
+        document.location.href = '<%=basePath%>/design/toDesignDel.do?uid='+uid;
     }
     //跳转到摄影图库页面
     function toPhotography(){
         document.location.href = '<%=basePath%>/photography/toPhotography.do';
     }
+    //跳转到摄影图库详情页面
+    function toPhotographyDel(uid){
+        document.location.href = '<%=basePath%>/photography/toPhotographyDel.do?uid='+uid;
+    }
     //跳转到婚秀页面
     function toWedding(){
         document.location.href = '<%=basePath%>/wedding/toWedding.do';
+    }
+    //跳转到婚秀详情页面
+    function toWeddingDel(uid){
+        document.location.href = '<%=basePath%>/wedding/toWeddingDel.do?uid='+uid;
     }
     //跳转到道具页面
     function toMultimedia(){
@@ -196,11 +239,9 @@
     <div class="tit_pic"><a href="#" onclick="toDesign()"><img src="<%=basePath%>/static/images/tit_pic1.png" height="70" width="207" /></a></div>
 
     <div class="hei380px">
-
-
-
         <div class="design_list da_img">
-            <ul class="clearfix">
+            <ul class="clearfix" id="design">
+                <!--
                 <li class="long_wid"><a href="design.html"><img src="<%=basePath%>/static/images/pic_chang3.png" />
                     <div class="botm_txtd">
                         <p>我是标题</p>
@@ -237,7 +278,7 @@
                         <p>我是标题</p>
                     </div>
                 </a></li>
-
+            -->
             </ul>
         </div><!-- design_list -->
 
@@ -327,7 +368,8 @@
 
 
             <div class="design_list">
-                <ul class="clearfix">
+                <ul class="clearfix" id="photography">
+                    <!--
                     <li><a href="design.html"><img src="<%=basePath%>/static/images/hlxa_pic1.png" />
                         <div class="txt_over">
                             <h2>我是标题</h2>
@@ -376,7 +418,7 @@
                             <p>我是简介我是简介</p>
                         </div>
                     </a></li>
-
+-->
 
                 </ul>
             </div><!-- design_list -->
@@ -479,8 +521,8 @@
 
 
         <div class="design_list da_img hl_listd">
-            <ul class="clearfix">
-
+            <ul class="clearfix" id="wedding">
+<!--
                 <li><a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic6.png" /><span class="bofang_icon"></span>
 
                     <div class="botm_txtd">
@@ -522,7 +564,7 @@
                         <p>我是标题我是标题我是标题我是标题</p>
                     </div>
                 </a></li>
-
+-->
 
             </ul>
         </div><!-- design_list -->

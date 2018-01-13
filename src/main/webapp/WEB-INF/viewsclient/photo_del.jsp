@@ -14,10 +14,10 @@
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
 <script src="<%=basePath%>/static/js/fs_forse.js"></script>
-
 </head>
-
 <body>
+<!--获取作品ID-->
+<input id="uid" name="uid" type="hidden" value="<%= request.getAttribute("uid")%>"/>
    <header>
      <div class="top">
      
@@ -50,20 +50,16 @@
       </div><!-- top_wid -->
       
       <div class="nav">
-        <ul class="clearfix">
-          <li ><a class="" href="index.jsp">首 页 </a> <p class="point_d"></p></li>
-          <li><a href="design.jsp" >设 计</a> <p class="point_d"></p></li>
-          
-          <li><a href="photography.jsp" class="active">摄影图库</a> <p class="point_d"></p></li>
-          <li><a href="multimedia.jsp">道具新品</a> <p class="point_d"></p></li>
-          <li><a href="wedding.jsp" >婚 秀</a> <p class="point_d"></p></li>
-         <li><a href="help.jsp">求图求助</a> <p class="point_d"></p></li>
-         <li><a href="free.jsp">免费下载</a> <p class="point_d"></p></li>
-        </ul>
+          <ul class="clearfix">
+              <li><a href="#" onclick="toIndex()">首 页 </a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toDesign()">设 计</a> <p class="point_d"></p></li>
+              <li><a class="active" href="#" onclick="toPhotography()">摄影图库</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toMultimedia()">道具新品</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toWedding()">婚 秀</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toHelp()">求图求助</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toFree()">免费下载</a> <p class="point_d"></p></li>
+          </ul>
       </div><!-- nav -->
-      
-      
-      
       </div><!-- top -->
    </header>
    
@@ -106,10 +102,56 @@
                 
             </div>
             
-            <script type="text/javascript">jQuery(".turn_pic2").slide({ mainCell:".bd ul",effect:"left",autoPlay:true });</script>
-
-         
-            
+            <script type="text/javascript">
+                jQuery(".turn_pic2").slide({ mainCell:".bd ul",effect:"left",autoPlay:true });
+                $(document).ready(function () {
+                    //获取摄影信息
+                    getPhotographyDel();
+                });
+                function getPhotographyDel(){
+                    //作品ID
+                    var uid=$("#uid").val();
+                    $.ajax({
+                        url: "<%=basePath%>/general/getWorkDetails.do",
+                        type: "POST",
+                        data:{
+                            uid:uid
+                        },
+                        success: function (data) {
+                            var msg = eval("(" + data + ")");
+                            alert(data);
+                        }
+                    });
+                }
+                //跳转到首页
+                function toIndex(){
+                    document.location.href = '<%=basePath%>/signin/index.do';
+                }
+                //跳转到设计页面
+                function toDesign(){
+                    document.location.href = '<%=basePath%>/design/toDesign.do';
+                }
+                //跳转到摄影图库页面
+                function toPhotography(){
+                    document.location.href = '<%=basePath%>/photography/toPhotography.do';
+                }
+                //跳转到婚秀页面
+                function toWedding(){
+                    document.location.href = '<%=basePath%>/wedding/toWedding.do';
+                }
+                //跳转到道具页面
+                function toMultimedia(){
+                    document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
+                }
+                //跳转到免费下载页面
+                function toFree(){
+                    document.location.href = '<%=basePath%>/free/toFree.do';
+                }
+                //跳转到求助求图页面
+                function toHelp(){
+                    document.location.href = '<%=basePath%>/help/toHelp.do';
+                }
+            </script>
             <div class="botm_js">
               婚秀中国网正版图库 &nbsp; &nbsp;  &nbsp; &nbsp;  编号：1025808214 &nbsp; &nbsp;  &nbsp; &nbsp;   会员：甜心卡布奇诺
               <a href="javascript:" class="jb_icon">举报</a>

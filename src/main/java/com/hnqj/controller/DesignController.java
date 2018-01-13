@@ -8,6 +8,7 @@ import com.hnqj.services.UserinfoServices;
 import com.hnqj.services.WorksServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,9 @@ public class DesignController extends BaseController{
     }
     //跳转到设计明细页面
     @RequestMapping(value = "/toDesignDel.do")
-    public String toDesignDel(){
+    public String toDesignDel(HttpServletRequest request, Model model){
+        String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
+        model.addAttribute("uid", uid);//作品Id传到页面
         return  "design_del";
     }
 
