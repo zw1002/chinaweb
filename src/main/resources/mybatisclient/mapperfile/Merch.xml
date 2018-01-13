@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mybatis/mapperfile.Merch">
+<mapper namespace="MerchMapper">
   <resultMap id="BaseResultMap" type="com.hnqj.model.Merch">
     <!--
       WARNING - @mbg.generated
@@ -37,7 +37,7 @@
     select 
     <include refid="Base_Column_List" />
     from tb_merch
-    where uid = #{uid,jdbcType=VARCHAR}
+    where uid = #{fid,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--

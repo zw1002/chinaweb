@@ -3,10 +3,10 @@ package com.hnqj.controller;
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
 import com.hnqj.model.Dict;
+import com.hnqj.model.Integral;
+import com.hnqj.model.Merch;
 import com.hnqj.model.Works;
-import com.hnqj.services.CollectionServices;
-import com.hnqj.services.DictServices;
-import com.hnqj.services.WorksServices;
+import com.hnqj.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -31,6 +30,10 @@ public class GeneralController extends BaseController{
     WorksServices worksServices;
     @Autowired
     CollectionServices collectionServices;
+    @Autowired
+    MerchServices merchServices;
+    @Autowired
+    IntegralServices integralServices;
     /**
      * 获取分类接口
      * @param request
@@ -42,12 +45,20 @@ public class GeneralController extends BaseController{
         logger.info("getGroupClass");
         try
         {
-            String typeName = request.getParameter("type");
-            if(typeName==null)
+            String typeName = request.getParameter("type")==null?"":request.getParameter("type");
+            if(typeName.equals(""))
                 ResultUtils.writeFailed(response);
-            System.out.println(typeName);
+
+            List<Map<String, String>> hashMaps=new ArrayList<>();
+
             List<Dict> relDicts = dictServices.selectFilterDictList(typeName);
-            ResultUtils.write(response,relDicts);
+            for(Dict dict:relDicts){
+                Map<String, String> map = new HashMap<>();
+                map.put("uid",dict.getUid());
+                map.put("typename",dict.getKeyname());
+                hashMaps.add(map);
+            }
+            ResultUtils.write(response,hashMaps);
         }
         catch(Exception ex){
             logger.error("getGroupClass e="+ex.getMessage());
@@ -66,12 +77,39 @@ public class GeneralController extends BaseController{
         logger.info("getGroupClass");
         try
         {
-            String worksID = request.getParameter("uid");
-            if(worksID==null)
+            String worksID = request.getParameter("uid")==null?"":request.getParameter("uid");
+            if(worksID.equals(""))
                 ResultUtils.writeFailed(response);
-            System.out.println(worksID);
+            //System.out.println(worksID);
             Works relWorks = worksServices.getWorksforId(worksID);
-            ResultUtils.write(response,relWorks);
+            if(relWorks!=null)
+            {
+                Map<String, String> map = new HashMap<>();
+                map.put("uid",relWorks.getUid());
+                map.put("worksurl",relWorks.getWorksurl());
+                map.put("worksname",relWorks.getWorksname());
+                map.put("favcount",relWorks.getFavcount().toString());
+                map.put("downcount",relWorks.getDowncount().toString());
+                map.put("price",relWorks.getPrice().toString());
+                map.put("uptime",relWorks.getUptime().toString());
+                map.put("dpinum",relWorks.getDpinum());
+                map.put("imgsize",relWorks.getImgsize().toString());
+                map.put("imgformart",relWorks.getImgformart());
+                map.put("colrmodel",relWorks.getColrmodel());
+                map.put("userid",relWorks.getMerchid());
+                Merch merchModel =merchServices.getMerchforId(relWorks.getMerchid());
+                map.put("merchname",merchModel.getMerchname());
+                map.put("workcount",merchModel.getWorksnums().toString());
+                map.put("count",merchModel.getDealnums().toString());
+                //根据积分查询等级
+                Integral integral = integralServices.getIntegralforNum(merchModel.getDealnums());
+                map.put("grade",integral.getGrade().toString());
+                map.put("workremark",relWorks.getWorkremark());
+                map.put("worklabel",relWorks.getWorklabel());
+                ResultUtils.write(response,map);
+            }
+            else
+                ResultUtils.writeFailed(response);
         }
         catch(Exception ex){
             logger.error("getWorkDetails e="+ex.getMessage());
@@ -105,13 +143,13 @@ public class GeneralController extends BaseController{
 
                     pageData.put("collectiontime",new Timestamp(today.getTime()));//df.format()
                     pageData.put("collectionflag", "0");
-                    if (collectionServices.addCollection(pageData) > 0)
-                        ResultUtils.writeSuccess(response);
+                    if (collectionServices.addCollection(pageData) > 0)   //需要在作品表收藏数量+1  未做
+                        ResultUtils.write(response,"收藏成功!");
                     else
                         ResultUtils.writeFailed(response);
                 } else {//取消收藏
                     if (collectionServices.delCollectionByUseridandWorksID(pageData) > 0)
-                        ResultUtils.writeSuccess(response);
+                        ResultUtils.write(response,"取消收藏成功!"); //需要在作品表收藏数量+1  未做
                     else
                         ResultUtils.writeFailed(response);
                 }

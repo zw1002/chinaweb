@@ -135,7 +135,7 @@ public class Merch {
      * @mbg.generated Tue Jan 09 16:28:58 CST 2018
      */
     public String getMerchname() {
-        return merchname;
+        return merchname==null?"":merchname;
     }
 
     /**
@@ -303,7 +303,7 @@ public class Merch {
      * @mbg.generated Tue Jan 09 16:28:58 CST 2018
      */
     public Integer getWorksnums() {
-        return worksnums;
+        return worksnums==null?0:worksnums;
     }
 
     /**
@@ -327,7 +327,7 @@ public class Merch {
      * @mbg.generated Tue Jan 09 16:28:58 CST 2018
      */
     public Integer getDealnums() {
-        return dealnums;
+        return dealnums==null?0:dealnums;
     }
 
     /**
