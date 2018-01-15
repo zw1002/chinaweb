@@ -22,35 +22,62 @@
 			   $(this).find("a.ztit").removeClass("active"); 
 			  $(this).find(".nav_list").hide();
 			  }
-		  
 		  )
-	 
-	 })
+ });
+ $(document).ready(function () {
 
+ });
+ //跳转到首页
+ function toIndex(){
+     document.location.href = '<%=basePath%>/signin/index.do';
+ }
+ //跳转到设计页面
+ function toDesign(){
+     document.location.href = '<%=basePath%>/design/toDesign.do';
+ }
+ //跳转到摄影图库页面
+ function toPhotography(){
+     document.location.href = '<%=basePath%>/photography/toPhotography.do';
+ }
+ //跳转到婚秀页面
+ function toWedding(){
+     document.location.href = '<%=basePath%>/wedding/toWedding.do';
+ }
+ //跳转到道具页面
+ function toMultimedia(){
+     document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
+ }
+ //跳转到免费下载页面
+ function toFree(){
+     document.location.href = '<%=basePath%>/free/toFree.do';
+ }
+ //跳转到求助求图页面
+ function toHelp(){
+     document.location.href = '<%=basePath%>/help/toHelp.do';
+ }
+ //跳转到上传作品页面
+    function toUpload(){
+        document.location.href = '<%=basePath%>/uploadFile/toUpload.do';
+    }
 </script>
-
 </head>
-
 <body>
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
          <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
-         
-         
          <div class="nav_new fl">
             <ul class="clearfix">
-               <li><a href="index.jsp" class="ztit">网站首页</a></li>
+               <li><a href="#" onclick="toIndex()" class="ztit">网站首页</a></li>
                <li><a href="javascript:" class="all_fl ztit">所有分类</a>
                  <div class="nav_list">
-                    <a href="design.jsp">设计</a>
-                  
-                    <a href="photography.jsp">摄影图库</a>
-                     <a href="multimedia.jsp">道具新品</a>
-                    <a href="wedding.jsp">婚秀</a>
-                    <a href="help.jsp">求图求助</a>
-                    <a href="free.jsp">免费下载</a>
-                 </div> 
+                     <a href="#" onclick="toDesign()">设 计</a>
+                     <a href="#" onclick="toPhotography()">摄影图库</a>
+                     <a href="#" onclick="toMultimedia()">道具新品</a>
+                     <a href="#" onclick="toWedding()">婚 秀</a>
+                     <a href="#" onclick="toHelp()">求图求助</a>
+                     <a href="#" onclick="toFree()">免费下载</a>
+                 </div>
                </li>
             </ul>
          </div>
@@ -87,8 +114,7 @@
                  <div class="mj_tab">
                     <table width="100%">
                        <tr>
-                           <td width="50%"> <a href="#" class="active"><img src="<%=basePath%>/static/images/icon_mj.png" height="16" width="16" /> 我是卖家</a></td>
-                           <td> <a href="#"> 成为买家</a></td>
+                           <td width="50%"> <a href="#">成为卖家</a></td>
                        </tr>
                     </table>
                  </div>
@@ -97,7 +123,7 @@
              <div class="mem_nav">
              <h2>个人中心</h2>
                 <ul>
-                   <li><a class="mem_icon1" href="upload.jsp">上传作品</a></li>
+                   <li><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
                    <li><a class="mem_icon2" href="collection_2.jsp">收藏</a></li>
                    <li><a class="mem_icon3" href="album_2.jsp">专辑</a></li>
                    <li><a class="mem_icon4" href="transaction.jsp">交易</a></li>

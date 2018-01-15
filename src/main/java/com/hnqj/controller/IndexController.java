@@ -1,11 +1,11 @@
 package com.hnqj.controller;
-import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
 import com.hnqj.model.Dealuidchild;
 import com.hnqj.model.Playimg;
-import com.hnqj.model.Works;
+import com.hnqj.model.Train;
 import com.hnqj.services.DealuidchildServices;
 import com.hnqj.services.PlayimgServices;
+import com.hnqj.services.TrainServices;
 import com.hnqj.services.WorksServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.hnqj.core.ResultUtils.toDateJson;
 
 /**
  * 首页控制层
@@ -31,6 +33,8 @@ public class IndexController extends BaseController{
     DealuidchildServices dealuidchildServices;
     @Autowired
     WorksServices worksServices;
+    @Autowired
+    TrainServices trainServices;
     /**
      * 获取首页轮播图
      * @param request
@@ -61,7 +65,16 @@ public class IndexController extends BaseController{
         logger.info("getTransaction");
         try{
             List<Dealuidchild> dealuidchildList=dealuidchildServices.selectDealuidchildList();
-            ResultUtils.write(response,dealuidchildList);
+            List<Map<String, Object>> hashMaps=new ArrayList<>();
+            for(Dealuidchild dealuidchild:dealuidchildList){
+                Map<String, Object> map = new HashMap<>();
+                map.put("worksid",dealuidchild.getWorksid());
+                map.put("worksname",dealuidchild.getWorksname());
+                map.put("worksprice",dealuidchild.getWorksprice());
+                map.put("time",dealuidchild.getAddtime()+"分钟前");
+                hashMaps.add(map);
+            }
+            ResultUtils.write(response,hashMaps);
         }catch (Exception e){
             logger.error("getTransaction e="+e.getMessage());
             ResultUtils.writeFailed(response);
@@ -69,6 +82,21 @@ public class IndexController extends BaseController{
         return null;
     }
 
+    /**
+     * 名师面对面   未删除数据
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getTain.do")
+    public String getTain(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getTain");
+        //标识是否搜索顶置的数据
+        String flag = request.getParameter("flag") == null ? "" : request.getParameter("flag");
+        List<Train> trainList=trainServices.selectTrainListByCount(flag);
+        ResultUtils.write(response,toDateJson(trainList));
+        return null;
+    }
 
 
 }

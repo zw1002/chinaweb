@@ -217,9 +217,9 @@ public class GeneralController extends BaseController{
     @RequestMapping("/getUserInfoWorks.do")
     public String getUserInfoWorks(HttpServletRequest request, HttpServletResponse response) {
         logger.info("getUserInfoWorks");
+        String merchId = request.getParameter("merchId") == null ? "" : request.getParameter("merchId");
         int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
         int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
-        String merchId = request.getParameter("merchId") == null ? "" : request.getParameter("merchId");
         List<Map<String, String>> hashMaps=new ArrayList<>();
         try{
             PageData pageData = new PageData();

@@ -96,6 +96,7 @@
                 jQuery(".turn_pic").slide({ titCell:".hd ul", mainCell:".bd ul", effect:"fold", autoPlay:true, autoPage:true, delayTime:500, trigger:"click",interTime:4000,mouseOverStop:false});
             }
         });
+        //交易动态
         getTransaction();
         //重启效果
         jQuery(".txtMarquee-left").slide({mainCell:".bd ul",autoPlay:true,effect:"leftMarquee",vis:4,interTime:50});
@@ -116,7 +117,7 @@
                 var msg=eval("("+data+")");
                 var str="";
                 for(var i=0;i<msg.length;i++){
-                    str += "<li><a onclick='toDesignDel()' id='"+msg[i].worksid+"' href='javascript:' target='_blank'>"+msg[i].worksname+"<span class='col_f00'>￥"+msg[i].worksprice+"</span>    8分钟前</a></li>";
+                    str += "<li><a onclick='toDesignDel()' id='"+msg[i].worksid+"' href='javascript:' target='_blank'>"+msg[i].worksname+"<span class='col_f00'>￥"+msg[i].worksprice+"</span>"+msg[i].time+"</a></li>";
                 }
                 $(".infoList").append(str);
                 if(flag == 1){

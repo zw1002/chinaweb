@@ -85,4 +85,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return trainList; 
 	}
+
+	public List<Train> selectTrainListByCount(String flag) {
+		logger.info("名师面对面");
+		List<Train>	trainList=null;
+		try {
+			trainList = (List<Train>) daoSupport.findForList("TrainMapper.selectTrainListByCount",flag);
+		}catch (Exception e){
+			e.printStackTrace();
+			trainList=null;
+		}
+		return trainList;
+	}
 }

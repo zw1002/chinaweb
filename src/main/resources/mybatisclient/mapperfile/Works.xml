@@ -96,7 +96,7 @@
     )
     )
     order by downcount desc
-    <if test="count != null and count != ''">
+    <if test="count != null and count != '0'">
       LIMIT #{offset},#{count}
     </if>
   </select>
@@ -107,7 +107,7 @@
     from tb_works
     where merchid = #{merchid}
     order by downcount desc
-    <if test="count != null and count != ''">
+    <if test="count != null and count != '0'">
       LIMIT #{offset},#{count}
     </if>
   </select>
