@@ -17,6 +17,21 @@ public class PersonalCenterController extends  BaseController{
     public String toShop(){
         return  "shop";
     }
+    //跳转到收藏页面
+    @RequestMapping(value = "/toCollection.do")
+    public String toCollection(){
+        return  "collection_2";
+    }
+    //跳转到交易页面
+    @RequestMapping(value = "/toTransaction.do")
+    public String toTransaction(){
+        return  "transaction";
+    }
+    //跳转到提现页面
+    @RequestMapping(value = "/toWithdrawals.do")
+    public String toWithdrawals(){
+        return  "transaction";
+    }
 
     /**
      * 完善个人信息

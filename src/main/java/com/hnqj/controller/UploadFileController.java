@@ -58,7 +58,6 @@ public class UploadFileController extends  BaseController {
 
     /**
      * 图片批量上传
-     *
      * @param files
      * @param request
      * @return

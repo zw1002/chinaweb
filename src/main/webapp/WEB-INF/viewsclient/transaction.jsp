@@ -24,99 +24,112 @@
 			   $(this).find("a.ztit").removeClass("active"); 
 			  $(this).find(".nav_list").hide();
 			  }
-		  
 		  )
-	 
-	 })
-
+	 });
+ //跳转到首页
+ function toIndex(){
+     document.location.href = '<%=basePath%>/signin/index.do';
+ }
+ //跳转到设计页面
+ function toDesign(){
+     document.location.href = '<%=basePath%>/design/toDesign.do';
+ }
+ //跳转到摄影图库页面
+ function toPhotography(){
+     document.location.href = '<%=basePath%>/photography/toPhotography.do';
+ }
+ //跳转到婚秀页面
+ function toWedding(){
+     document.location.href = '<%=basePath%>/wedding/toWedding.do';
+ }
+ //跳转到道具页面
+ function toMultimedia(){
+     document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
+ }
+ //跳转到免费下载页面
+ function toFree(){
+     document.location.href = '<%=basePath%>/free/toFree.do';
+ }
+ //跳转到求助求图页面
+ function toHelp(){
+     document.location.href = '<%=basePath%>/help/toHelp.do';
+ }
+ //跳转到上传作品页面
+ function toUpload(){
+     document.location.href = '<%=basePath%>/uploadFile/toUpload.do';
+ }
+ //跳转到收藏页面
+ function toCollection(){
+     document.location.href = '<%=basePath%>/personalcenter/toCollection.do';
+ }
+ //跳转到交易页面
+ function toTransaction(){
+     document.location.href = '<%=basePath%>/personalcenter/toTransaction.do';
+ }
+ //跳转到会员空间页面
+ function toHomepage(){
+     document.location.href = '<%=basePath%>/homepage/toHomepage.do';
+ }
 </script>
-
 </head>
-
 <body>
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
          <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
-         
-         
          <div class="nav_new fl">
-            <ul class="clearfix">
-               <li><a href="index.jsp" class="ztit">网站首页</a></li>
-               <li><a href="javascript:" class="all_fl ztit">所有分类</a>
-                 <div class="nav_list">
-                    <a href="design.jsp">设计</a>
-                  
-                    <a href="photography.jsp">摄影图库</a>
-                     <a href="multimedia.jsp">道具新品</a>
-                    <a href="wedding.jsp">婚秀</a>
-                    <a href="help.jsp">求图求助</a>
-                    <a href="free.jsp">免费下载</a>
-                 </div> 
-               </li>
-            </ul>
+             <ul class="clearfix">
+                 <li><a href="#" onclick="toIndex()" class="ztit">网站首页</a></li>
+                 <li><a href="javascript:" class="all_fl ztit">所有分类</a>
+                     <div class="nav_list">
+                         <a href="#" onclick="toDesign()">设 计</a>
+                         <a href="#" onclick="toPhotography()">摄影图库</a>
+                         <a href="#" onclick="toMultimedia()">道具新品</a>
+                         <a href="#" onclick="toWedding()">婚 秀</a>
+                         <a href="#" onclick="toHelp()">求图求助</a>
+                         <a href="#" onclick="toFree()">免费下载</a>
+                     </div>
+                 </li>
+             </ul>
          </div>
-         
          <div class="ss_bg new_ss fl">
             <input name="" type="text" placeholder="请输入搜索内容"  class="inp_txt">
             <input type="submit" value="搜 索" class="ss_btn" /> 
          </div> 
-         
-         <a href="javascript:" class="sc_btn wygt"><img src="<%=basePath%>/static/images/icon_ft2.png" height="14" width="14" /> 我要改图</a>
-          
       </div><!-- top_wid -->
-
       </div><!-- top -->
    </header>
-   
-   <div class="bg_f5"> 
+   <div class="bg_f5">
      <div class="wrap">
-        
         <div class="memder_con">
-        
            <div class="wid260px fl">
-           
              <div class="grzl_box">
-                 <a href="homepage.jsp" class="kj_lj">个人空间 ></a>
-                 
+                 <a href="#" onclick="toHomepage()" class="kj_lj">个人空间 ></a>
                  <div class="tx_infor">
                       <img src="<%=basePath%>/static/images/head_img2.png" />
                       <h2>宇宙军</h2>
-                      <p class="sjss">设计师</p>
-                      <span class="icon_jf">38728</span> |  <span class="icon_hp">99.28</span>
                  </div>
-                 
                  <div class="mj_tab">
                     <table width="100%">
                        <tr>
-                           <td width="50%"> <a href="#" class="active"><img src="<%=basePath%>/static/images/icon_mj.png" height="16" width="16" /> 我是卖家</a></td>
-                           <td> <a href="#"> 成为买家</a></td>
+                           <td width="50%"> <a href="#">成为卖家</a></td>
                        </tr>
                     </table>
                  </div>
              </div><!-- grzl_box --> 
-             
              <div class="mem_nav">
              <h2>个人中心</h2>
                 <ul>
-                   <li><a class="mem_icon1 " href="upload.jsp">上传作品</a></li>
-                   <li><a class="mem_icon2 " href="collection_2.jsp">收藏</a></li>
-                   <li><a class="mem_icon3" href="album_2.jsp">专辑</a></li>
-                   <li><a class="mem_icon4 active" href="transaction.jsp">交易</a></li>
-                   <li><a class="mem_icon5" href="income.jsp">收支</a></li>
-                   <li><a class="mem_icon6" href="recharge.html">充值</a></li>
-                   <li><a class="mem_icon7" href="withdraw.html">提现</a></li>
-                   <li><a class="mem_icon8" href="task.html">任务</a></li>
-                   <li><a class="mem_icon9" href="information.html">个人资料</a></li>
+                    <li><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
+                    <li><a class="mem_icon2" href="#" onclick="toCollection()">收藏</a></li>
+                    <li><a class="mem_icon4 active" href="#" onclick="toTransaction()">交易</a></li>
+                    <li><a class="mem_icon7" href="#">提现</a></li>
+                    <li><a class="mem_icon9" href="#">个人资料</a></li>
                 </ul>
              </div>
-                
            </div><!-- wid260px -->
-           
-           
-           
-           
            <div class="wid925px fr">
+               <!--
                <div class="coll_con">
                   <div class="sxtj_tab short_tabd">
                     <table width="100%">
@@ -134,28 +147,28 @@
                     </table>
                   </div>
               </div> 
-               
+               -->
                <div class="tran_con">   
                   <div class="jy_nav">
                     <ul class=" clearfix">
                        <li>已出售</li>
                        <li>已购买</li>
                        <li>正在交易</li>
+                        <!--
                        <li>交易站厅</li>
                        <li>交易失败</li>
+                       -->
                     </ul> 
                   </div>
-                  
                   <div class="jy_tab_con">
-                  
                      <!-- 已出售 -->
                      <ul>
                           <table width="100%">
                              <tr>             
-                                <th>作品信息</th>                                          
+                                <th>作品信息</th>
+                                 <th>实收金额</th>
                                 <th>交易状态</th>
-                                <th>实收金额</th>
-                                <th>对方</th>  
+                                <th>对方</th>
                              </tr>
                              <tr>             
                                 <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
@@ -171,7 +184,7 @@
                                 
                                 </td>                                          
                                 <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p> <a href="#" class="col_blue">查看详情</a></td>
+                                <td><p>交易成功</p></td>
                                 <td>
                                   <div class="tc_rel">
                                      <img src="<%=basePath%>/static/images/head_img.png" />
@@ -206,7 +219,7 @@
                                 
                                 </td>                                          
                                 <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p> <a href="#" class="col_blue">查看详情</a></td>
+                                <td><p>交易成功</p></td>
                                 <td>
                                   <div class="tc_rel">
                                      <img src="<%=basePath%>/static/images/head_img.png" />
@@ -241,7 +254,7 @@
                                 
                                 </td>                                          
                                 <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p> <a href="#" class="col_blue">查看详情</a></td>
+                                <td><p>交易成功</p></td>
                                 <td>
                                   <div class="tc_rel">
                                      <img src="<%=basePath%>/static/images/head_img.png" />
@@ -276,7 +289,7 @@
                                 
                                 </td>                                          
                                 <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p> <a href="#" class="col_blue">查看详情</a></td>
+                                <td><p>交易成功</p></td>
                                 <td>
                                   <div class="tc_rel">
                                      <img src="<%=basePath%>/static/images/head_img.png" />
@@ -305,8 +318,8 @@
                           <table width="100%">
                              <tr>             
                                 <th>作品信息</th>                                          
-                                <th>交易状态</th>
                                 <th>实收金额</th>
+                                 <th>交易状态</th>
                                 <th>对方</th>  
                              </tr>
                              <tr>             
@@ -323,7 +336,7 @@
                                 
                                 </td>                                          
                                 <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p> <a href="#" class="col_blue">查看详情</a></td>
+                                <td><p>交易成功</p></td>
                                 <td>
                                   <div class="tc_rel">
                                      <img src="<%=basePath%>/static/images/head_img.png" />
@@ -358,7 +371,7 @@
                                 
                                 </td>                                          
                                 <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p> <a href="#" class="col_blue">查看详情</a></td>
+                                <td><p>交易成功</p></td>
                                 <td>
                                   <div class="tc_rel">
                                      <img src="<%=basePath%>/static/images/head_img.png" />
@@ -393,7 +406,7 @@
                                 
                                 </td>                                          
                                 <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p> <a href="#" class="col_blue">查看详情</a></td>
+                                <td><p>交易成功</p></td>
                                 <td>
                                   <div class="tc_rel">
                                      <img src="<%=basePath%>/static/images/head_img.png" />
@@ -428,7 +441,7 @@
                                 
                                 </td>                                          
                                 <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p> <a href="#" class="col_blue">查看详情</a></td>
+                                <td><p>交易成功</p></td>
                                 <td>
                                   <div class="tc_rel">
                                      <img src="<%=basePath%>/static/images/head_img.png" />
@@ -457,8 +470,8 @@
                           <table width="100%">
                              <tr>             
                                 <th>作品信息</th>                                          
-                                <th>交易状态</th>
                                 <th>实收金额</th>
+                                 <th>交易状态</th>
                                 <th>对方</th>  
                              </tr>
                              <tr>             
@@ -475,7 +488,7 @@
                                 
                                 </td>                                          
                                 <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p> <a href="#" class="col_blue">查看详情</a></td>
+                                <td><p>交易成功</p></td>
                                 <td>
                                   <div class="tc_rel">
                                      <img src="<%=basePath%>/static/images/head_img.png" />
@@ -510,7 +523,7 @@
                                 
                                 </td>                                          
                                 <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p> <a href="#" class="col_blue">查看详情</a></td>
+                                <td><p>交易成功</p></td>
                                 <td>
                                   <div class="tc_rel">
                                      <img src="<%=basePath%>/static/images/head_img.png" />
@@ -561,7 +574,7 @@
                                 
                                 </td>                                          
                                 <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p> <a href="#" class="col_blue">查看详情</a></td>
+                                <td><p>交易成功</p></td>
                                 <td>
                                   <div class="tc_rel">
                                      <img src="<%=basePath%>/static/images/head_img.png" />

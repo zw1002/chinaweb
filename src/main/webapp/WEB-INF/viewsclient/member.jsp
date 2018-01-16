@@ -25,7 +25,7 @@
 		  )
  });
  $(document).ready(function () {
-
+$(".tempWrap").css("width","694");
  });
  //跳转到首页
  function toIndex(){
@@ -59,13 +59,25 @@
     function toUpload(){
         document.location.href = '<%=basePath%>/uploadFile/toUpload.do';
     }
+ //跳转到收藏页面
+ function toCollection(){
+     document.location.href = '<%=basePath%>/personalcenter/toCollection.do';
+ }
+ //跳转到交易页面
+ function toTransaction(){
+     document.location.href = '<%=basePath%>/personalcenter/toTransaction.do';
+ }
+ //跳转到会员空间页面
+ function toHomepage(){
+     document.location.href = '<%=basePath%>/homepage/toHomepage.do';
+ }
 </script>
 </head>
 <body>
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
-         <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
+         <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="nav_new fl">
             <ul class="clearfix">
                <li><a href="#" onclick="toIndex()" class="ztit">网站首页</a></li>
@@ -81,36 +93,27 @@
                </li>
             </ul>
          </div>
-         
          <div class="ss_bg new_ss fl">
             <input name="" type="text" placeholder="请输入搜索内容"  class="inp_txt">
             <input type="submit" value="搜 索" class="ss_btn" /> 
          </div> 
-         
-         <a href="javascript:" class="sc_btn wygt"><img src="<%=basePath%>/static/images/icon_ft2.png" height="14" width="14" /> 我要改图</a>
-          
       </div><!-- top_wid -->
-
       </div><!-- top -->
    </header>
-   
-   <div class="bg_f5"> 
+   <div class="bg_f5">
      <div class="wrap">
-        
         <div class="memder_con">
-        
            <div class="wid260px fl">
-           
              <div class="grzl_box">
-                 <a href="homepage.jsp" class="kj_lj">个人空间 ></a>
-                 
+                 <a href="#" onclick="toHomepage()" class="kj_lj">个人空间 ></a>
                  <div class="tx_infor">
                       <img src="<%=basePath%>/static/images/head_img2.png" />
                       <h2>宇宙军</h2>
+                     <!--
                       <p class="sjss">设计师</p>
                       <span class="icon_jf">38728</span> |  <span class="icon_hp">99.28</span>
+                      -->
                  </div>
-                 
                  <div class="mj_tab">
                     <table width="100%">
                        <tr>
@@ -119,32 +122,23 @@
                     </table>
                  </div>
              </div><!-- grzl_box --> 
-             
              <div class="mem_nav">
              <h2>个人中心</h2>
                 <ul>
                    <li><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
-                   <li><a class="mem_icon2" href="collection_2.jsp">收藏</a></li>
-                   <li><a class="mem_icon3" href="album_2.jsp">专辑</a></li>
-                   <li><a class="mem_icon4" href="transaction.jsp">交易</a></li>
-                   <li><a class="mem_icon5" href="income.jsp">收支</a></li>
-                   <li><a class="mem_icon6" href="recharge.html">充值</a></li>
-                   <li><a class="mem_icon7" href="withdraw.html">提现</a></li>
-                   <li><a class="mem_icon8" href="task.html">任务</a></li>
-                   <li><a class="mem_icon9" href="information.html">个人资料</a></li>
+                   <li><a class="mem_icon2" href="#" onclick="toCollection()">收藏</a></li>
+                   <li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>
+                   <!--<li><a class="mem_icon5" href="income.jsp">收支</a></li>-->
+                   <li><a class="mem_icon7" href="#">提现</a></li>
+                   <!--<li><a class="mem_icon8" href="task.html">任务</a></li>-->
+                   <li><a class="mem_icon9" href="#">个人资料</a></li>
                 </ul>
              </div>
-                
            </div><!-- wid260px -->
-           
-           
-           
-           
            <div class="wid925px fr">
-           
               <div class="fytd_box">
                  <div class="hei40px">
-                 <div class="txtMarquee-left">
+                 <div class="txtMarquee-left" style="width: 694px">
                    <p class="tit_fl">消息通知：</p>
 			<div class="bd">
 				<ul class="infoList">
@@ -152,7 +146,7 @@
 					<li><a href="javascript:" target="_blank">关于会员奖励制度最新改变2<span class="col_999">2016-10-20</span></a></li>
 			        <li><a href="javascript:" target="_blank">关于会员奖励制度最新改变3<span class="col_999">2016-10-20</span></a></li>
 					<li><a href="javascript:" target="_blank">关于会员奖励制度最新改变4<span class="col_999">2016-10-20</span></a></li>
-			
+
 				</ul>
 			</div>
 		</div>
@@ -160,11 +154,7 @@
 		<script type="text/javascript">
 		jQuery(".txtMarquee-left").slide({mainCell:".bd ul",autoPlay:true,effect:"leftMarquee",vis:2,interTime:50});
 		</script>  
-                   
-                   
-                   <div class="jyzt_txt">婚秀中国工作室：交易状态</div>
                  </div>
-                 
                  <div class="cs_tabd">
                    <table width="100%">
                       <tr>
@@ -174,7 +164,7 @@
                          <td><h2>6487</h2>积分</td>
                          <td width="120">
                            <div class="tx_btn fr">
-                               <a href="recharge.html">充值</a>
+                               <!--<a href="recharge.html">充值</a>-->
                                <a href="withdraw.html" class="tx_bbt">提现</a>
                            </div>
                          </td>
@@ -183,7 +173,7 @@
                  </div>
               
               </div><!-- fytd_box -->
-             
+             <!--
              <div class="dh_mem_list">
                  <ul class="clearfix">
                      <li><a href="upload.jsp"><img src="<%=basePath%>/static/images/mem_icon1.png" />上传作品</a></li>
@@ -194,7 +184,7 @@
                      <li><a href="upload.jsp"><img src="<%=basePath%>/static/images/mem_icon6.png" />设计工具</a></li>
                  </ul>
              </div>
-             
+             -->
              <div class="mem_ty_box">
                  <div class="gxq_tit"><h2>我的足迹</h2> <a href="javascript:">更多>> </a></div>
                  
@@ -254,44 +244,9 @@
                
            </ul>
          </div><!-- design_list -->
-                 
              </div>
-             
-             
-             <div class="mem_ty_box">
-                 <div class="gxq_tit"><h2>求助求图</h2> <a href="javascript:">更多>> </a></div>
-                 
-                 <div class="qtqz_pad">
-                    <table width="100%">
-                       <tr>
-                           <td><h2>婚秀悬赏，定制您的专属需求，一站发布，多站推广！</h2>
-                           全额赏金托管，放心参与，安全投标！ <a href="#" class="fbrw">我要发布任务</a>
-                           </td>
-                           <td>
-                             <div class="qt_lb">
-                               <ul>
-                                  <li><span class="col_f00">￥2000.00</span> <a href="javascript:">小分子肽护肤品精华液LOGO设计</a></li>
-                                  <li><span class="col_f00">￥2000.00</span> <a href="javascript:">小分子肽护肤品精华液LOGO设计</a></li>
-                                  <li><span class="col_f00">￥2000.00</span> <a href="javascript:">小分子肽护肤品精华液LOGO设计</a></li>
-                                  <li><span class="col_f00">￥2000.00</span> <a href="javascript:">小分子肽护肤品精华液LOGO设计</a></li>
-                               
-                               </ul>
-                             
-                             </div>
-                           </td>
-                           <td width="70">
-                             <a href="#" class="xs_btn">更多<br/>悬赏</a>
-                           </td>
-                       </tr>
-                    </table>
-                 
-                 </div> 
-                 
              </div>
-             
-             
-           </div><!-- wid925px -->
-           
+
            <div class="clear"></div>
         
         </div><!-- memder_con -->
