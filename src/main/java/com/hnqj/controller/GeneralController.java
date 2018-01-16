@@ -154,12 +154,12 @@ public class GeneralController extends BaseController{
 
                     pageData.put("collectiontime",new Timestamp(today.getTime()));//df.format()
                     pageData.put("collectionflag", "0");
-                    if (collectionServices.addCollection(pageData) > 0)   //需要在作品表收藏数量+1  未做
+                    if (collectionServices.addCollections(pageData) > 0)   //需要在作品表收藏数量+1  未做
                         ResultUtils.write(response,"收藏成功!");
                     else
                         ResultUtils.writeFailed(response);
                 } else {//取消收藏
-                    if (collectionServices.delCollectionByUseridandWorksID(pageData) > 0)
+                    if (collectionServices.delCollectionsByUseridandWorksID(pageData) > 0)
                         ResultUtils.write(response,"取消收藏成功!"); //需要在作品表收藏数量+1  未做
                     else
                         ResultUtils.writeFailed(response);

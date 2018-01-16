@@ -25,6 +25,45 @@
 			  }
 		  )
 	 });
+ $(document).ready(function () {
+     //初始化个人收藏作品
+     getCollectionData();
+ });
+ //初始化收藏数据
+ function getCollectionData(){
+     $.ajax({
+         url: "<%=basePath%>/personalcenter/getCollectionData.do",
+         type: "POST",
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             var str="";
+             for(var i=0;i<msg.length;i++){
+                 str += '<tr id="'+msg[i].worksid+'"> <td width="120"><a href="#"><img src="<%=basePath%>'+msg[i].worksurl+'"></a></td>'
+                 +'<td><h2>'+msg[i].worksname+'</h2> <p>[普通价] ￥'+msg[i].price+'</p>'
+                 +'<p>[标签] '+msg[i].worklabel+'</p><p>[收藏日期] '+msg[i].collectiontime+'</p>'
+                 +'</td><td width="50"><a href="#" onclick="delCollection('+msg[i].worksid+')">取消收藏</a></td></tr>';
+             }
+             $(".collect_tab table").append(str);
+         }
+     });
+ }
+ //取消收藏
+ function delCollection(workid){
+     $.ajax({
+         url: "<%=basePath%>/personalcenter/delCollection.do",
+         type: "POST",
+         data:{
+             workid:workid
+         },
+         success: function (data) {
+             if(data!=="failed"){
+                $("#"+workid).css("display","none");
+             }else{
+                 errorInfo("取消失败");
+             }
+         }
+     });
+ }
  //跳转到首页
  function toIndex(){
      document.location.href = '<%=basePath%>/signin/index.do';
@@ -106,7 +145,7 @@
                  <a href="#" onclick="toHomepage()" class="kj_lj">个人空间 ></a>
                  <div class="tx_infor">
                       <img src="<%=basePath%>/static/images/head_img2.png" />
-                      <h2>宇宙军</h2>
+                     <h2>${userinfo.getFristname()}</h2>
                  </div>
                  <div class="mj_tab">
                     <table width="100%">
@@ -132,58 +171,9 @@
                <div class="coll_con">
                   <div class="collect_tab">
                      <table width="100%">
-                         <tr>
-                             <td width="120"><a href="#" ><img src="<%=basePath%>/static/images/hlxa_pic1.png" /></a></td>
-                             <td>
-                                 <h2>欧式屏风雕花</h2>
-                                 <p>[编号] 20151008223347761382</p>
-                                <p>[普通价] ￥85.00</p>
-                                <p>[主要参数] 533.06KB | AI | RGB | Adobe Illustrator CS3</p>
-                                <p>[收藏日期] 2016/1/21 18:02:23</p>
-                                <p>[收藏分类] 欧式背景</p>
-                             </td>
-                             <td width="50"><a href="#">取消收藏</a></td>
-                         </tr>
-                          <tr>
-                             <td><a href="#" ><img src="<%=basePath%>/static/images/hlxa_pic2.png" /></a></td>
-                             <td>
-                                 <h2>欧式屏风雕花</h2>
-                                 <p>[编号] 20151008223347761382</p>
-                                <p>[普通价] ￥85.00</p>
-                                <p>[主要参数] 533.06KB | AI | RGB | Adobe Illustrator CS3</p>
-                                <p>[收藏日期] 2016/1/21 18:02:23</p>
-                                <p>[收藏分类] 欧式背景</p>
-                             </td>
-                              <td width="50"><a href="#">取消收藏</a></td>
-                         </tr>
-                         <tr>
-                             <td><a href="#" ><img src="<%=basePath%>/static/images/hlxa_pic3.png" /></a></td>
-                             <td>
-                                 <h2>欧式屏风雕花</h2>
-                                 <p>[编号] 20151008223347761382</p>
-                                <p>[普通价] ￥85.00</p>
-                                <p>[主要参数] 533.06KB | AI | RGB | Adobe Illustrator CS3</p>
-                                <p>[收藏日期] 2016/1/21 18:02:23</p>
-                                <p>[收藏分类] 欧式背景</p>
-                             </td>
-                             <td width="50"><a href="#">取消收藏</a></td>
-                         </tr>
-                         <tr>
-                             <td><a href="#" ><img src="<%=basePath%>/static/images/hlxa_pic4.png" /></a></td>
-                             <td>
-                                 <h2>欧式屏风雕花</h2>
-                                 <p>[编号] 20151008223347761382</p>
-                                <p>[普通价] ￥85.00</p>
-                                <p>[主要参数] 533.06KB | AI | RGB | Adobe Illustrator CS3</p>
-                                <p>[收藏日期] 2016/1/21 18:02:23</p>
-                                <p>[收藏分类] 欧式背景</p>
-                             </td>
-                             <td width="50"><a href="#">取消收藏</a></td>
-                         </tr>
                      </table>
                   </div>
                    </div><!-- coll_con -->
-                  
                                     <div id="pages" class="pages_box"></div>
 
 

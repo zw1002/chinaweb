@@ -2,7 +2,7 @@ package com.hnqj.services;
 
 import com.hnqj.core.PageData;
 
-import com.hnqj.model.Collection;
+import com.hnqj.model.Collections;
 
 import javax.annotation.Resource;
 import com.hnqj.dao.DaoSupportImpl;
@@ -19,22 +19,22 @@ protected final Log logger = LogFactory.getLog(getClass());
 
 	private DaoSupportImpl daoSupport; 
 
-	public int addCollection(PageData pageData) {
-	 logger.info("增加Collection");
+	public int addCollections(PageData pageData) {
+	 logger.info("增加Collections");
 	 int iFlag =0; 
 	 try { 
-		iFlag = (int) daoSupport.insert("CollectionMapper.insert",pageData);
+		iFlag = (int) daoSupport.insert("CollectionsMapper.insert",pageData);
 	 }catch (Exception e){ 
 	 e.printStackTrace(); 
 	 iFlag=0; 
 	}
 	 return iFlag; 
 	}
-	public int delCollectionByFid(String fid) {
-	 logger.info("删除Collection");
+	public int delCollectionsByFid(String fid) {
+	 logger.info("删除Collections");
 	 int iFlag =0; 
 	 try { 
-		iFlag = (int) daoSupport.delete("CollectionMapper.deleteCollectionByFid",fid);
+		iFlag = (int) daoSupport.delete("CollectionsMapper.deleteCollectionByFid",fid);
 	 }catch (Exception e){ 
 	 e.printStackTrace(); 
 	 iFlag=0; 
@@ -42,59 +42,83 @@ protected final Log logger = LogFactory.getLog(getClass());
 	 return iFlag; 
 	}
 
-	public int delCollectionByUseridandWorksID(PageData pageData) {
-		logger.info("删除delCollectionByUseridandWorksID");
+	public int delCollectionsByUseridandWorksID(PageData pageData) {
+		logger.info("删除delCollectionsByUseridandWorksID");
 		int iFlag =0;
 		try {
-			iFlag = (int) daoSupport.delete("CollectionMapper.deleteByUidAndWorksid",pageData);
+			iFlag = (int) daoSupport.delete("CollectionsMapper.deleteByUidAndWorksid",pageData);
 		}catch (Exception e){
 			e.printStackTrace();
 			iFlag=0;
 		}
 		return iFlag;
 	}
-	public int updateCollection(PageData pageData) {
-	 logger.info("修改Collection");
+	public int updateCollections(PageData pageData) {
+	 logger.info("修改Collections");
 	 int iFlag =0; 
 	 try { 
-		iFlag = (int) daoSupport.update("CollectionMapper.updateCollection",pageData);
+		iFlag = (int) daoSupport.update("CollectionsMapper.updateCollection",pageData);
 	 }catch (Exception e){ 
 	 e.printStackTrace(); 
 	 iFlag=0; 
 	}
 	 return iFlag; 
 	}
-	public Collection getCollectionforId(String fid) {
-	 logger.info("通过ID查询Collection");
-	Collection	collection=null;
+	public Collections getCollectionsforId(String fid) {
+	 logger.info("通过ID查询Collections");
+	Collections	collection=null;
 	 try { 
-		collection = (Collection) daoSupport.findForObject("CollectionMapper.getCollectionForId",fid);
+		collection = (Collections) daoSupport.findForObject("CollectionsMapper.getCollectionForId",fid);
 	 }catch (Exception e){ 
 	 e.printStackTrace(); 
 	 collection=null; 
 	}
 	 return collection; 
 	}
-	public List<Collection> getAllCollection(PageData pageData) {
-	 logger.info("分页查询Collection");
-	List<Collection>	collectionList=null;
+	public List<Collections> getAllCollections(PageData pageData) {
+	 logger.info("分页查询Collections");
+	List<Collections>	collectionList=null;
 	 try { 
-		collectionList = (List<Collection>) daoSupport.findForList("CollectionMapper.getAllCollection",pageData);
+		collectionList = (List<Collections>) daoSupport.findForList("CollectionsMapper.getAllCollection",pageData);
 	 }catch (Exception e){ 
 	 e.printStackTrace(); 
 	 collectionList=null; 
 	}
 	 return collectionList; 
 	}
-	public List<Collection> selectCollectionList() {
-	 logger.info("查询所有Collection");
-	List<Collection>	collectionList=null;
+	public List<Collections> selectCollectionsList() {
+	 logger.info("查询所有Collections");
+	List<Collections>	collectionList=null;
 	 try { 
-		collectionList = (List<Collection>) daoSupport.findForList("CollectionMapper.selectCollectionList",null);
+		collectionList = (List<Collections>) daoSupport.findForList("CollectionsMapper.selectCollectionList",null);
 	 }catch (Exception e){ 
 	 e.printStackTrace(); 
 	 collectionList=null; 
 	}
 	 return collectionList; 
+	}
+
+	public List<Collections> selectCollectionsByUserId(String userid) {
+		logger.info("查询个人所有Collections");
+		List<Collections>	collectionList=null;
+		try {
+			collectionList = (List<Collections>) daoSupport.findForList("CollectionsMapper.selectCollectionByUserId",userid);
+		}catch (Exception e){
+			e.printStackTrace();
+			collectionList=null;
+		}
+		return collectionList;
+	}
+
+	public int delCollections(PageData pageData) {
+		logger.info("取消收藏");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("CollectionsMapper.delCollection",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
 	}
 }

@@ -22,108 +22,78 @@
 			   $(this).find("a.ztit").removeClass("active"); 
 			  $(this).find(".nav_list").hide();
 			  }
-		  
 		  )
-	 
-	 })
-
+	 });
 </script>
-
 </head>
-
 <body>
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
-         <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
-         
-         
+         <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="nav_new fl">
-            <ul class="clearfix">
-               <li><a href="index.jsp" class="ztit">网站首页</a></li>
-               <li><a href="javascript:" class="all_fl ztit">所有分类</a>
-                 <div class="nav_list">
-                    <a href="design.jsp">设计</a>
-                  
-                    <a href="photography.jsp">摄影图库</a>
-                     <a href="multimedia.jsp">道具新品</a>
-                    <a href="wedding.jsp">婚秀</a>
-                    <a href="help.jsp">求图求助</a>
-                    <a href="free.jsp">免费下载</a>
-                 </div> 
-               </li>
-            </ul>
+             <ul class="clearfix">
+                 <li><a href="#" onclick="toIndex()" class="ztit">网站首页</a></li>
+                 <li><a href="javascript:" class="all_fl ztit">所有分类</a>
+                     <div class="nav_list">
+                         <a href="#" onclick="toDesign()">设 计</a>
+                         <a href="#" onclick="toPhotography()">摄影图库</a>
+                         <a href="#" onclick="toMultimedia()">道具新品</a>
+                         <a href="#" onclick="toWedding()">婚 秀</a>
+                         <a href="#" onclick="toHelp()">求图求助</a>
+                         <a href="#" onclick="toFree()">免费下载</a>
+                     </div>
+                 </li>
+             </ul>
          </div>
-         
          <div class="ss_bg new_ss fl">
             <input name="" type="text" placeholder="请输入搜索内容"  class="inp_txt">
             <input type="submit" value="搜 索" class="ss_btn" /> 
          </div> 
-         
-         <a href="javascript:" class="sc_btn"><img src="<%=basePath%>/static/images/icon_down2.png" height="14" width="14" /> 图片上传</a>
-          
       </div><!-- top_wid -->
-
       </div><!-- top -->
    </header>
-   
-   <div class="bg_f5"> 
+   <div class="bg_f5">
      <div class="wrap">
-        
         <div class="home_top">
           <div class="img_sc"><img src="<%=basePath%>/static/images/hy_banner.png" height="215" width="1200" /></div>
-          
           <div class="tx_zl">
              <div class="zl_tabd fl">
                 <table width="100%">
                    <tr>
-                      <td><h2>784512</h2>人气</td>                      
-                      <td><h2>54784</h2>粉丝</td>
                       <td><h2>325</h2>关注</td>
+                       <td><h2>325</h2>作品数量</td>
                    </tr>
                 </table>
              </div>
-             
              <div class="wid180px">
                <img src="<%=basePath%>/static/images/sytk_pic1.png" />
-               <h2>雨田三石</h2><p>设计师</p>
+               <h2>雨田三石</h2>
                <div class="btn_dd">
-                 <a href="#">私信</a><a href="#" class="gz_cold">+关注</a>
+                 <a href="#" class="gz_cold">+关注</a>
                </div>
              </div>
-             
              <div class="zl_tabd fr">
                 <table width="100%">
                    <tr>
                       <td><h2>784512</h2>成交额</td>                      
                       <td><h2>54784</h2>交易量</td>
-                      <td><h2>325</h2>作品数量</td>
                    </tr>
                 </table>
              </div>
-             
           </div><!-- tx_zl -->
         </div><!-- home_top -->
-        
-        
         <div class="home_nav">
            <ul>
               <li><a class="active" href="homepage.jap">主页</a></li>
               <li><a class="" href="works.jsp">作品</a></li>
-                      
-                      <li><a class="" href="album.jsp">专辑</a></li>
-                      <li><a class="" href="post.jsp">帖子</a></li>
                       <li><a class="" href="collection.jsp">收藏</a></li>
-                      
                       <li><a class="" href="attention.jsp">关注页面/我的粉丝</a></li>
            </ul>
         </div>
-       
        <div class="home_con">
-        
         <div class="wid920px fl">
            <div class="gxq_tit font16px"><h2>会员作品</h2> <a href="javascript:">更多>> </a></div>
-           
            <div class="page_list">
               <ul class="clearfix">
                  <li>

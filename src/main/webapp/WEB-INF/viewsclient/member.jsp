@@ -108,7 +108,7 @@ $(".tempWrap").css("width","694");
                  <a href="#" onclick="toHomepage()" class="kj_lj">个人空间 ></a>
                  <div class="tx_infor">
                       <img src="<%=basePath%>/static/images/head_img2.png" />
-                      <h2>宇宙军</h2>
+                      <h2>${userinfo.getFristname()}</h2>
                      <!--
                       <p class="sjss">设计师</p>
                       <span class="icon_jf">38728</span> |  <span class="icon_hp">99.28</span>
