@@ -85,4 +85,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return focusotherList; 
 	}
+
+	public List<FocusOther> getFocusOtherForFocusId(String uid) {
+		logger.info("获取用户被关注量");
+		List<FocusOther>	focusotherList=null;
+		try {
+			focusotherList = (List<FocusOther>) daoSupport.findForList("FocusOtherMapper.getFocusOtherForFocusId",uid);
+		}catch (Exception e){
+			e.printStackTrace();
+			focusotherList=null;
+		}
+		return focusotherList;
+	}
 }

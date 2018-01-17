@@ -108,9 +108,9 @@
  function toTransaction(){
      document.location.href = '<%=basePath%>/personalcenter/toTransaction.do';
  }
- //跳转到会员空间页面
  function toHomepage(){
-     document.location.href = '<%=basePath%>/homepage/toHomepage.do';
+     var uid="${userinfo.getUid()}";
+     document.location.href = '<%=basePath%>/homepage/toHomepage.do?uid='+uid;
  }
 </script>
 </head>

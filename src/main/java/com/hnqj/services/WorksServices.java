@@ -109,4 +109,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return worksList;
 	}
+
+	public List<Works> getWorksForUserId(PageData pageData) {
+		logger.info("会员空间获取个人作品");
+		List<Works>	worksList=null;
+		try {
+			worksList = (List<Works>) daoSupport.findForList("WorksMapper.getWorksForUserId",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			worksList=null;
+		}
+		return worksList;
+	}
 }

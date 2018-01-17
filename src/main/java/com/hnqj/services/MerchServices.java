@@ -85,4 +85,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return merchList; 
 	}
+
+	public Merch getMerchForUserId(String uid) {
+		logger.info("通过会员ID查询Merch");
+		Merch	merch=null;
+		try {
+			merch = (Merch) daoSupport.findForObject("MerchMapper.getMerchForUserId",uid);
+		}catch (Exception e){
+			e.printStackTrace();
+			merch=null;
+		}
+		return merch;
+	}
 }

@@ -111,4 +111,17 @@
       LIMIT #{offset},#{count}
     </if>
   </select>
+  <!--会员空间获取个人作品-->
+  <select id="getWorksForUserId" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where merchid = (
+    select uid from tb_merch where userinfouid = #{userid}
+    )
+    order by downcount desc
+    <if test="count != null and count != '0'">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
 </mapper>

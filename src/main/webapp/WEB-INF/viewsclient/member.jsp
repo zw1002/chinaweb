@@ -25,6 +25,7 @@
 		  )
  });
  $(document).ready(function () {
+     //修改通知的宽度
 $(".tempWrap").css("width","694");
  });
  //跳转到首页
@@ -69,7 +70,8 @@ $(".tempWrap").css("width","694");
  }
  //跳转到会员空间页面
  function toHomepage(){
-     document.location.href = '<%=basePath%>/homepage/toHomepage.do';
+     var uid="${userinfo.getUid()}";
+     document.location.href = '<%=basePath%>/homepage/toHomepage.do?uid='+uid;
  }
 </script>
 </head>

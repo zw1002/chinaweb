@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FreeController extends BaseController{
     @Autowired
     WorksServices worksServices;
-    //跳转到设计页面
+    //跳转到免费下载页面
     @RequestMapping(value = "/toFree.do")
     public String toFree(){
         return  "free";
     }
-    //跳转到设计明细页面
+    //跳转到免费下载明细页面
     @RequestMapping(value = "/toFreeDel.do")
     public String toFreeDel(){
         return  "free_del";

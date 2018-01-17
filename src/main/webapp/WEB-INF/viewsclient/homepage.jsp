@@ -24,9 +24,117 @@
 			  }
 		  )
 	 });
+ $(document).ready(function () {
+     getUserInfoData();
+     getUserMerch();
+     getUserFocus();
+     getMerchData();
+ });
+ //获取会员信息
+ function getUserInfoData(){
+     //会员ID
+     var uid=$("#uid").val();
+     $.ajax({
+         url: "<%=basePath%>/userinfo/getUserInfo.do",
+         type: "POST",
+         data: {
+             uid: uid
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             $("#username").text(msg.fristname);
+             $("#userpic").attr("src","<%=basePath%>"+msg.usrpicurl+"");
+         }
+     });
+ }
+ //获取会员店铺信息
+ function getUserMerch(){
+     //会员ID
+     var uid=$("#uid").val();
+     $.ajax({
+         url: "<%=basePath%>/merch/getMerchData.do",
+         type: "POST",
+         data: {
+             uid: uid
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             $("#worksnums").text(msg.worksnums);
+             $("#dealnums").text(msg.dealnums);
+             $("#merchremark").text(msg.remark);
+         }
+     });
+ }
+ //获取会员被关注量
+ function getUserFocus(){
+     var uid=$("#uid").val();
+     $.ajax({
+         url: "<%=basePath%>/userinfo/getUserFocus.do",
+         type: "POST",
+         data: {
+             uid: uid
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             $("#focuscount").text(msg.count);
+         }
+     });
+ }
+ //获取会员作品-根据下载量排序
+function getMerchData(){
+    var uid=$("#uid").val();
+    var count=6;
+    $.ajax({
+        url: "<%=basePath%>/homepage/getMerchData.do",
+        type: "POST",
+        data: {
+            uid: uid,
+            count:count
+        },
+        success: function (data) {
+            var msg = eval("(" + data + ")");
+            var str="";
+            for(var i=0;i<msg.length;i++){
+                str += '<li> <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
+                +'<a href="#"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
+                +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+            }
+            $("#userWorks").append(str);
+        }
+    });
+}
+ //跳转到首页
+ function toIndex(){
+     document.location.href = '<%=basePath%>/signin/index.do';
+ }
+ //跳转到设计页面
+ function toDesign(){
+     document.location.href = '<%=basePath%>/design/toDesign.do';
+ }
+ //跳转到摄影图库页面
+ function toPhotography(){
+     document.location.href = '<%=basePath%>/photography/toPhotography.do';
+ }
+ //跳转到婚秀页面
+ function toWedding(){
+     document.location.href = '<%=basePath%>/wedding/toWedding.do';
+ }
+ //跳转到道具页面
+ function toMultimedia(){
+     document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
+ }
+ //跳转到免费下载页面
+ function toFree(){
+     document.location.href = '<%=basePath%>/free/toFree.do';
+ }
+ //跳转到求助求图页面
+ function toHelp(){
+     document.location.href = '<%=basePath%>/help/toHelp.do';
+ }
 </script>
 </head>
 <body>
+<input id="uid" name="uid" type="hidden" value="<%= request.getAttribute("uid")%>"/>
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
@@ -61,14 +169,14 @@
              <div class="zl_tabd fl">
                 <table width="100%">
                    <tr>
-                      <td><h2>325</h2>关注</td>
-                       <td><h2>325</h2>作品数量</td>
+                      <td><h2 id="focuscount"></h2>关注</td>
+                       <td><h2 id="worksnums"></h2>作品数量</td>
                    </tr>
                 </table>
              </div>
              <div class="wid180px">
-               <img src="<%=basePath%>/static/images/sytk_pic1.png" />
-               <h2>雨田三石</h2>
+               <img id="userpic" src=""/>
+               <h2 id="username"></h2>
                <div class="btn_dd">
                  <a href="#" class="gz_cold">+关注</a>
                </div>
@@ -77,7 +185,7 @@
                 <table width="100%">
                    <tr>
                       <td><h2>784512</h2>成交额</td>                      
-                      <td><h2>54784</h2>交易量</td>
+                      <td><h2 id="dealnums"></h2>交易量</td>
                    </tr>
                 </table>
              </div>
@@ -95,49 +203,8 @@
         <div class="wid920px fl">
            <div class="gxq_tit font16px"><h2>会员作品</h2> <a href="javascript:">更多>> </a></div>
            <div class="page_list">
-              <ul class="clearfix">
-                 <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/sytk_pic8.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                  <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/sjtka_pic3.png" />
-                  <h2>《你是我的风景》海景圣堂海景圣堂海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                  <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/sjtka_pic2.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                  <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/dmt_pic6.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                  <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/dmt_pic5.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                  <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/dmt_pic4.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
+              <ul id="userWorks" class="clearfix">
+
               </ul>
            </div>
            
@@ -223,11 +290,8 @@
         <div class="wid260px fr">
           
           <div class="ty_box">
-             <div class="tit_zptj"><h2>个人简介</h2></div>
-             <div class="bq_box">
-              <a href="#">VI设计</a><a href="#">logo设计</a><a href="#">VI设计</a><a href="#">网站设计</a>
-             </div>
-             <p>部分文件为扑住图形可任意更改做持续更新请加关注，想了解更多作品！请点击下方（查看所有作品）或（点击专辑转PSD或CDR格式可发）站内信联系。</p>
+             <div class="tit_zptj"><h2>店铺简介</h2></div>
+             <p id="merchremark"></p>
           </div>
           
           <div class="ty_box">
