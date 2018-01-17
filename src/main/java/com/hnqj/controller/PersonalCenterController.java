@@ -2,10 +2,8 @@ package com.hnqj.controller;
 
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
-import com.hnqj.model.Collections;
-import com.hnqj.model.Works;
-import com.hnqj.services.CollectionServices;
-import com.hnqj.services.WorksServices;
+import com.hnqj.model.*;
+import com.hnqj.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.hnqj.core.ResultUtils.toDateJson;
 
 /**
  *个人中心控制层
@@ -27,6 +27,12 @@ public class PersonalCenterController extends  BaseController{
     CollectionServices collectionServices;
     @Autowired
     WorksServices worksServices;
+    @Autowired
+    DealuidchildServices dealuidchildServices;
+    @Autowired
+    UserinfoServices userinfoServices;
+    @Autowired
+    MerchServices merchServices;
     //跳转到开店页面
     @RequestMapping(value = "/toShop.do")
     public String toShop(){
@@ -89,6 +95,8 @@ public class PersonalCenterController extends  BaseController{
     public String getCollectionData(HttpServletRequest request, HttpServletResponse response) {
         logger.info("getCollectionData");
         try{
+            //当前页面
+            int pagenumber = request.getParameter("pagenumber") == null ? 0 : Integer.parseInt(request.getParameter("pagenumber"));
             String userid=getUser().getUid();
             List<Collections> list=collectionServices.selectCollectionsByUserId(userid);
             List<Map<String, Object>> hashMaps=new ArrayList<>();
@@ -130,6 +138,77 @@ public class PersonalCenterController extends  BaseController{
             ResultUtils.writeSuccess(response);
         }catch(Exception e){
             logger.error("delCollection e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 获取个人已出售作品
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getAlreadySoldWorks.do")
+    public String getAlreadySoldWorks(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getAlreadySoldWorks");
+        try{
+            String userid=getUser().getUid();
+            List<Dealuidchild> dealuidchildList=dealuidchildServices.getDealuidchildForWorksId(userid);
+            List<Map<String, Object>> hashMaps=new ArrayList<>();
+            for(Dealuidchild dealuidchild:dealuidchildList){
+                Map<String, Object> map = new HashMap<>();
+                map.put("worksid",dealuidchild.getWorksid());
+                Works works=worksServices.getWorksforId(dealuidchild.getWorksid());
+                map.put("worksname",works.getWorksname());
+                map.put("worksurl",works.getSamllurl());
+                map.put("price",works.getPrice());
+                map.put("worklabel",works.getWorklabel());
+                map.put("addtime",dealuidchild.getAddtime());
+                Userinfo userinfo=userinfoServices.getUserinfoforId(dealuidchild.getPayuserid());
+                map.put("payUserPic",userinfo.getUsrpicurl());
+                map.put("payUsername",userinfo.getFristname());
+                hashMaps.add(map);
+            }
+            ResultUtils.write(response,toDateJson(hashMaps));
+        }catch(Exception e){
+            logger.error("getAlreadySoldWorks e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 获取个人已购买作品
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getAlreadyPurchasedWorks.do")
+    public String getAlreadyPurchasedWorks(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getAlreadyPurchasedWorks");
+        try{
+            String userid=getUser().getUid();
+            List<Dealuidchild> dealuidchildList=dealuidchildServices.getDealuidchildForPayUserId(userid);
+            List<Map<String, Object>> hashMaps=new ArrayList<>();
+            for(Dealuidchild dealuidchild:dealuidchildList){
+                Map<String, Object> map = new HashMap<>();
+                map.put("worksid",dealuidchild.getWorksid());
+                Works works=worksServices.getWorksforId(dealuidchild.getWorksid());
+                map.put("worksname",works.getWorksname());
+                map.put("worksurl",works.getSamllurl());
+                map.put("price",works.getPrice());
+                map.put("worklabel",works.getWorklabel());
+                map.put("addtime",dealuidchild.getAddtime());
+                Merch merch=merchServices.getMerchforId(works.getMerchid());
+                Userinfo userinfo=userinfoServices.getUserinfoforId(merch.getUserinfouid());
+                map.put("payUserPic",userinfo.getUsrpicurl());
+                map.put("payUsername",userinfo.getFristname());
+                hashMaps.add(map);
+            }
+            ResultUtils.write(response,toDateJson(hashMaps));
+        }catch(Exception e){
+            logger.error("getAlreadyPurchasedWorks e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;

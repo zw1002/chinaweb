@@ -26,7 +26,6 @@
 		  )
 	 });
  $(document).ready(function () {
-     //初始化个人收藏作品
      getCollectionData();
  });
  //初始化收藏数据
@@ -39,7 +38,7 @@
              var str="";
              for(var i=0;i<msg.length;i++){
                  str += '<tr id="'+msg[i].worksid+'"> <td width="120"><a href="#"><img src="<%=basePath%>'+msg[i].worksurl+'"></a></td>'
-                 +'<td><h2>'+msg[i].worksname+'</h2> <p>[普通价] ￥'+msg[i].price+'</p>'
+                 +'<td><h2>'+msg[i].worksname+'</h2> <p>[价格] ￥'+msg[i].price+'</p>'
                  +'<p>[标签] '+msg[i].worklabel+'</p><p>[收藏日期] '+msg[i].collectiontime+'</p>'
                  +'</td><td width="50"><a href="#" onclick="delCollection('+msg[i].worksid+')">取消收藏</a></td></tr>';
              }
@@ -114,7 +113,7 @@
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
-         <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
+         <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="nav_new fl">
              <ul class="clearfix">
                  <li><a href="#" onclick="toIndex()" class="ztit">网站首页</a></li>
@@ -144,7 +143,7 @@
              <div class="grzl_box">
                  <a href="#" onclick="toHomepage()" class="kj_lj">个人空间 ></a>
                  <div class="tx_infor">
-                      <img src="<%=basePath%>/static/images/head_img2.png" />
+                     <img src="<%=basePath%>${userinfo.getUsrpicurl()}"/>
                      <h2>${userinfo.getFristname()}</h2>
                  </div>
                  <div class="mj_tab">
@@ -174,7 +173,7 @@
                      </table>
                   </div>
                    </div><!-- coll_con -->
-                                    <div id="pages" class="pages_box"></div>
+             <div id="pages" class="pages_box"></div>
 
 
 <script>
@@ -191,8 +190,8 @@ laypage({
  	next:'下一页',           //用于控制下一页。若不显示，设置false即可
 	jump: function(obj, first){
     //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
-     var curr = obj.curr;
-    }  
+     var pagenumber = obj.curr;
+    }
 });
 </script>  
            </div><!-- wid925px -->

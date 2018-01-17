@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8">
 <title>婚秀中国网</title>
-    <link rel="icon" href="<%=basePath%>/static/images/ico.ico" type="image/x-icon"/>
+<link rel="icon" href="<%=basePath%>/static/images/ico.ico" type="image/x-icon"/>
 <link href="<%=basePath%>/static/css/global.css" rel="stylesheet" type="text/css" />
 <link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/normalize.css" />
@@ -22,7 +22,15 @@
 		  $(this).parents(".fl_nav").find("a").removeClass("on");
 		  $(this).addClass("on")
 		  })
-	  })
+	  });
+  $(document).ready(function () {
+      //隐藏注册/按钮登录    显示个人中心/个人空间
+      var firstname="${userinfo.getFristname()}";
+      if(firstname != ""){
+          $("#beferLogin").css("display","none");
+          $("#backLogin").css("display","block");
+      }
+  });
   //跳转到首页
   function toIndex(){
       document.location.href = '<%=basePath%>/signin/index.do';
@@ -51,6 +59,22 @@
   function toHelp(){
       document.location.href = '<%=basePath%>/help/toHelp.do';
   }
+  //跳转到注册页面
+  function toRegister(){
+      document.location.href = '<%=basePath%>/signin/register.do';
+  }
+  //跳转到登录页面
+  function toLogin(){
+      document.location.href = '<%=basePath%>/signin/login.do';
+  }
+  //跳转到会员中心页面
+  function toMember(){
+      document.location.href = '<%=basePath%>/member/toMember.do';
+  }
+  //跳转到会员空间页面
+  function toHomepage(){
+      document.location.href = '<%=basePath%>/homepage/toHomepage.do';
+  }
 </script>
 </head>
 
@@ -62,17 +86,16 @@
          <div class="top_wid">
             欢迎来到婚秀中国网
              <!-- 登录前 -->
-            <div class="top_pos">
-              <a href="login.jsp">登录</a>|<a href="regist.jsp">注册</a>
-            </div>
-            
-            <!-- 登录后 -->
-            <div class="top_pos" style="display:none;">
-              <a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.jsp" class="sc_icon">我要上传</a>|<a href="collection_2.jsp">我的收藏（<span class="col_f00">2</span>）</a>
-            </div>
+             <div id="beferLogin" class="top_pos">
+                 <a href="#" onclick="toLogin()">登录</a>|<a href="#" onclick="toRegister()">注册</a>
+             </div>
+             <!-- 登录后 -->
+             <div id="backLogin" class="top_pos" style="display:none;">
+                 <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>
+                 <!--<a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.html" class="sc_icon">我要上传</a>|<a href="collection_2.html">我的收藏（<span class="col_f00">2</span>）</a>-->
+             </div>
          </div>
       </div><!-- top_line -->
-      
       <div class="top_wid logo_con">
           <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="ss_bg fl">
@@ -340,17 +363,12 @@
 					
 				</div><!-- grid -->
 				</div>
-			
 		</main>
-		<script src="<%=basePath%>/static/js/<%=basePath%>/static/imagesloaded.pkgd.min.js"></script>
+		<script src="<%=basePath%>/static/js/imagesloaded.pkgd.min.js"></script>
 		<script src="<%=basePath%>/static/js/masonry.pkgd.min.js"></script>
 		<script src="<%=basePath%>/static/js/anime.min.js"></script>
 		<script src="<%=basePath%>/static/js/main.js"></script>
-         
-         
-                    <div id="pages" class="pages_box"></div>
-
-
+<div id="pages" class="pages_box"></div>
 <script>
 laypage({
     cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,

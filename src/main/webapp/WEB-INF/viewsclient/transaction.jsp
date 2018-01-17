@@ -25,7 +25,49 @@
 			  $(this).find(".nav_list").hide();
 			  }
 		  )
-	 });
+ });
+ $(document).ready(function () {
+     //已出售
+     alreadySold();
+     //已购买
+     alreadyPurchased();
+ });
+ //获取已出售作品
+ function  alreadySold(){
+     $.ajax({
+         url: "<%=basePath%>/personalcenter/getAlreadySoldWorks.do",
+         type: "POST",
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             var str="";
+             for(var i=0;i<msg.length;i++){
+                 str += '<tr id="'+msg[i].worksid+'"><td class="jj_txt"> <p class="fl">'
+                 +'<img src="<%=basePath%>'+msg[i].worksurl+'" /></p> <h2>'+msg[i].worksname+'</h2> <p>[类型] 设计</p><p class="xzzs">[标签] '+msg[i].worklabel+'</p><p class="xzzs">[交易时间] '+msg[i].addtime+'</p></td>'
+                 +'<td><p class="col_f00">￥'+msg[i].price+'</p></td> <td><p>交易成功</p></td><td>'
+                 +'<img src="<%=basePath%>'+msg[i].payUserPic+'" /> <p>'+msg[i].payUsername+'</p></td></tr>';
+             }
+             $("#alreadySold table").append(str);
+         }
+     });
+ }
+ //已购买
+ function  alreadyPurchased(){
+     $.ajax({
+         url: "<%=basePath%>/personalcenter/getAlreadyPurchasedWorks.do",
+         type: "POST",
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             var str="";
+             for(var i=0;i<msg.length;i++){
+                 str += '<tr id="'+msg[i].worksid+'"><td class="jj_txt"> <p class="fl">'
+                         +'<img src="<%=basePath%>'+msg[i].worksurl+'" /></p> <h2>'+msg[i].worksname+'</h2> <p>[类型] 设计</p><p class="xzzs">[标签] '+msg[i].worklabel+'</p><p class="xzzs">[交易时间] '+msg[i].addtime+'</p></td>'
+                         +'<td><p class="col_f00">￥'+msg[i].price+'</p></td> <td><p>交易成功</p></td><td>'
+                         +'<img src="<%=basePath%>'+msg[i].payUserPic+'" /> <p>'+msg[i].payUsername+'</p></td></tr>';
+             }
+             $("#alreadyPurchased table").append(str);
+         }
+     });
+ }
  //跳转到首页
  function toIndex(){
      document.location.href = '<%=basePath%>/signin/index.do';
@@ -76,7 +118,7 @@
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
-         <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
+         <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="nav_new fl">
              <ul class="clearfix">
                  <li><a href="#" onclick="toIndex()" class="ztit">网站首页</a></li>
@@ -106,8 +148,8 @@
              <div class="grzl_box">
                  <a href="#" onclick="toHomepage()" class="kj_lj">个人空间 ></a>
                  <div class="tx_infor">
-                      <img src="<%=basePath%>/static/images/head_img2.png" />
-                      <h2>宇宙军</h2>
+                      <img src="<%=basePath%>${userinfo.getUsrpicurl()}"/>
+                      <h2>${userinfo.getFristname()}</h2>
                  </div>
                  <div class="mj_tab">
                     <table width="100%">
@@ -162,7 +204,7 @@
                   </div>
                   <div class="jy_tab_con">
                      <!-- 已出售 -->
-                     <ul>
+                     <ul id="alreadySold">
                           <table width="100%">
                              <tr>             
                                 <th>作品信息</th>
@@ -170,151 +212,10 @@
                                 <th>交易状态</th>
                                 <th>对方</th>
                              </tr>
-                             <tr>             
-                                <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
-                             </tr>
-                             <tr>             
-                                <td class="jj_txt">
-                                  <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic4.png" /></p>
-                                  <h2>欧式屏风雕花</h2>
-                                 <p>[类型] 设计</p>
-                                <p class="xzzs">[简介] 我是简介我是简介我是简介我是简介我是简介我是简介</p>
-                                <p>[创建] 2016/1/21 18:02:23</p>
-                                <p>[更新] 2016/1/21 18:02:23</p>
-                                
-                                </td>                                          
-                                <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p></td>
-                                <td>
-                                  <div class="tc_rel">
-                                     <img src="<%=basePath%>/static/images/head_img.png" />
-                                      <p>新设计团队</p>
-                                  
-                                    <div class="tip_bxf">
-                                        <table width="100%">
-                                           <tr>
-                                               <td><h3>17700.50</h3> 交易额</td>
-                                               <td><h3>5620</h3> 交易量</td>
-                                               <td><h3>235</h3> 作品数</td>
-                                               <td><h3>0</h3>     投稿数</td>
-                                           </tr>
-                                        </table>
-                                        <div class="znx_btn"><a href="#">发站内信</a></div>    
-                                    </div>
-                                  </div>
-                                
-                                </td>  
-                             </tr>
-                             <tr>             
-                                <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
-                             </tr>
-                             <tr>             
-                                <td class="jj_txt">
-                                  <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic5.png" /></p>
-                                  <h2>欧式屏风雕花</h2>
-                                 <p>[类型] 设计</p>
-                                <p class="xzzs">[简介] 我是简介我是简介我是简介我是简介我是简介我是简介</p>
-                                <p>[创建] 2016/1/21 18:02:23</p>
-                                <p>[更新] 2016/1/21 18:02:23</p>
-                                
-                                </td>                                          
-                                <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p></td>
-                                <td>
-                                  <div class="tc_rel">
-                                     <img src="<%=basePath%>/static/images/head_img.png" />
-                                      <p>新设计团队</p>
-                                  
-                                    <div class="tip_bxf">
-                                        <table width="100%">
-                                           <tr>
-                                               <td><h3>17700.50</h3> 交易额</td>
-                                               <td><h3>5620</h3> 交易量</td>
-                                               <td><h3>235</h3> 作品数</td>
-                                               <td><h3>0</h3>     投稿数</td>
-                                           </tr>
-                                        </table>
-                                        <div class="znx_btn"><a href="#">发站内信</a></div>    
-                                    </div>
-                                  </div>
-                                
-                                </td>  
-                             </tr>
-                             <tr>             
-                                <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
-                             </tr>
-                             <tr>             
-                                <td class="jj_txt">
-                                  <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic6.png" /></p>
-                                  <h2>欧式屏风雕花</h2>
-                                 <p>[类型] 设计</p>
-                                <p class="xzzs">[简介] 我是简介我是简介我是简介我是简介我是简介我是简介</p>
-                                <p>[创建] 2016/1/21 18:02:23</p>
-                                <p>[更新] 2016/1/21 18:02:23</p>
-                                
-                                </td>                                          
-                                <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p></td>
-                                <td>
-                                  <div class="tc_rel">
-                                     <img src="<%=basePath%>/static/images/head_img.png" />
-                                      <p>新设计团队</p>
-                                  
-                                    <div class="tip_bxf">
-                                        <table width="100%">
-                                           <tr>
-                                               <td><h3>17700.50</h3> 交易额</td>
-                                               <td><h3>5620</h3> 交易量</td>
-                                               <td><h3>235</h3> 作品数</td>
-                                               <td><h3>0</h3>     投稿数</td>
-                                           </tr>
-                                        </table>
-                                        <div class="znx_btn"><a href="#">发站内信</a></div>    
-                                    </div>
-                                  </div>
-                                
-                                </td>  
-                             </tr>
-                             <tr>             
-                                <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
-                             </tr>
-                             <tr>             
-                                <td class="jj_txt">
-                                  <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic7.png" /></p>
-                                  <h2>欧式屏风雕花</h2>
-                                 <p>[类型] 设计</p>
-                                <p class="xzzs">[简介] 我是简介我是简介我是简介我是简介我是简介我是简介</p>
-                                <p>[创建] 2016/1/21 18:02:23</p>
-                                <p>[更新] 2016/1/21 18:02:23</p>
-                                
-                                </td>                                          
-                                <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p></td>
-                                <td>
-                                  <div class="tc_rel">
-                                     <img src="<%=basePath%>/static/images/head_img.png" />
-                                      <p>新设计团队</p>
-                                  
-                                    <div class="tip_bxf">
-                                        <table width="100%">
-                                           <tr>
-                                               <td><h3>17700.50</h3> 交易额</td>
-                                               <td><h3>5620</h3> 交易量</td>
-                                               <td><h3>235</h3> 作品数</td>
-                                               <td><h3>0</h3>     投稿数</td>
-                                           </tr>
-                                        </table>
-                                        <div class="znx_btn"><a href="#">发站内信</a></div>    
-                                    </div>
-                                  </div>
-                                
-                                </td>  
-                             </tr>    
                           </table>
                      </ul>
-                     
                      <!-- 已购买 -->
-                     <ul>
+                     <ul id="alreadyPurchased">
                           <table width="100%">
                              <tr>             
                                 <th>作品信息</th>                                          
@@ -322,149 +223,8 @@
                                  <th>交易状态</th>
                                 <th>对方</th>  
                              </tr>
-                             <tr>             
-                                <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
-                             </tr>
-                             <tr>             
-                                <td class="jj_txt">
-                                  <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic1.png" /></p>
-                                  <h2>欧式屏风雕花</h2>
-                                 <p>[类型] 设计</p>
-                                <p class="xzzs">[简介] 我是简介我是简介我是简介我是简介我是简介我是简介</p>
-                                <p>[创建] 2016/1/21 18:02:23</p>
-                                <p>[更新] 2016/1/21 18:02:23</p>
-                                
-                                </td>                                          
-                                <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p></td>
-                                <td>
-                                  <div class="tc_rel">
-                                     <img src="<%=basePath%>/static/images/head_img.png" />
-                                      <p>新设计团队</p>
-                                  
-                                    <div class="tip_bxf">
-                                        <table width="100%">
-                                           <tr>
-                                               <td><h3>17700.50</h3> 交易额</td>
-                                               <td><h3>5620</h3> 交易量</td>
-                                               <td><h3>235</h3> 作品数</td>
-                                               <td><h3>0</h3>     投稿数</td>
-                                           </tr>
-                                        </table>
-                                        <div class="znx_btn"><a href="#">发站内信</a></div>    
-                                    </div>
-                                  </div>
-                                
-                                </td>  
-                             </tr>
-                             <tr>             
-                                <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
-                             </tr>
-                             <tr>             
-                                <td class="jj_txt">
-                                  <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic2.png" /></p>
-                                  <h2>欧式屏风雕花</h2>
-                                 <p>[类型] 设计</p>
-                                <p class="xzzs">[简介] 我是简介我是简介我是简介我是简介我是简介我是简介</p>
-                                <p>[创建] 2016/1/21 18:02:23</p>
-                                <p>[更新] 2016/1/21 18:02:23</p>
-                                
-                                </td>                                          
-                                <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p></td>
-                                <td>
-                                  <div class="tc_rel">
-                                     <img src="<%=basePath%>/static/images/head_img.png" />
-                                      <p>新设计团队</p>
-                                  
-                                    <div class="tip_bxf">
-                                        <table width="100%">
-                                           <tr>
-                                               <td><h3>17700.50</h3> 交易额</td>
-                                               <td><h3>5620</h3> 交易量</td>
-                                               <td><h3>235</h3> 作品数</td>
-                                               <td><h3>0</h3>     投稿数</td>
-                                           </tr>
-                                        </table>
-                                        <div class="znx_btn"><a href="#">发站内信</a></div>    
-                                    </div>
-                                  </div>
-                                
-                                </td>  
-                             </tr>
-                             <tr>             
-                                <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
-                             </tr>
-                             <tr>             
-                                <td class="jj_txt">
-                                  <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic3.png" /></p>
-                                  <h2>欧式屏风雕花</h2>
-                                 <p>[类型] 设计</p>
-                                <p class="xzzs">[简介] 我是简介我是简介我是简介我是简介我是简介我是简介</p>
-                                <p>[创建] 2016/1/21 18:02:23</p>
-                                <p>[更新] 2016/1/21 18:02:23</p>
-                                
-                                </td>                                          
-                                <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p></td>
-                                <td>
-                                  <div class="tc_rel">
-                                     <img src="<%=basePath%>/static/images/head_img.png" />
-                                      <p>新设计团队</p>
-                                  
-                                    <div class="tip_bxf">
-                                        <table width="100%">
-                                           <tr>
-                                               <td><h3>17700.50</h3> 交易额</td>
-                                               <td><h3>5620</h3> 交易量</td>
-                                               <td><h3>235</h3> 作品数</td>
-                                               <td><h3>0</h3>     投稿数</td>
-                                           </tr>
-                                        </table>
-                                        <div class="znx_btn"><a href="#">发站内信</a></div>    
-                                    </div>
-                                  </div>
-                                
-                                </td>  
-                             </tr>
-                             <tr>             
-                                <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
-                             </tr>
-                             <tr>             
-                                <td class="jj_txt">
-                                  <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic4.png" /></p>
-                                  <h2>欧式屏风雕花</h2>
-                                 <p>[类型] 设计</p>
-                                <p class="xzzs">[简介] 我是简介我是简介我是简介我是简介我是简介我是简介</p>
-                                <p>[创建] 2016/1/21 18:02:23</p>
-                                <p>[更新] 2016/1/21 18:02:23</p>
-                                
-                                </td>                                          
-                                <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p></td>
-                                <td>
-                                  <div class="tc_rel">
-                                     <img src="<%=basePath%>/static/images/head_img.png" />
-                                      <p>新设计团队</p>
-                                  
-                                    <div class="tip_bxf">
-                                        <table width="100%">
-                                           <tr>
-                                               <td><h3>17700.50</h3> 交易额</td>
-                                               <td><h3>5620</h3> 交易量</td>
-                                               <td><h3>235</h3> 作品数</td>
-                                               <td><h3>0</h3>     投稿数</td>
-                                           </tr>
-                                        </table>
-                                        <div class="znx_btn"><a href="#">发站内信</a></div>    
-                                    </div>
-                                  </div>
-                                
-                                </td>  
-                             </tr>    
                           </table>
                      </ul>
-                     
                      <!-- 正在交易 -->
                      <ul>
                           <table width="100%">
@@ -474,45 +234,7 @@
                                  <th>交易状态</th>
                                 <th>对方</th>  
                              </tr>
-                             <tr>             
-                                <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
-                             </tr>
-                             <tr>             
-                                <td class="jj_txt">
-                                  <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic4.png" /></p>
-                                  <h2>欧式屏风雕花</h2>
-                                 <p>[类型] 设计</p>
-                                <p class="xzzs">[简介] 我是简介我是简介我是简介我是简介我是简介我是简介</p>
-                                <p>[创建] 2016/1/21 18:02:23</p>
-                                <p>[更新] 2016/1/21 18:02:23</p>
-                                
-                                </td>                                          
-                                <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p></td>
-                                <td>
-                                  <div class="tc_rel">
-                                     <img src="<%=basePath%>/static/images/head_img.png" />
-                                      <p>新设计团队</p>
-                                  
-                                    <div class="tip_bxf">
-                                        <table width="100%">
-                                           <tr>
-                                               <td><h3>17700.50</h3> 交易额</td>
-                                               <td><h3>5620</h3> 交易量</td>
-                                               <td><h3>235</h3> 作品数</td>
-                                               <td><h3>0</h3>     投稿数</td>
-                                           </tr>
-                                        </table>
-                                        <div class="znx_btn"><a href="#">发站内信</a></div>    
-                                    </div>
-                                  </div>
-                                
-                                </td>  
-                             </tr>
-                             <tr>             
-                                <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
-                             </tr>
-                             <tr>             
+                             <tr>
                                 <td class="jj_txt">
                                   <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic5.png" /></p>
                                   <h2>欧式屏风雕花</h2>
@@ -544,82 +266,14 @@
                                 
                                 </td>  
                              </tr>
-                           
-                               
                           </table>
                      </ul>
-                     
-                     
-                      <!-- 交易站厅-->
-                     <ul>
-                          <table width="100%">
-                             <tr>             
-                                <th>作品信息</th>                                          
-                                <th>交易状态</th>
-                                <th>实收金额</th>
-                                <th>对方</th>  
-                             </tr>
-                             
-                             <tr>             
-                                <td colspan="4" class="bg_tit">合同号：HS@163.co2-5124575121  &nbsp; &nbsp; &nbsp;     开始时间：2015-08-12   15:45:11  &nbsp; &nbsp; &nbsp;   结束时间：2015-14-20  16:00:02     </td>                                          
-                             </tr>
-                             <tr>             
-                                <td class="jj_txt">
-                                  <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic5.png" /></p>
-                                  <h2>欧式屏风雕花</h2>
-                                 <p>[类型] 设计</p>
-                                <p class="xzzs">[简介] 我是简介我是简介我是简介我是简介我是简介我是简介</p>
-                                <p>[创建] 2016/1/21 18:02:23</p>
-                                <p>[更新] 2016/1/21 18:02:23</p>
-                                
-                                </td>                                          
-                                <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p></td>
-                                <td>
-                                  <div class="tc_rel">
-                                     <img src="<%=basePath%>/static/images/head_img.png" />
-                                      <p>新设计团队</p>
-                                  
-                                    <div class="tip_bxf">
-                                        <table width="100%">
-                                           <tr>
-                                               <td><h3>17700.50</h3> 交易额</td>
-                                               <td><h3>5620</h3> 交易量</td>
-                                               <td><h3>235</h3> 作品数</td>
-                                               <td><h3>0</h3>     投稿数</td>
-                                           </tr>
-                                        </table>
-                                        <div class="znx_btn"><a href="#">发站内信</a></div>    
-                                    </div>
-                                  </div>
-                                
-                                </td>  
-                             </tr>
-                          
-                               
-                          </table>
-                     </ul>
-                     
-                      <!-- 交易失败-->
-                     <ul>
-                       
-                       <p style="text-align:center; margin:50px auto;">暂无交易失败</p>
-                       
-                     </ul>
-                     
-                  
                   </div>
-                  
                  </div>
-                  
               <script type="text/javascript">
 jQuery(".tran_con").slide({titCell:".jy_nav li",mainCell:".jy_tab_con", trigger:"click"})
  </script>     
-                 
-                  
                                     <div id="pages" class="pages_box"></div>
-
-
 								<script>
                                 laypage({
                                     cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,

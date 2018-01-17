@@ -97,4 +97,28 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return dealuidchildList;
 	}
+
+	public List<Dealuidchild> getDealuidchildForWorksId(String userid) {
+		logger.info("获取个人已出售作品");
+		List<Dealuidchild>	dealuidchildList=null;
+		try {
+			dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.getDealuidchildForWorksId",userid);
+		}catch (Exception e){
+			e.printStackTrace();
+			dealuidchildList=null;
+		}
+		return dealuidchildList;
+	}
+
+	public List<Dealuidchild> getDealuidchildForPayUserId(String userid) {
+		logger.info("获取个人已购买作品");
+		List<Dealuidchild>	dealuidchildList=null;
+		try {
+			dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.getDealuidchildForPayUserId",userid);
+		}catch (Exception e){
+			e.printStackTrace();
+			dealuidchildList=null;
+		}
+		return dealuidchildList;
+	}
 }

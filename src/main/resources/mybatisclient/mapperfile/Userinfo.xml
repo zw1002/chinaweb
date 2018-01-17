@@ -13,7 +13,7 @@
   <sql id="Base_Column_List">
     uid, fristname, telephone, iccode, usrpicurl,idpic, idpicback
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="getUserinfoForId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_userinfo

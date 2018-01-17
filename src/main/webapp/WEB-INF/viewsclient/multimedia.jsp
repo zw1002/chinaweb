@@ -21,30 +21,77 @@
 	  $(".fl_nav a").click(function(){
 		  $(this).parents(".fl_nav").find("a").removeClass("on");
 		  $(this).addClass("on")
-		  
 		  })
-	  
-	  })
-
+});
+  $(document).ready(function () {
+      //隐藏注册/按钮登录    显示个人中心/个人空间
+      var firstname="${userinfo.getFristname()}";
+      if(firstname != ""){
+          $("#beferLogin").css("display","none");
+          $("#backLogin").css("display","block");
+      }
+  });
+  //跳转到首页
+  function toIndex(){
+      document.location.href = '<%=basePath%>/signin/index.do';
+  }
+  //跳转到设计页面
+  function toDesign(){
+      document.location.href = '<%=basePath%>/design/toDesign.do';
+  }
+  //跳转到摄影图库页面
+  function toPhotography(){
+      document.location.href = '<%=basePath%>/photography/toPhotography.do';
+  }
+  //跳转到婚秀页面
+  function toWedding(){
+      document.location.href = '<%=basePath%>/wedding/toWedding.do';
+  }
+  //跳转到道具页面
+  function toMultimedia(){
+      document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
+  }
+  //跳转到免费下载页面
+  function toFree(){
+      document.location.href = '<%=basePath%>/free/toFree.do';
+  }
+  //跳转到求助求图页面
+  function toHelp(){
+      document.location.href = '<%=basePath%>/help/toHelp.do';
+  }//跳转到注册页面
+  function toRegister(){
+      document.location.href = '<%=basePath%>/signin/register.do';
+  }
+  //跳转到登录页面
+  function toLogin(){
+      document.location.href = '<%=basePath%>/signin/login.do';
+  }
+  //跳转到会员中心页面
+  function toMember(){
+      document.location.href = '<%=basePath%>/member/toMember.do';
+  }
+  //跳转到会员空间页面
+  function toHomepage(){
+      document.location.href = '<%=basePath%>/homepage/toHomepage.do';
+  }
 </script>
 </head>
-
 <body>
-   <header>
+   <header style="margin-top: -22px">
      <div class="top">
      
       <div class="top_line">
          <div class="top_wid">
             欢迎来到婚秀中国网
              <!-- 登录前 -->
-            <div class="top_pos">
-              <a href="login.jsp">登录</a>|<a href="regist.jsp">注册</a>
-            </div>
-            
-            <!-- 登录后 -->
-            <div class="top_pos" style="display:none;">
-              <a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.jsp" class="sc_icon">我要上传</a>|<a href="collection_2.jsp">我的收藏（<span class="col_f00">2</span>）</a>
-            </div>
+             <div id="beferLogin" class="top_pos">
+                 <a href="#" onclick="toLogin()">登录</a>|<a href="#" onclick="toRegister()">注册</a>
+             </div>
+             <!-- 登录后 -->
+             <div id="backLogin" class="top_pos" style="display:none;">
+                 <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>
+                 <!--<a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.html" class="sc_icon">我要上传</a>|<a href="collection_2.html">我的收藏（<span class="col_f00">2</span>）</a>-->
+             </div>
          </div>
       </div><!-- top_line -->
       
@@ -308,34 +355,6 @@ laypage({
     }  
     
 });
-//跳转到首页
-function toIndex(){
-    document.location.href = '<%=basePath%>/signin/index.do';
-}
-//跳转到设计页面
-function toDesign(){
-    document.location.href = '<%=basePath%>/design/toDesign.do';
-}
-//跳转到摄影图库页面
-function toPhotography(){
-    document.location.href = '<%=basePath%>/photography/toPhotography.do';
-}
-//跳转到婚秀页面
-function toWedding(){
-    document.location.href = '<%=basePath%>/wedding/toWedding.do';
-}
-//跳转到道具页面
-function toMultimedia(){
-    document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
-}
-//跳转到免费下载页面
-function toFree(){
-    document.location.href = '<%=basePath%>/free/toFree.do';
-}
-//跳转到求助求图页面
-function toHelp(){
-    document.location.href = '<%=basePath%>/help/toHelp.do';
-}
 </script>  
 
    
