@@ -21,4 +21,14 @@
     from tb_focus_other
     where focus_userid = #{focusUserid,jdbcType=VARCHAR}
   </select>
+  <!--获取用户关注信息-->
+  <select id="getFocusOtherForUserId" parameterType="pd" resultMap="BaseResultMap">
+    select
+    *
+    from tb_focus_other
+    where user_id = #{userid}
+    <if test="count != null and count != '0'">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
 </mapper>

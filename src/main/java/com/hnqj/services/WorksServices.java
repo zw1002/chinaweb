@@ -121,4 +121,40 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return worksList;
 	}
+
+	public List<Works> getWorksForUserBestSellers(PageData pageData) {
+		logger.info("会员近三个月热卖");
+		List<Works>	worksList=null;
+		try {
+			worksList = (List<Works>) daoSupport.findForList("WorksMapper.getWorksForUserBestSellers",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			worksList=null;
+		}
+		return worksList;
+	}
+
+	public List<Works> getWorksForUserIdAndTime(PageData pageData) {
+		logger.info("会员最新作品");
+		List<Works>	worksList=null;
+		try {
+			worksList = (List<Works>) daoSupport.findForList("WorksMapper.getWorksForUserIdAndTime",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			worksList=null;
+		}
+		return worksList;
+	}
+
+	public List<Works> serchWorks(PageData pageData) {
+		logger.info("作品搜索");
+		List<Works>	worksList=null;
+		try {
+			worksList = (List<Works>) daoSupport.findForList("WorksMapper.serchWorks",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			worksList=null;
+		}
+		return worksList;
+	}
 }

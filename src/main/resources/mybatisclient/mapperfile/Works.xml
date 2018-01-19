@@ -124,4 +124,34 @@
       LIMIT #{offset},#{count}
     </if>
   </select>
+  <!--会员近三个月热卖-->
+  <select id="getWorksForUserBestSellers" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where uid in (
+    select worksid from tb_dealuidchild where worksid in(
+    select uid from tb_works
+    where merchid=(
+    select uid from tb_merch
+    where userinfouid = #{userid}
+    ) ) and addtime between #{defaultStartDate} and #{defaultEndDate})
+    order by downcount desc
+    <if test="count != null and count != '0'">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--会员最新作品推荐-->
+  <select id="getWorksForUserIdAndTime" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where merchid = (
+    select uid from tb_merch where userinfouid = #{userid}
+    )
+    order by uptime desc
+    <if test="count != null and count != '0'">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
 </mapper>

@@ -29,6 +29,9 @@
      getUserMerch();
      getUserFocus();
      getMerchData();
+     userBestSellers();
+     latestRecommendation();
+     getUserFocusOthers();
  });
  //获取会员信息
  function getUserInfoData(){
@@ -80,6 +83,27 @@
          }
      });
  }
+ //获取会员关注信息
+ function getUserFocusOthers(){
+     var uid=$("#uid").val();
+     var count=6;
+     $.ajax({
+         url: "<%=basePath%>/userinfo/getUserFocusOthers.do",
+         type: "POST",
+         data: {
+             uid: uid,
+             count:count
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             var str="";
+             for(var i=0;i<msg.length;i++){
+                 str += '<li><a href="#"><img src="<%=basePath%>'+msg[i].userpic+'" /> <p>'+msg[i].username+'</p></a></li>';
+             }
+             $("#userFocusOthers").append(str);
+         }
+     });
+ }
  //获取会员作品-根据下载量排序
 function getMerchData(){
     var uid=$("#uid").val();
@@ -103,6 +127,52 @@ function getMerchData(){
         }
     });
 }
+ //近三个月热卖
+ function userBestSellers(){
+     var uid=$("#uid").val();
+     var count=6;
+     $.ajax({
+         url: "<%=basePath%>/homepage/userBestSellers.do",
+         type: "POST",
+         data: {
+             uid: uid,
+             count:count
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             var str="";
+             for(var i=0;i<msg.length;i++){
+                 str += '<li> <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
+                         +'<a href="#"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
+                         +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+             }
+             $("#userBestSellers").append(str);
+         }
+     });
+ }
+ //最新作品推荐
+ function latestRecommendation(){
+     var uid=$("#uid").val();
+     var count=3;
+     $.ajax({
+         url: "<%=basePath%>/homepage/latestRecommendation.do",
+         type: "POST",
+         data: {
+             uid: uid,
+             count:count
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             var str="";
+             for(var i=0;i<msg.length;i++){
+                 str += '<li> <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
+                         +'<a href="#"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
+                         +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+             }
+             $("#latestRecommendation").append(str);
+         }
+     });
+ }
  //跳转到首页
  function toIndex(){
      document.location.href = '<%=basePath%>/signin/index.do';
@@ -210,77 +280,15 @@ function getMerchData(){
            
            <div class="gxq_tit font16px"><h2>近三个月的热卖作品</h2> <a href="javascript:">更多>> </a></div>
            <div class="page_list">
-              <ul class="clearfix">
-                 <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/hlxa_pic1.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                  <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/hlxa_pic2.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                  <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/hlxa_pic3.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                 <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/hlxa_pic4.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                  <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/hlxa_pic5.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                  <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/hlxa_pic6.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
+              <ul id="userBestSellers" class="clearfix">
+
               </ul>
            </div>
            
-            <div class="gxq_tit font16px"><h2>最新作品推荐</h2> <a href="javascript:">更多>> </a></div>
+            <div class="gxq_tit font16px"><h2>最新作品推荐</h2></div>
            <div class="page_list">
-              <ul class="clearfix">
-                 <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/dmtk_pic1.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                  <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/dmtk_pic2.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                  <li>
-                  <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>
-                 <a href="#"><img src="<%=basePath%>/static/images/dmtk_pic3.png" />
-                  <h2>《你是我的风景》海景圣堂</h2>
-                 </a>
-                 <p class="small_txt"><span class="sc_icon">收藏：4554</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：6541</span></p>
-                 </li>
-                 
+              <ul id="latestRecommendation" class="clearfix">
+
               </ul>
            </div>
            
@@ -308,33 +316,13 @@ function getMerchData(){
           </div>
           
           <div class="ty_box">
-             <div class="tit_zptj"><h2>TA关注的(<span class="col_f00">20</span>)</h2> <a href="javascript:">更多>> </a></div>
+             <div class="tit_zptj"><h2>TA关注的</h2> <a href="javascript:">更多>> </a></div>
              <div class="tx_listd">
-               <ul class="clearfix">
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic1.png" /> <p>与众不同</p></a></li>
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic2.png" /> <p>与众与众不同不同</p></a></li>
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic3.png" /> <p>与众不同</p></a></li>
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic4.png" /> <p>与众不同</p></a></li>
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic5.png" /> <p>与与众不同众不同</p></a></li>
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic6.png" /> <p>与众不同</p></a></li>
+               <ul id="userFocusOthers" class="clearfix">
+
                </ul>
              </div>
           </div>
-          
-           <div class="ty_box">
-             <div class="tit_zptj"><h2>TA关注的粉丝</h2> <a href="javascript:">更多>> </a></div>
-             <div class="tx_listd">
-               <ul class="clearfix">
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic1.png" /> <p>与众不同</p></a></li>
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic2.png" /> <p>与众与众不同不同</p></a></li>
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic3.png" /> <p>与众不同</p></a></li>
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic4.png" /> <p>与众不同</p></a></li>
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic5.png" /> <p>与与众不同众不同</p></a></li>
-                  <li><a href="#"><img src="<%=basePath%>/static/images/sytk_pic6.png" /> <p>与众不同</p></a></li>
-               </ul>
-             </div>
-          </div>
-          
           <div class="ty_box">
              <div class="tit_zptj"><h2>网站最新交易状态</h2> <a href="javascript:">更多>> </a></div>
              <div class="zt_listdd">
