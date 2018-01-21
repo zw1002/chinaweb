@@ -323,4 +323,76 @@ public class GeneralController extends BaseController{
         }
         return null;
     }
+
+    /**
+     * 作品搜索接口
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/seachWorks.do")
+    public String seachWorks(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("seachWorks");
+        String data = request.getParameter("data") == null ? "" : request.getParameter("data");
+        String label = request.getParameter("label") == null ? "" : request.getParameter("label");
+        int clickcount = request.getParameter("clickcount") == null ? 0 : Integer.parseInt(request.getParameter("clickcount"));
+        int collectioncount = request.getParameter("collectioncount") == null ? 0 : Integer.parseInt(request.getParameter("collectioncount"));
+        int downloadcount = request.getParameter("downloadcount") == null ? 0 : Integer.parseInt(request.getParameter("downloadcount"));
+        int workprice = request.getParameter("workprice") == null ? 0 : Integer.parseInt(request.getParameter("workprice"));
+        String worktype = request.getParameter("worktype") == null ? "" : request.getParameter("worktype");
+        String newup = request.getParameter("newup") == null ? "0" : request.getParameter("newup");
+        String startCount = request.getParameter("offset") == null ? "1" : request.getParameter("offset");
+        String limit = request.getParameter("count") == null ? "10" : request.getParameter("count");
+        List<Map<String, String>> hashMaps=new ArrayList<>();
+        try{
+            PageData pageData = new PageData();
+            pageData.put("data",data);
+            String[] labels = label.split(",");
+            String strLblFilter="(";
+            for (String str: labels) {
+                if(str.equals("")) continue;
+                strLblFilter+=" LIKE '%"+str+"%' or ";
+            }
+            strLblFilter=strLblFilter.substring(0,strLblFilter.length()-4);
+            strLblFilter+=")";
+            //System.out.println("kkkkkkkk:"+strLblFilter);
+            pageData.put("label",strLblFilter);
+            if(clickcount>0)
+                pageData.put("orderField","ticknums");
+            else if(collectioncount>0)
+                pageData.put("orderField","favcount");
+            else if(downloadcount>0)
+                pageData.put("orderField","downcount");
+            else if(workprice>0)
+                pageData.put("orderField","price");
+            else if(newup.equals("1"))
+                pageData.put("orderField","uptime");
+//            pageData.put("clickcount",clickcount);
+//            pageData.put("type",collectioncount);
+//            pageData.put("offset",downloadcount);
+//            pageData.put("count",workprice);
+//            pageData.put("newup",newup);
+            pageData.put("type",worktype);
+            pageData.put("offset",startCount);
+            pageData.put("count",limit);
+            List<Works> dealuidchildList=worksServices.serchWorks(pageData);
+            for(Works work:dealuidchildList){
+                Map<String, String> map = new HashMap<>();
+                map.put("uid",work.getUid());
+                map.put("worksurl",work.getWorksurl());
+                map.put("workstype",work.getWorkstype());
+                map.put("worksnmae",work.getWorksname());
+                map.put("favcount",work.getFavcount().toString());
+                map.put("downcount",work.getDowncount().toString());
+                map.put("ticknums",work.getTicknums().toString());
+                map.put("price",work.getPrice().toString());
+                hashMaps.add(map);
+            }
+            ResultUtils.write(response,hashMaps);
+        }catch (Exception e){
+            logger.error("seachWorks e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
 }

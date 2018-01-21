@@ -150,6 +150,7 @@ protected final Log logger = LogFactory.getLog(getClass());
 		logger.info("作品搜索");
 		List<Works>	worksList=null;
 		try {
+
 			worksList = (List<Works>) daoSupport.findForList("WorksMapper.serchWorks",pageData);
 		}catch (Exception e){
 			e.printStackTrace();

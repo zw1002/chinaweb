@@ -154,4 +154,26 @@
       LIMIT #{offset},#{count}
     </if>
   </select>
+  <!--会员最新作品推荐-->
+  <select id="serchWorks" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where 1=1
+    <if test="data != null and data != ''">
+      and worksname LIKE CONCAT(CONCAT('%', #{data, jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="label != null and label != ''">
+      AND worklabel #{label, jdbcType=VARCHAR}
+    </if>
+    <if test="type != null and type != ''">
+      AND workstype in (select keyvalue from tb_worklabel where keyvalue =#{type, jdbcType=VARCHAR})
+    </if>
+    <if test="orderField != null and orderField != ''">
+    order by #{orderField} desc
+    </if>
+    <if test="count != null and count != '0'">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
 </mapper>
