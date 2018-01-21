@@ -98,11 +98,11 @@ protected final Log logger = LogFactory.getLog(getClass());
 	 return collectionList; 
 	}
 
-	public List<Collections> selectCollectionsByUserId(String userid) {
+	public List<Collections> selectCollectionsByUserId(PageData pageData) {
 		logger.info("查询个人所有Collections");
 		List<Collections>	collectionList=null;
 		try {
-			collectionList = (List<Collections>) daoSupport.findForList("CollectionsMapper.selectCollectionByUserId",userid);
+			collectionList = (List<Collections>) daoSupport.findForList("CollectionsMapper.selectCollectionByUserId",pageData);
 		}catch (Exception e){
 			e.printStackTrace();
 			collectionList=null;

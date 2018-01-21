@@ -84,7 +84,7 @@ public class IndexController extends BaseController{
     }
 
     /**
-     * 名师面对面   未删除数据
+     * 名师面对面   根据顶置标识获取未删除数据
      * @param request
      * @param response
      * @return

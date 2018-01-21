@@ -38,7 +38,7 @@
       select worksid from tb_dealuidchild) and workstype like '3%')
       )
       group by worksid order by price desc
-      <if test="count != null and count != '0'">
+      <if test="count != null and count != 0">
         LIMIT #{offset},#{count}
       </if>
     </if>
@@ -46,7 +46,7 @@
       SELECT worksid,sum(worksprice) as price
       FROM tb_dealuidchild
       group by worksid order by price desc
-      <if test="count != null and count != '0'">
+      <if test="count != null and count != 0">
         LIMIT #{offset},#{count}
       </if>
     </if>
@@ -78,5 +78,15 @@
     select dealuid from tb_dealrecord where dealstate = '1' and payuserid =#{payuserid,jdbcType=VARCHAR}
     )
     order by addtime desc
+  </select>
+  <!--统计个人店铺交易额-->
+  <select id="getUserTurnover" parameterType="java.lang.String" resultType="map">
+    select SUM(worksprice) as turnover from tb_dealuidchild
+    where worksid in(
+    select uid from tb_works where merchid =(
+    select uid from tb_merch
+    where userinfouid = #{userinfouid,jdbcType=VARCHAR}
+    )
+    )
   </select>
 </mapper>

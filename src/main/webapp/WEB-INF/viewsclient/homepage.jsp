@@ -13,7 +13,9 @@
 <link rel="stylesheet"  href="<%=basePath%>/static/css/fsgallery.css" media="all" />
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
-<script type="text/javascript">
+    <link href="<%=basePath%>/static/css/laypage.css" rel="stylesheet" type="text/css" />
+    <script src="<%=basePath%>/static/js/laypage.js"></script>
+    <script type="text/javascript">
  $(function(){
 	  $(".nav_new ul li").hover(function(){
 		     $(this).find(".nav_list").show();
@@ -32,6 +34,9 @@
      userBestSellers();
      latestRecommendation();
      getUserFocusOthers();
+     getTurnover();
+     $("#allWorks").css("display","none");
+     $("#allCollection").css("display","none");
  });
  //获取会员信息
  function getUserInfoData(){
@@ -50,6 +55,21 @@
          }
      });
  }
+ //店铺成交额
+ function getTurnover(){
+     var uid=$("#uid").val();
+     $.ajax({
+         url: "<%=basePath%>/homepage/getTurnover.do",
+         type: "POST",
+         data: {
+             uid: uid
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             $("#turnover").text(msg[0].turnover);
+         }
+     });
+ }
  //获取会员店铺信息
  function getUserMerch(){
      //会员ID
@@ -65,6 +85,7 @@
              $("#worksnums").text(msg.worksnums);
              $("#dealnums").text(msg.dealnums);
              $("#merchremark").text(msg.remark);
+             $("#merchid").val(msg.uid);
          }
      });
  }
@@ -99,6 +120,9 @@
              var str="";
              for(var i=0;i<msg.length;i++){
                  str += '<li><a href="#"><img src="<%=basePath%>'+msg[i].userpic+'" /> <p>'+msg[i].username+'</p></a></li>';
+                 if(msg[i].uid == uid){
+                     $("#focus").text("已关注");
+                 }
              }
              $("#userFocusOthers").append(str);
          }
@@ -201,6 +225,114 @@ function getMerchData(){
  function toHelp(){
      document.location.href = '<%=basePath%>/help/toHelp.do';
  }
+ //获取会员全部作品
+    function getUserAllWorks(offset,count){
+        $("#userAllWorks").find("li").remove();
+        var uid=$("#uid").val();
+        $.ajax({
+            url: "<%=basePath%>/homepage/getMerchData.do",
+            type: "POST",
+            async:false,
+            data: {
+                uid: uid,
+                offset:offset,
+                count:count
+            },
+            success: function (data) {
+                var msg = eval("(" + data + ")");
+                var str="";
+                for(var i=0;i<msg.length;i++){
+                    str += '<li> <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
+                            +'<a href="#"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
+                            +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                }
+                $("#userAllWorks").append(str);
+            }
+        });
+    }
+ function toWorks(){
+     var div = document.getElementById('work');
+     div.setAttribute("class", "active");
+     var div1 = document.getElementById('userpages');
+     div1.setAttribute("class", "");
+     var div2 = document.getElementById('collection');
+     div2.setAttribute("class", "");
+     $("#allWorks").css("display","block");
+     $("#userpage").css("display","none");
+     $("#allCollection").css("display","none");
+ }
+ //获取会员收藏
+ function userAllCollection(offset,count){
+     $("#userAllCollection").find("li").remove();
+     var userid=$("#uid").val();
+     $.ajax({
+         url: "<%=basePath%>/personalcenter/getCollectionData.do",
+         type: "POST",
+         data:{
+             userid:userid,
+             offset:offset,
+             count:count
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             var str="";
+             for(var i=0;i<msg.length;i++){
+                 str +='<li><div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
+                         +'<a href="#"><img src="<%=basePath%>'+msg[i].worksurl+'" /> <h2>'+msg[i].worksname+'</h2> </a>'
+                         +'<p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+             }
+             $("#userAllCollection").append(str);
+         }
+     });
+ }
+ function toCollertion(){
+     var div = document.getElementById('collection');
+     div.setAttribute("class", "active");
+     var div1 = document.getElementById('userpages');
+     div1.setAttribute("class", "");
+     var div2 = document.getElementById('work');
+     div2.setAttribute("class", "");
+     $("#allCollection").css("display","block");
+     $("#userpage").css("display","none");
+     $("#allWorks").css("display","none");
+ }
+ function toUserPage(){
+     var div = document.getElementById('userpages');
+     div.setAttribute("class", "active");
+     var div1 = document.getElementById('collection');
+     div1.setAttribute("class", "");
+     var div2 = document.getElementById('work');
+     div2.setAttribute("class", "");
+     $("#userpage").css("display","block");
+     $("#allCollection").css("display","none");
+     $("#allWorks").css("display","none");
+ }
+//添加关注
+ function addFocusOthers(){
+     var focus=document.getElementById("focus").innerText;
+     if(focus.indexOf("+") != -1){
+         var focus_userid=$("#uid").val();
+         var focus_merchid=$("#merchid").val();
+         $.ajax({
+             url: "<%=basePath%>/homepage/addFocusOthers.do",
+             type: "POST",
+             data: {
+                 focus_userid: focus_userid,
+                 focus_merchid: focus_merchid
+             },
+             success: function (data) {
+                 if(data!=="failed"){
+                     alert("关注成功");
+                     $("#focus").text("已关注");
+                 }else{
+                     alert("关注失败");
+                 }
+             }
+         });
+     }else{
+         alert("已关注");
+     }
+ }
 </script>
 </head>
 <body>
@@ -248,13 +380,13 @@ function getMerchData(){
                <img id="userpic" src=""/>
                <h2 id="username"></h2>
                <div class="btn_dd">
-                 <a href="#" class="gz_cold">+关注</a>
+                 <a id="focus" href="#" onclick="addFocusOthers()" class="gz_cold">+关注</a>
                </div>
              </div>
              <div class="zl_tabd fr">
                 <table width="100%">
                    <tr>
-                      <td><h2>784512</h2>成交额</td>                      
+                      <td><h2 id="turnover"></h2>成交额</td>
                       <td><h2 id="dealnums"></h2>交易量</td>
                    </tr>
                 </table>
@@ -263,14 +395,14 @@ function getMerchData(){
         </div><!-- home_top -->
         <div class="home_nav">
            <ul>
-              <li><a class="active" href="homepage.jap">主页</a></li>
-              <li><a class="" href="works.jsp">作品</a></li>
-                      <li><a class="" href="collection.jsp">收藏</a></li>
-                      <li><a class="" href="attention.jsp">关注页面/我的粉丝</a></li>
+              <li><a id="userpages" class="active" href="#" onclick="toUserPage()">主页</a></li>
+               <li><a id="work" class="" href="#" onclick="toWorks()">作品</a></li>
+               <li><a id="collection" class="" href="#" onclick="toCollertion()">收藏</a></li>
+               <!--<li><a class="" href="attention.jsp">关注页面/我的粉丝</a></li>-->
            </ul>
         </div>
        <div class="home_con">
-        <div class="wid920px fl">
+        <div id="userpage" class="wid920px fl">
            <div class="gxq_tit font16px"><h2>会员作品</h2> <a href="javascript:">更多>> </a></div>
            <div class="page_list">
               <ul id="userWorks" class="clearfix">
@@ -294,11 +426,12 @@ function getMerchData(){
            
         
         </div><!-- wid920px -->
-        
+
         <div class="wid260px fr">
           
           <div class="ty_box">
              <div class="tit_zptj"><h2>店铺简介</h2></div>
+              <input type="hidden" id="merchid"/>
              <p id="merchremark"></p>
           </div>
           
@@ -369,7 +502,92 @@ function getMerchData(){
           
         
         </div><!-- wid260px -->
-        
+           <div id="allWorks" class="wid920px fl">
+               <div class="gxq_tit font16px"><h2>全部作品</h2> </div>
+               <div class="page_list">
+                   <ul id="userAllWorks" class="clearfix">
+
+                   </ul>
+               </div>
+               <div id="pages" class="pages_box2"></div>
+               <script>
+                   var page=0;
+                   var groups=9;
+                   var uid=$("#uid").val();
+                   $.ajax({
+                       url: "<%=basePath%>/homepage/getMerchData.do",
+                       type: "POST",
+                       async:false,
+                       data: {
+                           uid: uid
+                       },
+                       success: function (data) {
+                           var msg = eval("(" + data + ")");
+                           page=Math.ceil(msg.length/groups);
+                       }
+                   });
+                   laypage({
+                       cont: ('pages'),//容器。值支持id名、原生dom对象，jquery对象,
+                       pages: page,              //分页数。一般通过服务端返回得到
+                       curr:1,                 //当前页。默认为1
+                       skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+                       skip: true,             //是否开启跳页
+                       first:'首页',           //用于控制首页  默认false
+                       last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+                       prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+                       next:'下一页',           //用于控制下一页。若不显示，设置false即可
+                       jump: function(obj, first){
+                           //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+                           var curr = obj.curr;
+                           var offset=(curr-1)*groups;
+                           getUserAllWorks(offset,groups);
+                       }
+                   });
+               </script>
+           </div><!-- wid920px -->
+           <div id="allCollection" class="wid920px fl">
+               <div class="gxq_tit font16px"><h2>全部收藏</h2> </div>
+               <div class="page_list">
+                   <ul id="userAllCollection" class="clearfix">
+
+                   </ul>
+               </div>
+               <div id="pagess" class="pages_box2"></div>
+               <script>
+                   var page=0;
+                   var groups=9;
+                   var uid=$("#uid").val();
+                   $.ajax({
+                       url: "<%=basePath%>/personalcenter/getCollectionData.do",
+                       type: "POST",
+                       async:false,
+                       data: {
+                           uid: uid
+                       },
+                       success: function (data) {
+                           var msg = eval("(" + data + ")");
+                           page=Math.ceil(msg.length/groups);
+                       }
+                   });
+                   laypage({
+                       cont: ('pagess'),   //容器。值支持id名、原生dom对象，jquery对象,
+                       pages: page,              //分页数。一般通过服务端返回得到
+                       curr:1,                 //当前页。默认为1
+                       skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+                       skip: true,             //是否开启跳页
+                       first:'首页',           //用于控制首页  默认false
+                       last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+                       prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+                       next:'下一页',           //用于控制下一页。若不显示，设置false即可
+                       jump: function(obj, first){
+                           //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+                           var curr = obj.curr;
+                           var offset=(curr-1)*groups;
+                           userAllCollection(offset,groups);
+                       }
+                   });
+               </script>
+           </div><!-- wid920px -->
         <div class="clear"></div>
      </div><!-- home_con -->
      

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import java.util.List;
+import java.util.Map;
+
 @Service("dealuidchild")
 public class DealuidchildServices {
 
@@ -115,6 +117,18 @@ protected final Log logger = LogFactory.getLog(getClass());
 		List<Dealuidchild>	dealuidchildList=null;
 		try {
 			dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.getDealuidchildForPayUserId",userid);
+		}catch (Exception e){
+			e.printStackTrace();
+			dealuidchildList=null;
+		}
+		return dealuidchildList;
+	}
+
+	public List<Map<String,Object>> getUserTurnover(String uid) {
+		logger.info("获取个人店铺交易额");
+		List<Map<String,Object>> dealuidchildList=null;
+		try {
+			dealuidchildList = (List<Map<String,Object>>) daoSupport.findForList("DealuidchildMapper.getUserTurnover",uid);
 		}catch (Exception e){
 			e.printStackTrace();
 			dealuidchildList=null;

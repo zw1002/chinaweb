@@ -29,10 +29,16 @@
      getCollectionData();
  });
  //初始化收藏数据
- function getCollectionData(){
+ function getCollectionData(offset,count){
+     var userid="${userinfo.getUid()}";
      $.ajax({
          url: "<%=basePath%>/personalcenter/getCollectionData.do",
          type: "POST",
+         data:{
+             userid:userid,
+             offset:offset,
+             count:count
+         },
          success: function (data) {
              var msg = eval("(" + data + ")");
              var str="";
@@ -177,22 +183,38 @@
 
 
 <script>
-laypage({
-    cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,
-    pages: 10,              //分页数。一般通过服务端返回得到
-	curr:1,                 //当前页。默认为1
-	groups: 5,              //连续显示分页数  默认为5
-	skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义 
-	skip: true,             //是否开启跳页
-	first:'首页',           //用于控制首页  默认false
-    last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
-	prev:'上一页',           //用于控制上一页。若不显示，设置false即可
- 	next:'下一页',           //用于控制下一页。若不显示，设置false即可
-	jump: function(obj, first){
-    //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
-     var pagenumber = obj.curr;
-    }
-});
+    var page=0;
+    var groups=9;
+    var uid=$("#uid").val();
+    $.ajax({
+        url: "<%=basePath%>/personalcenter/getCollectionData.do",
+        type: "POST",
+        async:false,
+        data: {
+            uid: uid
+        },
+        success: function (data) {
+            var msg = eval("(" + data + ")");
+            page=Math.ceil(msg.length/groups);
+        }
+    });
+    laypage({
+        cont: ('pagess'),   //容器。值支持id名、原生dom对象，jquery对象,
+        pages: page,              //分页数。一般通过服务端返回得到
+        curr:1,                 //当前页。默认为1
+        skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+        skip: true,             //是否开启跳页
+        first:'首页',           //用于控制首页  默认false
+        last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+        prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+        next:'下一页',           //用于控制下一页。若不显示，设置false即可
+        jump: function(obj, first){
+            //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+            var curr = obj.curr;
+            var offset=(curr-1)*groups;
+            userAllCollection(offset,groups);
+        }
+    });
 </script>  
            </div><!-- wid925px -->
            <div class="clear"></div>

@@ -12,7 +12,6 @@
 <link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
 <link href="<%=basePath%>/static/css/laypage.css" rel="stylesheet" type="text/css" />
 <script src="<%=basePath%>/static/js/laypage.js"></script>
-
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
 <script type="text/javascript">
@@ -27,54 +26,66 @@
 		  
 		  )
 	 
-	 })
-
+ });
+ $(document).ready(function () {
+     getMerchData();
+ });
+ //会员作品
+ function getMerchData(){
+     var uid=$("#uid").val();
+     $.ajax({
+         url: "<%=basePath%>/homepage/getMerchData.do",
+         type: "POST",
+         data: {
+             uid: uid
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             var str="";
+             for(var i=0;i<msg.length;i++){
+                 str += '<li> <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
+                         +'<a href="#"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
+                         +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+             }
+             $("#userWorks").append(str);
+         }
+     });
+ }
 </script>
-
 </head>
-
 <body>
+<input id="uid" name="uid" type="hidden" value="<%= request.getAttribute("uid")%>"/>
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
-         <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
-         
-         
-         <div class="nav_new fl">
-            <ul class="clearfix">
-               <li><a href="index.jsp" class="ztit">网站首页</a></li>
-               <li><a href="javascript:" class="all_fl ztit">所有分类</a>
-                 <div class="nav_list">
-                    <a href="design.jsp">设计</a>
-                  
-                    <a href="photography.jsp">摄影图库</a>
-                     <a href="multimedia.jsp">道具新品</a>
-                    <a href="wedding.jsp">婚秀</a> 
-                    <a href="help.jsp">求图求助</a>
-                    <a href="free.jsp">免费下载</a>
-                 </div> 
-               </li>
-            </ul>
+          <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
+          <div class="nav_new fl">
+              <ul class="clearfix">
+                  <li><a href="#" onclick="toIndex()" class="ztit">网站首页</a></li>
+                  <li><a href="javascript:" class="all_fl ztit">所有分类</a>
+                      <div class="nav_list">
+                          <a href="#" onclick="toDesign()">设 计</a>
+                          <a href="#" onclick="toPhotography()">摄影图库</a>
+                          <a href="#" onclick="toMultimedia()">道具新品</a>
+                          <a href="#" onclick="toWedding()">婚 秀</a>
+                          <a href="#" onclick="toHelp()">求图求助</a>
+                          <a href="#" onclick="toFree()">免费下载</a>
+                      </div>
+                  </li>
+              </ul>
          </div>
          
          <div class="ss_bg new_ss fl">
             <input name="" type="text" placeholder="请输入搜索内容"  class="inp_txt">
             <input type="submit" value="搜 索" class="ss_btn" /> 
          </div> 
-         
-         <a href="javascript:" class="sc_btn"><img src="<%=basePath%>/static/images/icon_down2.png" height="14" width="14" /> 图片上传</a>
-          
       </div><!-- top_wid -->
-
       </div><!-- top -->
    </header>
-   
-   <div class="bg_f5"> 
+   <div class="bg_f5">
      <div class="wrap">
-        
         <div class="home_top">
           <div class="img_sc"><img src="<%=basePath%>/static/images/hy_banner.png" height="215" width="1200" /></div>
-          
           <div class="tx_zl">
              <div class="zl_tabd fl">
                 <table width="100%">
@@ -122,10 +133,8 @@
         </div>
        
        <div class="home_con">
-        
         <div class="wid920px fl">
            <div class="gxq_tit font16px"><h2>全部作品</h2> </div>
-           
            <div class="page_list">
               <ul class="clearfix">
                  <li>

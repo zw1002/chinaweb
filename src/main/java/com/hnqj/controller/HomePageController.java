@@ -1,7 +1,10 @@
 package com.hnqj.controller;
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
+import com.hnqj.model.Dealuidchild;
 import com.hnqj.model.Works;
+import com.hnqj.services.DealuidchildServices;
+import com.hnqj.services.FocusOtherServices;
 import com.hnqj.services.UserinfoServices;
 import com.hnqj.services.WorksServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 会员空间控制层
@@ -27,12 +28,23 @@ public class HomePageController extends BaseController{
     UserinfoServices userinfoServices;
     @Autowired
     WorksServices worksServices;
+    @Autowired
+    FocusOtherServices focusOtherServices;
+    @Autowired
+    DealuidchildServices dealuidchildServices;
     //跳转到会员中心页面
     @RequestMapping(value = "/toHomepage.do")
     public String toHomepage(HttpServletRequest request, Model model){
         String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
         model.addAttribute("uid", uid);//会员Id传到页面
         return  "homepage";
+    }
+    //跳转到会员作品
+    @RequestMapping(value = "/toUserWorks.do")
+    public String toUserWorks(HttpServletRequest request, Model model){
+        String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
+        model.addAttribute("uid", uid);//会员Id传到页面
+        return  "works";
     }
 
     /**
@@ -45,9 +57,9 @@ public class HomePageController extends BaseController{
     public String getMerchData(HttpServletRequest request, HttpServletResponse response) {
         logger.info("getMerchData");
         try{
+            String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
             int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
             int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
-            String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
             PageData pageData = new PageData();
             pageData.put("userid",uid);
             pageData.put("offset",offset);
@@ -119,6 +131,52 @@ public class HomePageController extends BaseController{
             ResultUtils.write(response,worksList);
         }catch (Exception e){
             logger.error("latestRecommendation e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 添加关注
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/addFocusOthers.do")
+    public String addFocusOthers(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("addFocusOthers");
+        try{
+            String focus_userid = request.getParameter("focus_userid") == null ? "" : request.getParameter("focus_userid");
+            String focus_merchid = request.getParameter("focus_merchid") == null ? "" : request.getParameter("focus_merchid");
+            PageData pageData = new PageData();
+            pageData.put("userId",getUser().getUid());
+            pageData.put("focusUserid",focus_userid);
+            pageData.put("focusMerchid",focus_merchid);
+            pageData.put("addDate",new Date());
+            focusOtherServices.addFocusOther(pageData);
+            ResultUtils.writeSuccess(response);
+        }catch (Exception e){
+            logger.error("addFocusOthers e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 获取用户店铺成交额
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getTurnover.do")
+    public String getTurnover(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getTurnover");
+        try{
+            String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
+            List<Map<String, Object>> map = dealuidchildServices.getUserTurnover(uid);
+            ResultUtils.write(response,map);
+        }catch (Exception e){
+            logger.error("getTurnover e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;

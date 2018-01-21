@@ -95,6 +95,7 @@ public class UserInfoController extends BaseController{
                 Userinfo userinfo=userinfoServices.getUserinfoforId(focusOther.getFocusUserid());
                 map.put("userpic",userinfo.getUsrpicurl());
                 map.put("username",userinfo.getFristname());
+                map.put("uid",userinfo.getUid());
                 hashMaps.add(map);
             }
             ResultUtils.write(response,hashMaps);

@@ -95,10 +95,14 @@ public class PersonalCenterController extends  BaseController{
     public String getCollectionData(HttpServletRequest request, HttpServletResponse response) {
         logger.info("getCollectionData");
         try{
-            //当前页面
-            int pagenumber = request.getParameter("pagenumber") == null ? 0 : Integer.parseInt(request.getParameter("pagenumber"));
-            String userid=getUser().getUid();
-            List<Collections> list=collectionServices.selectCollectionsByUserId(userid);
+            int offset = request.getParameter("offset")== null ? 0 : Integer.parseInt(request.getParameter("offset"));
+            int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
+            String userid = request.getParameter("userid") == null ? "" : request.getParameter("userid");
+            PageData pageData = new PageData();
+            pageData.put("userid",userid);
+            pageData.put("offset",offset);
+            pageData.put("count",count);
+            List<Collections> list=collectionServices.selectCollectionsByUserId(pageData);
             List<Map<String, Object>> hashMaps=new ArrayList<>();
             for(Collections collection:list){
                 Map<String, Object> map = new HashMap<>();
@@ -108,6 +112,8 @@ public class PersonalCenterController extends  BaseController{
                 map.put("worksurl",works.getSamllurl());
                 map.put("price",works.getPrice());
                 map.put("worklabel",works.getWorklabel());
+                map.put("downcount",works.getDowncount());
+                map.put("favcount",works.getFavcount());
                 map.put("collectiontime",collection.getCollectiontime());
                 hashMaps.add(map);
             }

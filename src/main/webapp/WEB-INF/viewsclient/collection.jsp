@@ -122,11 +122,8 @@
         </div>
        
        <div class="home_con">
-        
         <div class="wid920px fl">
-           
            <div class="qh_btnd"><a href="collection.jsp" class="active">收藏的作品</a> <a href="collection2.jsp" >收藏的专辑</a></div>
-           
            <div class="page_list">
               <ul class="clearfix">
                  <li>
@@ -215,10 +212,7 @@
                  </li>
               </ul>
            </div>
-           
              <div id="pages" class="pages_box2"></div>
-
-
 								<script>
                                 laypage({
                                     cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,
@@ -235,12 +229,8 @@
                                     //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
                                      var curr = obj.curr;
                                     }  
-                                    
                                 });
                                 </script>  
-          
-           
-        
         </div><!-- wid920px -->
         
         <div class="wid260px fr">

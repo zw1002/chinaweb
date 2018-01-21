@@ -40,11 +40,14 @@
     where collectionuid = #{collectionuid,jdbcType=VARCHAR}
   </update>
   <!--获取个人收藏作品-->
-  <select id="selectCollectionByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectCollectionByUserId" parameterType="pd" resultMap="BaseResultMap">
     select
     *
     from tb_collection
     where userid = #{userid,jdbcType=VARCHAR} and collectionflag = '0'
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
   </select>
   <!--取消收藏-->
   <update id="delCollection" parameterType="pd">

@@ -8,7 +8,7 @@
     <result column="add_date" jdbcType="TIMESTAMP" property="addDate" />
   </resultMap>
 
-  <insert id="insert" parameterType="pd">
+  <insert id="addFocusOther" parameterType="pd">
     insert into tb_focus_other (user_id, focus_userid, focus_merchid,
       add_date)
     values (#{userId,jdbcType=VARCHAR}, #{focusUserid,jdbcType=VARCHAR}, #{focusMerchid,jdbcType=VARCHAR}, 

@@ -96,7 +96,7 @@
     )
     )
     order by downcount desc
-    <if test="count != null and count != '0'">
+    <if test="count != null and count != 0">
       LIMIT #{offset},#{count}
     </if>
   </select>
@@ -107,7 +107,7 @@
     from tb_works
     where merchid = #{merchid}
     order by downcount desc
-    <if test="count != null and count != '0'">
+    <if test="count != null and count != 0">
       LIMIT #{offset},#{count}
     </if>
   </select>
@@ -120,7 +120,7 @@
     select uid from tb_merch where userinfouid = #{userid}
     )
     order by downcount desc
-    <if test="count != null and count != '0'">
+    <if test="count != 0">
       LIMIT #{offset},#{count}
     </if>
   </select>
@@ -137,7 +137,7 @@
     where userinfouid = #{userid}
     ) ) and addtime between #{defaultStartDate} and #{defaultEndDate})
     order by downcount desc
-    <if test="count != null and count != '0'">
+    <if test="count != null and count != 0">
       LIMIT #{offset},#{count}
     </if>
   </select>
@@ -150,7 +150,7 @@
     select uid from tb_merch where userinfouid = #{userid}
     )
     order by uptime desc
-    <if test="count != null and count != '0'">
+    <if test="count != null and count != 0">
       LIMIT #{offset},#{count}
     </if>
   </select>
