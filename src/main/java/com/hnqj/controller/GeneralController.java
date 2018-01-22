@@ -59,9 +59,10 @@ public class GeneralController extends BaseController{
                 Map<String, String> map = new HashMap<>();
                 map.put("uid",dict.getUid());
                 map.put("typename",dict.getKeyname());
+                map.put("keyvalue",dict.getKeyvalue());
                 hashMaps.add(map);
             }
-            ResultUtils.write(response,hashMaps);
+            ResultUtils.write(response,"{\"code\":\"0000\",\"content\":"+toDateJson(hashMaps)+"}");
         }
         catch(Exception ex){
             logger.error("getGroupClass e="+ex.getMessage());
