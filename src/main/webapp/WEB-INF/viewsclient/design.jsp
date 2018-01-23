@@ -18,12 +18,6 @@
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
 <script type="text/javascript">
   $(function(){
-	  $(".fl_nav a").click(function(){
-		  $(this).parents(".fl_nav").find("a").removeClass("on");
-		  $(this).addClass("on")
-		  
-		  })
-	  
 	  });
   $(document).ready(function () {
       //隐藏注册/按钮登录    显示个人中心/个人空间
@@ -32,7 +26,48 @@
           $("#beferLogin").css("display","none");
           $("#backLogin").css("display","block");
       }
+      //初始设计分类
+      var classData=getAjaxData('<%=basePath%>/general/getGroupClass.do',{type:'设计分类'});
+      if(classData!=null) {
+          $('.fl_nav').html('');
+          var htmlVal=" <a href=\"javascript:\" class=\"on\">全部</a>";
+          for(var i=0;i<classData.content.length;i++){
+              htmlVal+="<a uid='"+classData.content[i].uid+"' href=\"javascript:\">"+classData.content[i].typename+"</a>";
+          }
+          $('.fl_nav').html(htmlVal);
+      }
+
+      $(".fl_nav>a").click(function(){
+          $(this).parents(".fl_nav").find("a").removeClass("on");
+          $(this).addClass("on");
+          alert($(this).text());
+          alert($(this).attr('uid'));
+          if($(this).text()=="更多"){
+              alert('ddd');
+          }
+          //查询该分类下所有图片数据
+
+      })
+      //请求设计分类图片数据
+
   });
+  function getAjaxData(url,para) {
+      var rtnVal=null;
+      $.ajax({
+          url: url,
+          type: "POST",
+          data:para,
+          async: false,
+          success: function (data) {
+            data=  JSON.parse(data)
+              if(data.code=="0000")
+                rtnVal=data;
+          },
+          error:function (err) {
+          }
+      });
+      return rtnVal;
+  }
   //跳转到首页
   function toIndex(){
       document.location.href = '<%=basePath%>/signin/index.do';
@@ -77,6 +112,7 @@
   function toHomepage(){
       document.location.href = '<%=basePath%>/homepage/toHomepage.do';
   }
+
 </script>
 </head>
 
@@ -348,6 +384,7 @@
 
 
 <script>
+    
 laypage({
     cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,
     pages: 10,              //分页数。一般通过服务端返回得到
@@ -362,6 +399,7 @@ laypage({
 	jump: function(obj, first){
     //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
      var curr = obj.curr;
+     
     }  
     
 });
