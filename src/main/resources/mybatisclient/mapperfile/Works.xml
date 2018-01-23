@@ -37,7 +37,7 @@
     from tb_works
     where uid = #{uid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteWorksByFid" parameterType="java.lang.String">
     delete from tb_works
     where uid = #{uid,jdbcType=VARCHAR}
   </delete>

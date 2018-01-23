@@ -84,8 +84,8 @@
  }
  //根据分类获取会员全部作品
  function getUserAllWorksByType(offset,count,type){
-     $("#designworks").find("li").remove();
      var uid=$("#uid").val();
+     var str="";
      $.ajax({
          url: "<%=basePath%>/personworks/getPersonWorksByType.do",
          type: "POST",
@@ -98,16 +98,45 @@
          },
          success: function (data) {
              var msg = eval("(" + data + ")");
-             var str="";
              for(var i=0;i<msg.length;i++){
-                 str += '<li> <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
-                         +'<a href="#"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
-                         +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                 str += '<li '+msg[i].uid+'><div class="btn_pos"><a href="#" onclick="offShelf('+msg[i].uid+')">下架</a></div>'
+                         +'<a href="#"><img src="<%=basePath%>'+msg[i].samllurl+'" /></a><h2>'+msg[i].worksname+'</h2>'
+                         +'<p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
              }
-             $("#designworks").append(str);
          }
      });
+     if(type == 00){//设计
+         $("#designworks").find("li").remove();
+         $("#designworks").append(str);
+     }else if(type == 10){//摄影
+         $("#photoworks").find("li").remove();
+         $("#photoworks").append(str);
+     }else if(type == 20){//道具
+         $("#multimeworks").find("li").remove();
+         $("#multimeworks").append(str);
+     }else{//婚秀
+         $("#weddingworks").find("li").remove();
+         $("#weddingworks").append(str);
+     }
  }
+    //作品下架
+    function offShelf(workid){
+        $.ajax({
+            url: "<%=basePath%>/personworks/workOffShelf.do",
+            type: "POST",
+            data: {
+                workid: workid
+            },
+            success: function (data) {
+                if(data!=="failed"){
+                    $("#"+workid).css("display","none");
+                    alert("作品下架成功!");
+                }else{
+                    alert("作品下架失败!");
+                }
+            }
+        });
+    }
 </script>
 </head>
 <body>
@@ -182,28 +211,27 @@
                      <!-- 设计 -->
                       <div class="page_list">
                       <ul style="width:890px" id="designworks" class="clearfix">
-
                       </ul>
                           <div id="pages" class="pages_box"></div>
                       </div>
                      <!-- 摄影 -->
-                     <ul>
-                          <table width="100%">
-
-                          </table>
-                     </ul>
+                      <div class="page_list">
+                          <ul style="width:890px" id="photoworks" class="clearfix">
+                          </ul>
+                          <div id="photopages" class="pages_box"></div>
+                      </div>
                      <!-- 婚秀 -->
-                     <ul>
-                          <table width="100%">
-
-                          </table>
-                     </ul>
+                      <div class="page_list">
+                          <ul style="width:890px" id="weddingworks" class="clearfix">
+                          </ul>
+                          <div id="weddingpages" class="pages_box"></div>
+                      </div>
                       <!-- 道具 -->
-                      <ul>
-                          <table width="100%">
-
-                          </table>
-                      </ul>
+                      <div class="page_list">
+                          <ul style="width:890px" id="multimeworks" class="clearfix">
+                          </ul>
+                          <div id="multimepages" class="pages_box"></div>
+                      </div>
                   </div>
                  </div>
 <script type="text/javascript">
@@ -215,7 +243,7 @@
     var weddingpage=0;
     var multimepage=0;
     var uid=$("#uid").val();
-    var groups=3;
+    var groups=6;
     //设计
     $.ajax({
         url: "<%=basePath%>/personworks/getPersonWorksByType.do",
@@ -262,6 +290,24 @@
             photopage=Math.ceil(msg.length/groups);
         }
     });
+    laypage({
+        cont: ('photopages'),   //容器。值支持id名、原生dom对象，jquery对象,
+        pages: photopage,              //分页数。一般通过服务端返回得到
+        curr:1,                 //当前页。默认为1
+        groups: groups,              //连续显示分页数  默认为5
+        skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+        skip: true,             //是否开启跳页
+        first:'首页',           //用于控制首页  默认false
+        last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+        prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+        next:'下一页',           //用于控制下一页。若不显示，设置false即可
+        jump: function(obj, first){
+            //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+            var curr = obj.curr;
+            var offset=(curr-1)*groups;
+            getUserAllWorksByType(offset,groups,"10");
+        }
+    });
     //婚秀
     $.ajax({
         url: "<%=basePath%>/personworks/getPersonWorksByType.do",
@@ -276,6 +322,24 @@
             weddingpage=Math.ceil(msg.length/groups);
         }
     });
+    laypage({
+        cont: ('weddingpages'),   //容器。值支持id名、原生dom对象，jquery对象,
+        pages: weddingpage,              //分页数。一般通过服务端返回得到
+        curr:1,                 //当前页。默认为1
+        groups: groups,              //连续显示分页数  默认为5
+        skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+        skip: true,             //是否开启跳页
+        first:'首页',           //用于控制首页  默认false
+        last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+        prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+        next:'下一页',           //用于控制下一页。若不显示，设置false即可
+        jump: function(obj, first){
+            //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+            var curr = obj.curr;
+            var offset=(curr-1)*groups;
+            getUserAllWorksByType(offset,groups,"30");
+        }
+    });
     //道具
     $.ajax({
         url: "<%=basePath%>/personworks/getPersonWorksByType.do",
@@ -288,6 +352,24 @@
         success: function (data) {
             var msg = eval("(" + data + ")");
             multimepage=Math.ceil(msg.length/groups);
+        }
+    });
+    laypage({
+        cont: ('multimepages'),   //容器。值支持id名、原生dom对象，jquery对象,
+        pages: multimepage,              //分页数。一般通过服务端返回得到
+        curr:1,                 //当前页。默认为1
+        groups: groups,              //连续显示分页数  默认为5
+        skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+        skip: true,             //是否开启跳页
+        first:'首页',           //用于控制首页  默认false
+        last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+        prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+        next:'下一页',           //用于控制下一页。若不显示，设置false即可
+        jump: function(obj, first){
+            //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+            var curr = obj.curr;
+            var offset=(curr-1)*groups;
+            getUserAllWorksByType(offset,groups,"20");
         }
     });
 </script>

@@ -82,6 +82,41 @@
      var uid="${userinfo.getUid()}";
      document.location.href = '<%=basePath%>/withdrawals/toWithdrawals.do?uid='+uid;
  }
+ //根据状态分页获取会员提现数据
+ function getUserAllCashRecordByType(offset,count,state){
+     var uid=$("#uid").val();
+     var str="";
+     $.ajax({
+         url: "<%=basePath%>/withdrawals/getCashRecordByState.do",
+         type: "POST",
+         async:false,
+         data: {
+             uid: uid,
+             offset:offset,
+             count:count,
+             state:state
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             if(msg.length > 0){
+                 for(var i=0;i<msg.length;i++){
+                     str += '<tr id="'+msg[i].cashuid+'"><td>'+msg[i].applynum+'</td>'
+                             +'<td>'+msg[i].applytime+'</td><td>'+msg[i].cashaccount+'</td></tr>';
+                 }
+             }
+         }
+     });
+     var sss='<tr> <th>提现金额</th> <th>申请时间</th> <th>收款账户</th> </tr>'
+     if(state == 0){//申请中
+         $("#applying table").find("tr").remove();
+         $("#applying table").append(sss);
+         $("#applying table").append(str);
+     }else{//已申请
+         $("#alreadlyapply table").find("tr").remove();
+         $("#alreadlyapply table").append(sss);
+         $("#alreadlyapply table").append(str);
+     }
+ }
 </script>
 </head>
 <body>
@@ -152,57 +187,114 @@
                   </div>
                   <div class="jy_tab_con">
                      <!-- 申请中 -->
-                     <ul>
+                      <ul id="applying">
                           <table width="100%">
-                              <div id="pages" class="pages_box"></div>
+                              <tr>
+                                  <th>提现金额</th>
+                                  <th>申请时间</th>
+                                  <th>收款账户</th>
+                              </tr>
                           </table>
-                     </ul>
+                          <div id="applyingpages" class="pages_box"></div>
+                      </ul>
                      <!-- 已申请 -->
-                     <ul>
+                      <ul id="alreadlyapply">
                           <table width="100%">
-
+                              <tr>
+                                  <th>提现金额</th>
+                                  <th>申请时间</th>
+                                  <th>收款账户</th>
+                                  <th>审核人员</th>
+                                  <th>审核时间</th>
+                                  <th>审核时间</th>
+                              </tr>
                           </table>
-                     </ul>
+                          <div id="alreadlyapplypages" class="pages_box"></div>
+                      </ul>
                   </div>
                  </div>
-              <script type="text/javascript">
-jQuery(".tran_con").slide({titCell:".jy_nav li",mainCell:".jy_tab_con", trigger:"click"})
+<script type="text/javascript">
+    jQuery(".tran_con").slide({titCell:".jy_nav li",mainCell:".jy_tab_con", trigger:"click"})
  </script>     
-								<script>
-                                laypage({
-                                    cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,
-                                    pages: 10,              //分页数。一般通过服务端返回得到
-                                    curr:1,                 //当前页。默认为1
-                                    groups: 5,              //连续显示分页数  默认为5
-                                    skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义 
-                                    skip: true,             //是否开启跳页
-                                    first:'首页',           //用于控制首页  默认false
-                                    last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
-                                    prev:'上一页',           //用于控制上一页。若不显示，设置false即可
-                                    next:'下一页',           //用于控制下一页。若不显示，设置false即可
-                                    jump: function(obj, first){
-                                    //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
-                                     var curr = obj.curr;
-                                    }
-                                    
-                                });
-                                </script>  
-
-                  
-             
-              
-              
-             
-           </div><!-- wid925px -->
-           
-           <div class="clear"></div>
-        
-        </div><!-- memder_con -->
-        
-   
+<script>
+    var applyingpage=0;
+    var alreadlyapplypage=0;
+    var uid=$("#uid").val();
+    var groups=6;
+    //申请中
+    $.ajax({
+        url: "<%=basePath%>/withdrawals/getCashRecordByState.do",
+        type: "POST",
+        async:false,
+        data: {
+            uid: uid,
+            state:"0"
+        },
+        success: function (data) {
+            var msg = eval("(" + data + ")");
+            if(msg.length > 0){
+                applyingpage=Math.ceil(msg.length/groups);
+            }
+        }
+    });
+    laypage({
+        cont: ('applyingpages'),   //容器。值支持id名、原生dom对象，jquery对象,
+        pages: applyingpage,              //分页数。一般通过服务端返回得到
+        curr:1,                 //当前页。默认为1
+        groups: groups,              //连续显示分页数  默认为5
+        skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+        skip: true,             //是否开启跳页
+        first:'首页',           //用于控制首页  默认false
+        last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+        prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+        next:'下一页',           //用于控制下一页。若不显示，设置false即可
+        jump: function(obj, first){
+            //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+            var curr = obj.curr;
+            var offset=(curr-1)*groups;
+            getUserAllCashRecordByType(offset,groups,"0");
+        }
+    });
+    //已申请
+    $.ajax({
+        url: "<%=basePath%>/withdrawals/getCashRecordByState.do",
+        type: "POST",
+        async:false,
+        data: {
+            uid: uid,
+            state:"1"
+        },
+        success: function (data) {
+            var msg = eval("(" + data + ")");
+            if(msg.length > 0){
+                alreadlyapplypage=Math.ceil(msg.length/groups);
+            }
+        }
+    });
+    laypage({
+        cont: ('alreadlyapplypages'),   //容器。值支持id名、原生dom对象，jquery对象,
+        pages: alreadlyapplypage,              //分页数。一般通过服务端返回得到
+        curr:1,                 //当前页。默认为1
+        groups: groups,              //连续显示分页数  默认为5
+        skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+        skip: true,             //是否开启跳页
+        first:'首页',           //用于控制首页  默认false
+        last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+        prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+        next:'下一页',           //用于控制下一页。若不显示，设置false即可
+        jump: function(obj, first){
+            //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+            var curr = obj.curr;
+            var offset=(curr-1)*groups;
+            getUserAllCashRecordByType(offset,groups,"1");
+        }
+    });
+</script>
+</div><!-- wid925px -->
+<div class="clear"></div>
+</div><!-- memder_con -->
    </div><!-- wrap -->
     </div><!-- bg_f5 -->
-    
    <!-- 公共底部 -->
    <footer>
      <div class="wrap">

@@ -85,4 +85,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return cashrecordList; 
 	}
+
+	public List<Cashrecord> getAllCashrecordByState(PageData pageData) {
+		logger.info("根据提现状态分页查询所有Cashrecord");
+		List<Cashrecord>	cashrecordList=null;
+		try {
+			cashrecordList = (List<Cashrecord>) daoSupport.findForList("CashrecordMapper.getAllCashrecordByState",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			cashrecordList=null;
+		}
+		return cashrecordList;
+	}
 }

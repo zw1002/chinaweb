@@ -57,4 +57,24 @@ public class PersonWorksController extends BaseController{
         return null;
     }
 
+    /**
+     * 作品下架
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/workOffShelf.do")
+    public String workOffShelf(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("workOffShelf");
+        try{
+            String workid = request.getParameter("workid") == null ? "" : request.getParameter("workid");
+            worksServices.delWorksByFid(workid);
+            ResultUtils.writeSuccess(response);
+        }catch (Exception e){
+            logger.error("workOffShelf e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
 }
