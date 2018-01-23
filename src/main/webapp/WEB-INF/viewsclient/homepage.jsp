@@ -143,8 +143,8 @@ function getMerchData(){
             var msg = eval("(" + data + ")");
             var str="";
             for(var i=0;i<msg.length;i++){
-                str += '<li> <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
-                +'<a href="#"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
+                str += '<li><div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
+                +'<a href="#" onclick="toDesignDel('+msg[i].uid+')"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
                 +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
             }
             $("#userWorks").append(str);
@@ -196,6 +196,10 @@ function getMerchData(){
              $("#latestRecommendation").append(str);
          }
      });
+ }
+ //跳转到设计明细页面
+ function toDesignDel(uid){
+     document.location.href = '<%=basePath%>/design/toDesignDel.do?uid='+uid;
  }
  //跳转到首页
  function toIndex(){
@@ -313,10 +317,12 @@ function getMerchData(){
      if(focus.indexOf("+") != -1){
          var focus_userid=$("#uid").val();
          var focus_merchid=$("#merchid").val();
+         var flag="1";
          $.ajax({
              url: "<%=basePath%>/homepage/addFocusOthers.do",
              type: "POST",
              data: {
+                 flag:flag,
                  focus_userid: focus_userid,
                  focus_merchid: focus_merchid
              },
@@ -449,7 +455,7 @@ function getMerchData(){
           </div>
           
           <div class="ty_box">
-             <div class="tit_zptj"><h2>TA关注的</h2> <a href="javascript:">更多>> </a></div>
+             <div class="tit_zptj"><h2>TA关注的</h2></div>
              <div class="tx_listd">
                <ul id="userFocusOthers" class="clearfix">
 

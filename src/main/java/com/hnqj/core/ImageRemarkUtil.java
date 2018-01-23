@@ -159,7 +159,7 @@ public class ImageRemarkUtil {
 	 *            目标图片路径
 	 */
 	public static void markImageByText(String logoText, String srcImgPath,
-									   String targerPath) {
+String targerPath) {
 		markImageByText(logoText, srcImgPath, targerPath, null);
 	}
 
@@ -173,7 +173,6 @@ public class ImageRemarkUtil {
 	 */
 	public static void markImageByText(String logoText, String srcImgPath,
 									   String targerPath, Integer degree) {
-
 		InputStream is = null;
 		OutputStream os = null;
 		try {

@@ -99,8 +99,9 @@ public class GeneralController extends BaseController{
                 map.put("imgsize",relWorks.getImgsize().toString());
                 map.put("imgformart",relWorks.getImgformart());
                 map.put("colrmodel",relWorks.getColrmodel());
-                map.put("userid",relWorks.getMerchid());
+                map.put("merchid",relWorks.getMerchid());
                 Merch merchModel =merchServices.getMerchforId(relWorks.getMerchid());
+                map.put("userid",merchModel.getUserinfouid());
                 map.put("merchname",merchModel.getMerchname());
                 map.put("workcount",merchModel.getWorksnums().toString());
                 map.put("count",merchModel.getDealnums().toString());

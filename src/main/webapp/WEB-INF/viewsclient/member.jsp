@@ -73,6 +73,16 @@ $(".tempWrap").css("width","694");
      var uid="${userinfo.getUid()}";
      document.location.href = '<%=basePath%>/homepage/toHomepage.do?uid='+uid;
  }
+    //跳转到我的作品页面
+    function personWorks(){
+        var uid="${userinfo.getUid()}";
+        document.location.href = '<%=basePath%>/personworks/toPersonWorks.do?uid='+uid;
+    }
+    //跳转到提现页面
+    function toWithdrawals(){
+        var uid="${userinfo.getUid()}";
+        document.location.href = '<%=basePath%>/withdrawals/toWithdrawals.do?uid='+uid;
+    }
 </script>
 </head>
 <body>
@@ -128,10 +138,11 @@ $(".tempWrap").css("width","694");
              <h2>个人中心</h2>
                 <ul>
                    <li><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
+                    <li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
                    <li><a class="mem_icon2" href="#" onclick="toCollection()">收藏</a></li>
                    <li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>
                    <!--<li><a class="mem_icon5" href="income.jsp">收支</a></li>-->
-                   <li><a class="mem_icon7" href="#">提现</a></li>
+                   <li><a class="mem_icon7" href="#" onclick="toWithdrawals()">提现</a></li>
                    <!--<li><a class="mem_icon8" href="task.html">任务</a></li>-->
                    <li><a class="mem_icon9" href="#">个人资料</a></li>
                 </ul>

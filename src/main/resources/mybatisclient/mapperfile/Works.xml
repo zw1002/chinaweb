@@ -154,4 +154,22 @@
       LIMIT #{offset},#{count}
     </if>
   </select>
+  <!--个人中心分类获取个人作品-->
+  <select id="getPersonWorksByType" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where merchid = (
+    select uid from tb_merch where userinfouid = #{userid}
+    )
+    and workstype in(
+    select keyvalue from tb_dict where parentid =(
+    select uid from tb_dict where keyvalue = #{type}
+    )
+    )
+    order by downcount desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
 </mapper>

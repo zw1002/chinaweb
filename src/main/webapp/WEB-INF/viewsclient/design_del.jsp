@@ -20,7 +20,14 @@
 <input id="uid" name="uid" type="hidden" value="<%= request.getAttribute("uid")%>"/>
 <input id="merchid" name="merchid" type="hidden"/>
 <script type="text/javascript">
+    var userid;
     $(document).ready(function () {
+        //隐藏注册/按钮登录    显示个人中心/个人空间
+        var firstname="${userinfo.getFristname()}";
+        if(firstname != ""){
+            $("#beferLogin").css("display","none");
+            $("#backLogin").css("display","block");
+        }
         //获取作品信息
         getDisginDel();
         //感兴趣
@@ -53,7 +60,8 @@
                 $("#imgsize").text("大小:"+msg.imgsize);
                 $("#dpinum").text("分辨率:"+msg.dpinum);
                 $("#uptime").text("发布时间:"+msg.uptime);
-                $("#merchid").val(msg.userid);
+                $("#merchid").val(msg.merchid);
+                userid=msg.userid;
             }
         });
     }
@@ -103,6 +111,14 @@
             }
         });
     }
+    //跳转到注册页面
+    function toRegister(){
+        document.location.href = '<%=basePath%>/signin/register.do';
+    }
+    //跳转到登录页面
+    function toLogin(){
+        document.location.href = '<%=basePath%>/signin/login.do';
+    }
     //跳转到首页
     function toIndex(){
         document.location.href = '<%=basePath%>/signin/index.do';
@@ -135,6 +151,46 @@
     function toHelp(){
         document.location.href = '<%=basePath%>/help/toHelp.do';
     }
+    //跳转到会员中心页面
+    function toMember(){
+        document.location.href = '<%=basePath%>/member/toMember.do';
+    }
+    //跳转到会员空间页面
+    function toHomepage(){
+        var uid="${userinfo.getUid()}";
+        document.location.href = '<%=basePath%>/homepage/toHomepage.do?uid='+uid;
+    }
+    //跳转到店铺页面
+    function toUserHomepage(){
+        document.location.href = '<%=basePath%>/homepage/toHomepage.do?uid='+userid;
+    }
+    //收藏店铺
+    function addFocusOthers(){
+        var focus=document.getElementById("focus").innerText;
+        if(focus.indexOf("收藏店铺") != -1){
+            var focus_merchid=$("#merchid").val();
+            var flag="2";
+            $.ajax({
+                url: "<%=basePath%>/homepage/addFocusOthers.do",
+                type: "POST",
+                data: {
+                    flag:flag,
+                    focus_userid: userid,
+                    focus_merchid: focus_merchid
+                },
+                success: function (data) {
+                    if(data!=="failed"){
+                        alert("收藏成功");
+                        $("#focus").text("已收藏");
+                    }else{
+                        alert("收藏失败");
+                    }
+                }
+            });
+        }else{
+            alert("已收藏");
+        }
+    }
 </script>
    <header>
      <div class="top">
@@ -142,13 +198,14 @@
          <div class="top_wid">
             欢迎来到婚秀中国网
              <!-- 登录前 -->
-            <div class="top_pos"  style="display:none;">
-              <a href="login.jsp">登录</a>|<a href="regist.jsp">注册</a>
-            </div>
-            <!-- 登录后 -->
-            <div class="top_pos">
-              <a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.jsp" class="sc_icon">我要上传</a>|<a href="collection_2.jsp">我的收藏（<span class="col_f00">2</span>）</a>
-            </div>
+             <div id="beferLogin" class="top_pos">
+                 <a href="#" onclick="toLogin()">登录</a>|<a href="#" onclick="toRegister()">注册</a>
+             </div>
+             <!-- 登录后 -->
+             <div id="backLogin" class="top_pos" style="display:none;">
+                 <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>
+                 <!--<a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.html" class="sc_icon">我要上传</a>|<a href="collection_2.html">我的收藏（<span class="col_f00">2</span>）</a>-->
+             </div>
          </div>
       </div><!-- top_line -->
       <div class="top_wid logo_con">
@@ -203,7 +260,7 @@
                <table width="100%" id="merchMessage">
 
                </table>
-                <div class="dp_boxd"><a href="#">收藏店铺</a> <a href="#">进入店铺</a></div>
+                <div class="dp_boxd"><a id="focus" href="#" onclick="addFocusOthers()">收藏店铺</a> <a href="#" onclick="toUserHomepage()">进入店铺</a></div>
              </div>
              <h2>婚庆场景设计模板</h2>
              <p><span class="col_f00">[原创设计]</span> AI矢量图，可任意设置精度，拉大，可做喷绘，写真，内送PSD分层文件放心下载</p>

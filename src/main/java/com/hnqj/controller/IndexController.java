@@ -72,7 +72,11 @@ public class IndexController extends BaseController{
                 map.put("worksprice",dealuidchild.getWorksprice());
                 Date date=dealuidchild.getAddtime();
                 long time=(new Date().getTime()-date.getTime())/(1000*60);
-                map.put("time",time+"分钟前");
+                if(time > 60){
+                    map.put("time","60分钟前");
+                }else{
+                    map.put("time",time+"分钟前");
+                }
                 hashMaps.add(map);
             }
             ResultUtils.write(response,hashMaps);

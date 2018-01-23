@@ -157,4 +157,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return worksList;
 	}
+
+	public List<Works> getPersonWorksByType(PageData pageData) {
+		logger.info("个人中心获取个人作品");
+		List<Works>	worksList=null;
+		try {
+			worksList = (List<Works>) daoSupport.findForList("WorksMapper.getPersonWorksByType",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			worksList=null;
+		}
+		return worksList;
+	}
 }

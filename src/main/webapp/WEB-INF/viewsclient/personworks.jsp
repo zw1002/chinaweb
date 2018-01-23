@@ -10,7 +10,8 @@
     <link rel="icon" href="<%=basePath%>/static/images/ico.ico" type="image/x-icon"/>
 <link href="<%=basePath%>/static/css/global.css" rel="stylesheet" type="text/css" />
 <link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
-<link href="<%=basePath%>/static/css/laypage.css" type="text/css" rel="stylesheet" >
+<link href="<%=basePath%>/static/css/laypage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<%=basePath%>/static/js/laydate.js"></script>
 <script src="<%=basePath%>/static/js/laypage.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
@@ -24,51 +25,9 @@
 			  $(this).find(".nav_list").hide();
 			  }
 		  )
-	 });
- $(document).ready(function () {
-     getCollectionData();
  });
- //初始化收藏数据
- function getCollectionData(offset,count){
-     var userid="${userinfo.getUid()}";
-     $.ajax({
-         url: "<%=basePath%>/personalcenter/getCollectionData.do",
-         type: "POST",
-         data:{
-             userid:userid,
-             offset:offset,
-             count:count
-         },
-         success: function (data) {
-             var msg = eval("(" + data + ")");
-             var str="";
-             for(var i=0;i<msg.length;i++){
-                 str += '<tr id="'+msg[i].worksid+'"> <td width="120"><a href="#"><img src="<%=basePath%>'+msg[i].worksurl+'"></a></td>'
-                 +'<td><h2>'+msg[i].worksname+'</h2> <p>[价格] ￥'+msg[i].price+'</p>'
-                 +'<p>[标签] '+msg[i].worklabel+'</p><p>[收藏日期] '+msg[i].collectiontime+'</p>'
-                 +'</td><td width="50"><a href="#" onclick="delCollection('+msg[i].worksid+')">取消收藏</a></td></tr>';
-             }
-             $(".collect_tab table").append(str);
-         }
-     });
- }
- //取消收藏
- function delCollection(workid){
-     $.ajax({
-         url: "<%=basePath%>/personalcenter/delCollection.do",
-         type: "POST",
-         data:{
-             workid:workid
-         },
-         success: function (data) {
-             if(data!=="failed"){
-                $("#"+workid).css("display","none");
-             }else{
-                 errorInfo("取消失败");
-             }
-         }
-     });
- }
+ $(document).ready(function () {
+ });
  //跳转到首页
  function toIndex(){
      document.location.href = '<%=basePath%>/signin/index.do';
@@ -123,9 +82,36 @@
      var uid="${userinfo.getUid()}";
      document.location.href = '<%=basePath%>/withdrawals/toWithdrawals.do?uid='+uid;
  }
+ //根据分类获取会员全部作品
+ function getUserAllWorksByType(offset,count,type){
+     $("#designworks").find("li").remove();
+     var uid=$("#uid").val();
+     $.ajax({
+         url: "<%=basePath%>/personworks/getPersonWorksByType.do",
+         type: "POST",
+         async:false,
+         data: {
+             uid: uid,
+             offset:offset,
+             count:count,
+             type:type
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             var str="";
+             for(var i=0;i<msg.length;i++){
+                 str += '<li> <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
+                         +'<a href="#"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
+                         +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+             }
+             $("#designworks").append(str);
+         }
+     });
+ }
 </script>
 </head>
 <body>
+<input id="uid" name="uid" type="hidden" value="<%= request.getAttribute("uid")%>"/>
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
@@ -159,8 +145,8 @@
              <div class="grzl_box">
                  <a href="#" onclick="toHomepage()" class="kj_lj">个人空间 ></a>
                  <div class="tx_infor">
-                     <img src="<%=basePath%>${userinfo.getUsrpicurl()}"/>
-                     <h2>${userinfo.getFristname()}</h2>
+                      <img src="<%=basePath%>${userinfo.getUsrpicurl()}"/>
+                      <h2>${userinfo.getFristname()}</h2>
                  </div>
                  <div class="mj_tab">
                     <table width="100%">
@@ -170,13 +156,12 @@
                     </table>
                  </div>
              </div><!-- grzl_box --> 
-             
              <div class="mem_nav">
              <h2>个人中心</h2>
                 <ul>
                     <li><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
-                    <li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
-                    <li><a class="mem_icon2 active" active href="#" onclick="toCollection()">收藏</a></li>
+                    <li><a class="mem_icon9 active" href="#" onclick="personWorks()">我的作品</a></li>
+                    <li><a class="mem_icon2" href="#" onclick="toCollection()">收藏</a></li>
                     <li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>
                     <li><a class="mem_icon7" href="#" onclick="toWithdrawals()">提现</a></li>
                     <li><a class="mem_icon9" href="#">个人资料</a></li>
@@ -184,35 +169,72 @@
              </div>
            </div><!-- wid260px -->
            <div class="wid925px fr">
-               <div class="coll_con">
-                  <div class="collect_tab">
-                     <table width="100%">
-                     </table>
+               <div class="tran_con">
+                  <div class="jy_nav">
+                    <ul class=" clearfix">
+                       <li>设计</li>
+                       <li>摄影</li>
+                       <li>婚秀</li>
+                       <li>道具</li>
+                    </ul>
                   </div>
-                   </div><!-- coll_con -->
-             <div id="pages" class="pages_box"></div>
+                  <div class="jy_tab_con">
+                     <!-- 设计 -->
+                      <div class="page_list">
+                      <ul style="width:890px" id="designworks" class="clearfix">
 
+                      </ul>
+                          <div id="pages" class="pages_box"></div>
+                      </div>
+                     <!-- 摄影 -->
+                     <ul>
+                          <table width="100%">
 
+                          </table>
+                     </ul>
+                     <!-- 婚秀 -->
+                     <ul>
+                          <table width="100%">
+
+                          </table>
+                     </ul>
+                      <!-- 道具 -->
+                      <ul>
+                          <table width="100%">
+
+                          </table>
+                      </ul>
+                  </div>
+                 </div>
+<script type="text/javascript">
+    jQuery(".tran_con").slide({titCell:".jy_nav li",mainCell:".jy_tab_con", trigger:"click"})
+ </script>     
 <script>
-    var page=0;
-    var groups=9;
+    var designpage=0;
+    var photopage=0;
+    var weddingpage=0;
+    var multimepage=0;
     var uid=$("#uid").val();
+    var groups=3;
+    //设计
     $.ajax({
-        url: "<%=basePath%>/personalcenter/getCollectionData.do",
+        url: "<%=basePath%>/personworks/getPersonWorksByType.do",
         type: "POST",
         async:false,
         data: {
-            uid: uid
+            uid: uid,
+            type:"00"
         },
         success: function (data) {
             var msg = eval("(" + data + ")");
-            page=Math.ceil(msg.length/groups);
+            designpage=Math.ceil(msg.length/groups);
         }
     });
     laypage({
-        cont: ('pagess'),   //容器。值支持id名、原生dom对象，jquery对象,
-        pages: page,              //分页数。一般通过服务端返回得到
+        cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,
+        pages: designpage,              //分页数。一般通过服务端返回得到
         curr:1,                 //当前页。默认为1
+        groups: groups,              //连续显示分页数  默认为5
         skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
         skip: true,             //是否开启跳页
         first:'首页',           //用于控制首页  默认false
@@ -223,10 +245,52 @@
             //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
             var curr = obj.curr;
             var offset=(curr-1)*groups;
-            userAllCollection(offset,groups);
+            getUserAllWorksByType(offset,groups,"00");
         }
     });
-</script>  
+    //摄影
+    $.ajax({
+        url: "<%=basePath%>/personworks/getPersonWorksByType.do",
+        type: "POST",
+        async:false,
+        data: {
+            uid: uid,
+            type:"10"
+        },
+        success: function (data) {
+            var msg = eval("(" + data + ")");
+            photopage=Math.ceil(msg.length/groups);
+        }
+    });
+    //婚秀
+    $.ajax({
+        url: "<%=basePath%>/personworks/getPersonWorksByType.do",
+        type: "POST",
+        async:false,
+        data: {
+            uid: uid,
+            type:"30"
+        },
+        success: function (data) {
+            var msg = eval("(" + data + ")");
+            weddingpage=Math.ceil(msg.length/groups);
+        }
+    });
+    //道具
+    $.ajax({
+        url: "<%=basePath%>/personworks/getPersonWorksByType.do",
+        type: "POST",
+        async:false,
+        data: {
+            uid: uid,
+            type:"20"
+        },
+        success: function (data) {
+            var msg = eval("(" + data + ")");
+            multimepage=Math.ceil(msg.length/groups);
+        }
+    });
+</script>
            </div><!-- wid925px -->
            <div class="clear"></div>
         </div><!-- memder_con -->

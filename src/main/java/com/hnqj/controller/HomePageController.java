@@ -32,7 +32,7 @@ public class HomePageController extends BaseController{
     FocusOtherServices focusOtherServices;
     @Autowired
     DealuidchildServices dealuidchildServices;
-    //跳转到会员中心页面
+    //跳转到会员空间页面
     @RequestMapping(value = "/toHomepage.do")
     public String toHomepage(HttpServletRequest request, Model model){
         String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
@@ -146,12 +146,18 @@ public class HomePageController extends BaseController{
     public String addFocusOthers(HttpServletRequest request, HttpServletResponse response) {
         logger.info("addFocusOthers");
         try{
+            String flag = request.getParameter("flag") == null ? "" : request.getParameter("flag");
             String focus_userid = request.getParameter("focus_userid") == null ? "" : request.getParameter("focus_userid");
             String focus_merchid = request.getParameter("focus_merchid") == null ? "" : request.getParameter("focus_merchid");
             PageData pageData = new PageData();
             pageData.put("userId",getUser().getUid());
-            pageData.put("focusUserid",focus_userid);
-            pageData.put("focusMerchid",focus_merchid);
+            if(flag.equalsIgnoreCase("1")){//关注会员
+                pageData.put("focusUserid",focus_userid);
+                pageData.put("focusMerchid","");
+            }else{//收藏店铺
+                pageData.put("focusMerchid",focus_merchid);
+                pageData.put("focusUserid","");
+            }
             pageData.put("addDate",new Date());
             focusOtherServices.addFocusOther(pageData);
             ResultUtils.writeSuccess(response);
