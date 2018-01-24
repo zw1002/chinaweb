@@ -16,21 +16,144 @@
 <script src="<%=basePath%>/static/js/laypage.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
-<script type="text/javascript">
-  $(function(){
-	  $(".fl_nav a").click(function(){
-		  $(this).parents(".fl_nav").find("a").removeClass("on");
-		  $(this).addClass("on")
-		  })
-	  });
-  $(document).ready(function () {
-      //隐藏注册/按钮登录    显示个人中心/个人空间
-      var firstname="${userinfo.getFristname()}";
-      if(firstname != ""){
-          $("#beferLogin").css("display","none");
-          $("#backLogin").css("display","block");
-      }
-  });
+
+    <script src="<%=basePath%>/static/js/imagesloaded.pkgd.min.js"></script>
+    <script src="<%=basePath%>/static/js/masonry.pkgd.min.js"></script>
+    <script src="<%=basePath%>/static/js/anime.min.js"></script>
+    <script src="<%=basePath%>/static/js/main.js"></script>
+    <script type="text/javascript">
+        $(function(){
+        });
+        var queryPara={worktype:'00',workprice:2,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
+        $(document).ready(function () {
+            //隐藏注册/按钮登录    显示个人中心/个人空间
+            var firstname="${userinfo.getFristname()}";
+            if(firstname != ""){
+                $("#beferLogin").css("display","none");
+                $("#backLogin").css("display","block");
+            }
+            //初始设计分类
+            var classData=getAjaxData('<%=basePath%>/general/getGroupClass.do',{type:'设计分类'},false);
+            if(classData!=null) {
+                $('.fl_nav').html('');
+                var htmlVal=" <a uid=\"00\" href=\"javascript:\" class=\"on\">全部</a>";
+                for(var i=0;i<classData.content.length;i++){
+                    htmlVal+="<a uid='"+classData.content[i].keyvalue+"' href=\"javascript:\">"+classData.content[i].typename+"</a>";
+                }
+
+                $('.fl_nav').html(htmlVal);
+            }
+
+            $(".fl_nav>a").click(function(){
+                $(this).parents(".fl_nav").find("a").removeClass("on");
+                $(this).addClass("on");
+                queryPara.worktype = $(this).attr('uid')==""?'00':$(this).attr('uid');
+                outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
+            });
+
+            $(".px_box>a").click(function(){
+                $(this).parents(".px_box").find("a").removeClass("on");
+                $(this).addClass("on");
+
+                queryPara={worktype:0,workprice:2,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
+
+                queryPara.worktype = $(".fl_nav .on").attr('uid')==""?'00':$(".fl_nav .on").attr('uid');
+                if($(this).text()=="热门下载")
+                    queryPara.downloadcount=1;
+                else  if($(this).text()=="默认排序")
+                    queryPara.newup=1;
+                else
+                    queryPara.collectioncount=1;
+                outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
+            });
+            outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
+
+        });
+        function getAjaxData(url,para,isAsync) {
+            var rtnVal=null;
+            $.ajax({
+                url: url,
+                type: "POST",
+                data:para,
+                async: false,
+                success: function (data) {
+                    if(data!="failed"){
+                        data=  JSON.parse(data)
+                        if(data.code !=undefined){
+                            if(data.code=="0000")
+                                rtnVal=data;
+                        }
+                        else {
+                            if (data.length > 0)//.code=="0000"
+                                rtnVal = data;
+                        }
+                    }
+                },
+                error:function (err) {
+                }
+            });
+            return rtnVal;
+        }
+
+        function outPutQueryResult(resultData,isCount) {
+
+            if(resultData!=null){
+                var gridItems="<div class=\"grid__sizer\"></div>";
+                $('.grid,.grid--type-a').html('');
+                if(resultData.length==0)
+                {
+                    $('.grid,.grid--type-a').html('未加载到数据'); $('.grid,.grid--type-a').css('height','0px');
+                    return;
+                }
+                for(var i=0;i<resultData.length;i++){
+                    gridItems+="\t<div class=\"grid__item\">\n" +
+                        "\t\t\t\t\t\t<a class=\"grid__link\" href=\"#\" onclick='toFreeDel("+resultData[i].uid+")'><img class=\"grid__img\" src=\"<%=basePath%>"+resultData[i].worksurl+"\" alt=\"\" /></a>\n" +
+                        "                        <div class=\"list_txt_box\">\n" +
+                        "                          <h2>"+resultData[i].worksname+"</h2>\n" +
+                        "                          <p><a href=\"javascript:\" class=\"zan\">"+resultData[i].ticknums+"</a> | <a href=\"javascript:\" class=\"down\">"+resultData[i].downcount+"</a></p>\n" +
+                        "                        </div>\n" +
+                        "                      \n" +
+                        "\t\t\t\t\t</div>";
+                }
+                $('.grid,.grid--type-a').html(gridItems);
+                gridInit();
+            }
+            else {$('.grid,.grid--type-a').html('未加载到数据');
+                $('.grid,.grid--type-a').css('height','0px');}
+            if(isCount==0){
+                //重新获取查询结果记录数
+                var recordCounts=0;
+                queryPara.count=null;
+                var rdata =getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,false)
+                queryPara.count=20;
+                if(rdata!=null)
+                    recordCounts=Math.ceil(rdata.length/queryPara.count);
+                //初始化分页控制
+                laypage({
+                    cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,
+                    pages: recordCounts,              //分页数。一般通过服务端返回得到 总页数
+                    curr:1,                 //当前页。默认为1
+                    groups: 5,              //连续显示分页数  默认为5
+                    skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+                    skip: true,             //是否开启跳页
+                    first:'首页',           //用于控制首页  默认false
+                    last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+                    prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+                    next:'下一页',           //用于控制下一页。若不显示，设置false即可
+                    jump: function(obj, first){
+                        //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+                        var curr = obj.curr;
+                        //alert(curr);
+                        if(!first){
+                            queryPara.offset=(curr-1)*queryPara.count;
+
+                            outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),1);
+                        }
+                    }
+
+                });
+            }
+        }
   //跳转到首页
   function toIndex(){
       document.location.href = '<%=basePath%>/signin/index.do';
@@ -54,6 +177,10 @@
   //跳转到免费下载页面
   function toFree(){
       document.location.href = '<%=basePath%>/free/toFree.do';
+  }
+  //跳转免费下载页面
+  function toFreeDel(uid){
+      document.location.href = '<%=basePath%>/free/toFreeDel.do?uid='+uid;
   }
   //跳转到求助求图页面
   function toHelp(){
@@ -154,33 +281,6 @@
                      </div>
                     </td>
                  </tr>
-                 <tr>
-                    <td><b>颜色分类：</b></td>
-                    <td>
-                     <div class="fl_nav">
-                       <a href="javascript:" class="on">全部</a>
-                       <a href="javascript:">红色</a>
-                       <a href="javascript:">粉色</a>
-                       <a href="javascript:">香槟色</a>
-                       <a href="javascript:">白色</a>
-                       <a href="javascript:">金色</a>
-                       <a href="javascript:">蓝色</a>
-                       <a href="javascript:">绿色</a>
-                     </div>
-                    </td>
-                 </tr>
-                 <tr>
-                    <td><b>场地分类：</b></td>
-                    <td>
-                     <div class="fl_nav">
-                       <a href="javascript:" class="on">全部</a>
-                       <a href="javascript:">婚宴城             </a>
-                       <a href="javascript:">草地</a>
-                       <a href="javascript:">海边</a>
-                       
-                     </div>
-                    </td>
-                 </tr>
               </table>
             </div>
             
@@ -194,204 +294,12 @@
             <main>
 			<div class="content content--center">
 				<div class="grid grid--type-a">
-					<div class="grid__sizer"></div>
-                    
-					<div class="grid__item">
-                    
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_1.png" alt="" /> </a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                      
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_2.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                        
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_3.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣海景圣堂海景圣堂海景圣堂堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                      
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_4.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                        
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_5.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                      
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_6.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                        
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_7.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣海景圣堂海景圣堂海景圣堂堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                      
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_8.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                        
-					</div>
-                    
-                     <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_9.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣海景圣堂海景圣堂海景圣堂堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                      
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_10.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                        
-					</div>
-                    
-                     <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_11.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣海景圣堂海景圣堂海景圣堂堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                      
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_12.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                        
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_13.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣海景圣堂海景圣堂海景圣堂堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                      
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_14.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                        
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_1.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                      
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_2.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                        
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_3.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣海景圣堂海景圣堂海景圣堂堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                      
-					</div>
-                    
-                    <div class="grid__item">
-						<a class="grid__link" href="free_del.jsp"><img class="grid__img" src="<%=basePath%>/static/images/pbl_2.png" alt="" /></a>
-                        <div class="list_txt_box">
-                          <h2>《你是我的风景》海景圣堂</h2>
-                          <p><a href="javascript:" class="zan">215061</a> | <a href="javascript:" class="down">1026</a></p>
-                        </div>
-                        
-					</div>
-                    
-                    
-					
+
 				</div><!-- grid -->
 				</div>
 		</main>
-		<script src="<%=basePath%>/static/js/imagesloaded.pkgd.min.js"></script>
-		<script src="<%=basePath%>/static/js/masonry.pkgd.min.js"></script>
-		<script src="<%=basePath%>/static/js/anime.min.js"></script>
-		<script src="<%=basePath%>/static/js/main.js"></script>
-<div id="pages" class="pages_box"></div>
-<script>
-laypage({
-    cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,
-    pages: 10,              //分页数。一般通过服务端返回得到
-	curr:1,                 //当前页。默认为1
-	groups: 5,              //连续显示分页数  默认为5
-	skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义 
-	skip: true,             //是否开启跳页
-	first:'首页',           //用于控制首页  默认false
-    last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
-	prev:'上一页',           //用于控制上一页。若不显示，设置false即可
- 	next:'下一页',           //用于控制下一页。若不显示，设置false即可
-	jump: function(obj, first){
-    //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
-     var curr = obj.curr;
-    }  
-    
-});
-</script>  
 
-   
-   
-   
+<div id="pages" class="pages_box"></div>
     </div><!-- wrap -->
     </div><!-- bg_f5 -->
    
