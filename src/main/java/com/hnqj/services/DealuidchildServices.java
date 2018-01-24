@@ -100,11 +100,11 @@ protected final Log logger = LogFactory.getLog(getClass());
 		return dealuidchildList;
 	}
 
-	public List<Dealuidchild> getDealuidchildForWorksId(String userid) {
+	public List<Dealuidchild> getDealuidchildForWorksId(PageData pageData) {
 		logger.info("获取个人已出售作品");
 		List<Dealuidchild>	dealuidchildList=null;
 		try {
-			dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.getDealuidchildForWorksId",userid);
+			dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.getDealuidchildForWorksId",pageData);
 		}catch (Exception e){
 			e.printStackTrace();
 			dealuidchildList=null;
@@ -112,11 +112,11 @@ protected final Log logger = LogFactory.getLog(getClass());
 		return dealuidchildList;
 	}
 
-	public List<Dealuidchild> getDealuidchildForPayUserId(String userid) {
+	public List<Dealuidchild> getDealuidchildForPayUserId(PageData pageData) {
 		logger.info("获取个人已购买作品");
 		List<Dealuidchild>	dealuidchildList=null;
 		try {
-			dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.getDealuidchildForPayUserId",userid);
+			dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.getDealuidchildForPayUserId",pageData);
 		}catch (Exception e){
 			e.printStackTrace();
 			dealuidchildList=null;

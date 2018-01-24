@@ -52,7 +52,7 @@
     </if>
   </select>
   <!--获取个人已出售作品-->
-  <select id="getDealuidchildForWorksId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="getDealuidchildForWorksId" parameterType="pd" resultMap="BaseResultMap">
     select
     *
     from tb_dealuidchild
@@ -60,7 +60,7 @@
     select uid from tb_works
     where merchid = (
     select uid from tb_merch
-    where userinfouid = #{userinfouid,jdbcType=VARCHAR}
+    where userinfouid = #{userid}
     )
     )
     and
@@ -68,16 +68,22 @@
     select dealuid from tb_dealrecord where dealstate = '1'
     )
     order by addtime desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
   </select>
   <!--获取个人已购买作品-->
-  <select id="getDealuidchildForPayUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="getDealuidchildForPayUserId" parameterType="pd" resultMap="BaseResultMap">
     select
     *
     from tb_dealuidchild
     where dealuid in(
-    select dealuid from tb_dealrecord where dealstate = '1' and payuserid =#{payuserid,jdbcType=VARCHAR}
+    select dealuid from tb_dealrecord where dealstate = '1' and payuserid =#{userid}
     )
     order by addtime desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
   </select>
   <!--统计个人店铺交易额-->
   <select id="getUserTurnover" parameterType="java.lang.String" resultType="map">

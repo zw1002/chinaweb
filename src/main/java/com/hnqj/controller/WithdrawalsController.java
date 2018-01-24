@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+import static com.hnqj.core.ResultUtils.toDateJson;
+import static com.hnqj.core.ResultUtils.toDateTimeJson;
+
 /**
  * 提现管理控制层
  * 2018-01-10  张威
@@ -51,7 +54,7 @@ public class WithdrawalsController extends BaseController{
             pageData.put("count",count);
             pageData.put("state",state);
             List<Cashrecord> cashrecordList=cashrecordServices.getAllCashrecordByState(pageData);
-            ResultUtils.write(response,cashrecordList);
+            ResultUtils.write(response,toDateTimeJson(cashrecordList));
         }catch (Exception e){
             logger.error("getCashRecordByState e="+e.getMessage());
             ResultUtils.writeFailed(response);
