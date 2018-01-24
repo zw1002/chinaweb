@@ -101,4 +101,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return dictList;
 	}
+
+	public List<Dict> getDictForValue(String workstype) {
+		logger.info("根据value值查询指定类型的子类列表");
+		List<Dict>	dictList=null;
+		try {
+			dictList = (List<Dict>) daoSupport.findForList("DictMapper.getDictForValue",workstype);
+		}catch (Exception e){
+			e.printStackTrace();
+			dictList=null;
+		}
+		return dictList;
+	}
 }

@@ -27,16 +27,20 @@
 		  )
  });
  $(document).ready(function () {
-     //已出售
-     alreadySold();
-     //已购买
-     alreadyPurchased();
+
  });
  //获取已出售作品
- function  alreadySold(){
+ function  alreadySold(offset,count){
+     var sss='<tr> <th>作品信息</th> <th>实收金额</th> <th>交易状态</th> <th>对方</th> </tr>'
+     $("#alreadySold table").find("tr").remove();
      $.ajax({
          url: "<%=basePath%>/personalcenter/getAlreadySoldWorks.do",
          type: "POST",
+         async:false,
+         data: {
+             offset:offset,
+             count:count
+         },
          success: function (data) {
              var msg = eval("(" + data + ")");
              var str="";
@@ -46,15 +50,23 @@
                  +'<td><p class="col_f00">￥'+msg[i].price+'</p></td> <td><p>交易成功</p></td><td>'
                  +'<img src="<%=basePath%>'+msg[i].payUserPic+'" /> <p>'+msg[i].payUsername+'</p></td></tr>';
              }
+             $("#alreadySold table").append(sss);
              $("#alreadySold table").append(str);
          }
      });
  }
  //已购买
- function  alreadyPurchased(){
+ function  alreadyPurchased(offset,count){
+     var sss='<tr> <th>作品信息</th> <th>实收金额</th> <th>交易状态</th> <th>对方</th> </tr>'
+     $("#alreadyPurchased table").find("tr").remove();
      $.ajax({
          url: "<%=basePath%>/personalcenter/getAlreadyPurchasedWorks.do",
          type: "POST",
+         async:false,
+         data: {
+             offset:offset,
+             count:count
+         },
          success: function (data) {
              var msg = eval("(" + data + ")");
              var str="";
@@ -64,6 +76,7 @@
                          +'<td><p class="col_f00">￥'+msg[i].price+'</p></td> <td><p>交易成功</p></td><td>'
                          +'<img src="<%=basePath%>'+msg[i].payUserPic+'" /> <p>'+msg[i].payUsername+'</p></td></tr>';
              }
+             $("#alreadyPurchased table").append(sss);
              $("#alreadyPurchased table").append(str);
          }
      });
@@ -182,144 +195,101 @@
              </div>
            </div><!-- wid260px -->
            <div class="wid925px fr">
-               <!--
-               <div class="coll_con">
-                  <div class="sxtj_tab short_tabd">
-                    <table width="100%">
-                       <tr>
-                           <td><select name=""><option>交易类型</option></select></td>
-                           <td><select name=""><option>作品类型</option></select></td>
-                           <td><select name=""><option>作品编号</option></select></td>
-                           <td width=""><input name="" type="text"></td>
-                           <td>选择日期：</td>
-                           <td><input name="" type="text" placeholder="xxxx-yy-zz" onclick="laydate()"> - <input name=""  type="text" placeholder="xxxx-yy-zz" onclick="laydate()">
-                           </td>
-                           <td><a href="#" class="ss_btndd fr">搜索</a></td>
-                       </tr>
-                    
-                    </table>
-                  </div>
-              </div> 
-               -->
-               <div class="tran_con">   
+               <div class="tran_con">
                   <div class="jy_nav">
                     <ul class=" clearfix">
                        <li>已出售</li>
                        <li>已购买</li>
-                       <li>正在交易</li>
-                        <!--
-                       <li>交易站厅</li>
-                       <li>交易失败</li>
-                       -->
-                    </ul> 
+                    </ul>
                   </div>
                   <div class="jy_tab_con">
                      <!-- 已出售 -->
                      <ul id="alreadySold">
                           <table width="100%">
-                             <tr>             
-                                <th>作品信息</th>
-                                 <th>实收金额</th>
-                                <th>交易状态</th>
-                                <th>对方</th>
-                             </tr>
+
                           </table>
+                         <div id="pages" class="pages_box"></div>
                      </ul>
                      <!-- 已购买 -->
                      <ul id="alreadyPurchased">
                           <table width="100%">
-                             <tr>             
-                                <th>作品信息</th>                                          
-                                <th>实收金额</th>
-                                 <th>交易状态</th>
-                                <th>对方</th>  
-                             </tr>
+
                           </table>
-                     </ul>
-                     <!-- 正在交易 -->
-                     <ul>
-                          <table width="100%">
-                             <tr>             
-                                <th>作品信息</th>                                          
-                                <th>实收金额</th>
-                                 <th>交易状态</th>
-                                <th>对方</th>  
-                             </tr>
-                             <tr>
-                                <td class="jj_txt">
-                                  <p class="fl"><img src="<%=basePath%>/static/images/dmt_pic5.png" /></p>
-                                  <h2>欧式屏风雕花</h2>
-                                 <p>[类型] 设计</p>
-                                <p class="xzzs">[简介] 我是简介我是简介我是简介我是简介我是简介我是简介</p>
-                                <p>[创建] 2016/1/21 18:02:23</p>
-                                <p>[更新] 2016/1/21 18:02:23</p>
-                                
-                                </td>                                          
-                                <td><p class="col_f00">￥30.00</p></td>
-                                <td><p>交易成功</p></td>
-                                <td>
-                                  <div class="tc_rel">
-                                     <img src="<%=basePath%>/static/images/head_img.png" />
-                                      <p>新设计团队</p>
-                                  
-                                    <div class="tip_bxf">
-                                        <table width="100%">
-                                           <tr>
-                                               <td><h3>17700.50</h3> 交易额</td>
-                                               <td><h3>5620</h3> 交易量</td>
-                                               <td><h3>235</h3> 作品数</td>
-                                               <td><h3>0</h3>     投稿数</td>
-                                           </tr>
-                                        </table>
-                                        <div class="znx_btn"><a href="#">发站内信</a></div>    
-                                    </div>
-                                  </div>
-                                
-                                </td>  
-                             </tr>
-                          </table>
+                         <div id="pagess" class="pages_box"></div>
                      </ul>
                   </div>
                  </div>
-              <script type="text/javascript">
-jQuery(".tran_con").slide({titCell:".jy_nav li",mainCell:".jy_tab_con", trigger:"click"})
- </script>     
-                                    <div id="pages" class="pages_box"></div>
-								<script>
-                                laypage({
-                                    cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,
-                                    pages: 10,              //分页数。一般通过服务端返回得到
-                                    curr:1,                 //当前页。默认为1
-                                    groups: 5,              //连续显示分页数  默认为5
-                                    skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义 
-                                    skip: true,             //是否开启跳页
-                                    first:'首页',           //用于控制首页  默认false
-                                    last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
-                                    prev:'上一页',           //用于控制上一页。若不显示，设置false即可
-                                    next:'下一页',           //用于控制下一页。若不显示，设置false即可
-                                    jump: function(obj, first){
-                                    //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
-                                     var curr = obj.curr;
-                                    }  
-                                    
-                                });
-                                </script>  
-
-                  
-             
-              
-              
-             
+<script type="text/javascript">
+    jQuery(".tran_con").slide({titCell:".jy_nav li",mainCell:".jy_tab_con", trigger:"click"})
+ </script>
+<script>
+    var alreadlysoldpage=0;
+    var alreadyPurchasedpage=0;
+    var groups=6;
+    $.ajax({
+        url: "<%=basePath%>/personalcenter/getAlreadySoldWorks.do",
+        type: "POST",
+        async:false,
+        success: function (data) {
+            var msg = eval("(" + data + ")");
+            if(msg.length > 0) {
+                alreadlysoldpage = Math.ceil(msg.length / groups);
+            }
+        }
+    });
+    laypage({
+        cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,
+        pages: alreadlysoldpage,              //分页数。一般通过服务端返回得到
+        curr:1,                 //当前页。默认为1
+        groups: groups,              //连续显示分页数  默认为5
+        skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+        skip: true,             //是否开启跳页
+        first:'首页',           //用于控制首页  默认false
+        last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+        prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+        next:'下一页',           //用于控制下一页。若不显示，设置false即可
+        jump: function(obj, first){
+            //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+            var curr = obj.curr;
+            var offset=(curr-1)*groups;
+            alreadySold(offset,groups);
+        }
+    });
+    $.ajax({
+        url: "<%=basePath%>/personalcenter/getAlreadyPurchasedWorks.do",
+        type: "POST",
+        async:false,
+        success: function (data) {
+            var msg = eval("(" + data + ")");
+            if(msg.length > 0){
+                alreadyPurchasedpage=Math.ceil(msg.length/groups);
+            }
+        }
+    });
+    laypage({
+        cont: ('pagess'),   //容器。值支持id名、原生dom对象，jquery对象,
+        pages: alreadyPurchasedpage,              //分页数。一般通过服务端返回得到
+        curr:1,                 //当前页。默认为1
+        groups: groups,              //连续显示分页数  默认为5
+        skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+        skip: true,             //是否开启跳页
+        first:'首页',           //用于控制首页  默认false
+        last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+        prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+        next:'下一页',           //用于控制下一页。若不显示，设置false即可
+        jump: function(obj, first){
+            //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+            var curr = obj.curr;
+            var offset=(curr-1)*groups;
+            alreadyPurchased(offset,groups);
+        }
+    });
+</script>
            </div><!-- wid925px -->
-           
            <div class="clear"></div>
-        
         </div><!-- memder_con -->
-        
-   
    </div><!-- wrap -->
     </div><!-- bg_f5 -->
-    
    <!-- 公共底部 -->
    <footer>
      <div class="wrap">

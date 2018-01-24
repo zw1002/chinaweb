@@ -85,7 +85,8 @@
  //根据状态分页获取会员提现数据
  function getUserAllCashRecordByType(offset,count,state){
      var uid=$("#uid").val();
-     var str="";
+     var str="";//申请中
+     var strs="";//已提现
      $.ajax({
          url: "<%=basePath%>/withdrawals/getCashRecordByState.do",
          type: "POST",
@@ -100,20 +101,27 @@
              var msg = eval("(" + data + ")");
              if(msg.length > 0){
                  for(var i=0;i<msg.length;i++){
-                     str += '<tr id="'+msg[i].cashuid+'"><td>'+msg[i].applynum+'</td>'
-                             +'<td>'+msg[i].applytime+'</td><td>'+msg[i].cashaccount+'</td></tr>';
+                     if(state == 0){
+                         str += '<tr id="'+msg[i].cashuid+'"><td>'+msg[i].applynum+'</td>'
+                                 +'<td>'+msg[i].applytime+'</td><td>'+msg[i].cashaccount+'</td></tr>';
+                     }else{
+                         str += '<tr id="'+msg[i].cashuid+'"><td>'+msg[i].applynum+'</td>'
+                                 +'<td>'+msg[i].applytime+'</td><td>'+msg[i].cashaccount+'</td>'
+                                 +'<td>'+msg[i].checkpeople+'</td><td>'+msg[i].checktime+'</td></tr>';
+                     }
                  }
              }
          }
      });
      var sss='<tr> <th>提现金额</th> <th>申请时间</th> <th>收款账户</th> </tr>'
+     var ssss='<tr> <th>提现金额</th> <th>申请时间</th> <th>收款账户</th><th>审核人员</th> <th>审核时间</th></tr>'
      if(state == 0){//申请中
          $("#applying table").find("tr").remove();
          $("#applying table").append(sss);
          $("#applying table").append(str);
      }else{//已申请
          $("#alreadlyapply table").find("tr").remove();
-         $("#alreadlyapply table").append(sss);
+         $("#alreadlyapply table").append(ssss);
          $("#alreadlyapply table").append(str);
      }
  }
@@ -189,25 +197,14 @@
                      <!-- 申请中 -->
                       <ul id="applying">
                           <table width="100%">
-                              <tr>
-                                  <th>提现金额</th>
-                                  <th>申请时间</th>
-                                  <th>收款账户</th>
-                              </tr>
+
                           </table>
                           <div id="applyingpages" class="pages_box"></div>
                       </ul>
                      <!-- 已申请 -->
                       <ul id="alreadlyapply">
                           <table width="100%">
-                              <tr>
-                                  <th>提现金额</th>
-                                  <th>申请时间</th>
-                                  <th>收款账户</th>
-                                  <th>审核人员</th>
-                                  <th>审核时间</th>
-                                  <th>审核时间</th>
-                              </tr>
+
                           </table>
                           <div id="alreadlyapplypages" class="pages_box"></div>
                       </ul>

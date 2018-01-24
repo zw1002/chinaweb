@@ -29,7 +29,7 @@ public class UploadFileController extends  BaseController {
     //跳转到上传作品页面
     @RequestMapping(value = "/toUpload.do")
     public String toUpload() {
-        return "uploadFile";
+        return "upload";
     }
 
     /**
@@ -64,7 +64,10 @@ public class UploadFileController extends  BaseController {
      */
     @RequestMapping("/filesUpload.do")
     //requestParam要写才知道是前台的那个数组
-    public String filesUpload(@RequestParam("myfiles") MultipartFile[] files, HttpServletRequest request) {
+    public String filesUpload(@RequestParam("file") MultipartFile[] files, HttpServletRequest request) {
+        String worktype = request.getParameter("worktype") == null ? "" : request.getParameter("worktype");
+        String worklael = request.getParameter("worklael") == null ? "" : request.getParameter("worklael");
+        String label = request.getParameter("label") == null ? "" : request.getParameter("label");
         String HOMEPATH = request.getSession().getServletContext().getRealPath("/") + "static/uploadImg/";
         DateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         String today = dateFormate.format(new Date());
@@ -75,61 +78,24 @@ public class UploadFileController extends  BaseController {
         if (!f1.exists()) {
             f1.mkdirs();
         }
-        //创建一个通用的多部分解析器
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-        //判断 request 是否有文件上传,即多部分请求
-        if (multipartResolver.isMultipart(request)) {
-            //转换成多部分request
-            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-            //取得request中的所有文件名
-            Iterator<String> iter = multiRequest.getFileNames();
-            while (iter.hasNext()) {
-                //记录上传过程起始时的时间，用来计算上传时间
-                // int pre = (int) System.currentTimeMillis();
-                //取得上传文件
-                MultipartFile file = multiRequest.getFile(iter.next());
-                if (file != null) {
-                    Long time = new Date().getTime();
-                    String myFileName = file.getOriginalFilename();
-                    String name = "";
-                    String extName = "";
-
-                    if (myFileName.trim() != "") {
-                        long byteSize = file.getSize();
-                        //重命名上传后的文件名
-                        name = UUID.randomUUID().toString();
-                        if (myFileName.lastIndexOf(".") >= 0) {
-                            extName = myFileName.substring(myFileName.lastIndexOf("."));
-                        }
-                        File localFile = new File(savePath + time + myFileName);//上传文件是真实名称
-                        try {
-                            file.transferTo(localFile);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        PageData filesPageData = new PageData();
-                        filesPageData.put("fid",UUID.randomUUID().toString());
-                        String str=relativePath.replace("\\","/");
-                        filesPageData.put("filePath",str +time +myFileName);
-                        BigDecimal fileSize = null;
-                        String measuring = "";
-                        if (byteSize >= 1024 * 1024) {
-                            double f = byteSize * 1.0 / (1024 * 1000);
-                            fileSize = new BigDecimal(f);
-                            measuring = "MB";
-                        } else {
-                            double f = byteSize * 1.0 / (1024);
-                            fileSize = new BigDecimal(f);
-                            measuring = "KB";
-                        }
-                        fileSize = fileSize.setScale(2, BigDecimal.ROUND_HALF_UP);
-                        filesPageData.put("fileSize",fileSize + measuring);
-                        filesPageData.put("realName",myFileName);
-                        filesPageData.put("suffix",extName);
-                    }
+        for(MultipartFile file:files){
+            Long time = new Date().getTime();
+            String myFileName = file.getOriginalFilename();
+            String extName = "";
+            if (myFileName.trim() != "") {
+                long byteSize = file.getSize();
+                //重命名上传后的文件名
+                if (myFileName.lastIndexOf(".") >= 0) {
+                    extName = myFileName.substring(myFileName.lastIndexOf("."));
+                }
+                File localFile = new File(savePath + myFileName);//上传文件是真实名称
+                try {
+                    file.transferTo(localFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
-        return null;
+        return "upload";
     }
 }

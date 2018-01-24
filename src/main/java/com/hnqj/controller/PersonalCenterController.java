@@ -33,6 +33,8 @@ public class PersonalCenterController extends  BaseController{
     UserinfoServices userinfoServices;
     @Autowired
     MerchServices merchServices;
+    @Autowired
+    DictServices dictServices;
     //跳转到开店页面
     @RequestMapping(value = "/toShop.do")
     public String toShop(){
@@ -160,7 +162,13 @@ public class PersonalCenterController extends  BaseController{
         logger.info("getAlreadySoldWorks");
         try{
             String userid=getUser().getUid();
-            List<Dealuidchild> dealuidchildList=dealuidchildServices.getDealuidchildForWorksId(userid);
+            int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
+            int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
+            PageData pageData = new PageData();
+            pageData.put("userid",userid);
+            pageData.put("offset",offset);
+            pageData.put("count",count);
+            List<Dealuidchild> dealuidchildList=dealuidchildServices.getDealuidchildForWorksId(pageData);
             List<Map<String, Object>> hashMaps=new ArrayList<>();
             for(Dealuidchild dealuidchild:dealuidchildList){
                 Map<String, Object> map = new HashMap<>();
@@ -195,7 +203,13 @@ public class PersonalCenterController extends  BaseController{
         logger.info("getAlreadyPurchasedWorks");
         try{
             String userid=getUser().getUid();
-            List<Dealuidchild> dealuidchildList=dealuidchildServices.getDealuidchildForPayUserId(userid);
+            int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
+            int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
+            PageData pageData = new PageData();
+            pageData.put("userid",userid);
+            pageData.put("offset",offset);
+            pageData.put("count",count);
+            List<Dealuidchild> dealuidchildList=dealuidchildServices.getDealuidchildForPayUserId(pageData);
             List<Map<String, Object>> hashMaps=new ArrayList<>();
             for(Dealuidchild dealuidchild:dealuidchildList){
                 Map<String, Object> map = new HashMap<>();
@@ -215,6 +229,26 @@ public class PersonalCenterController extends  BaseController{
             ResultUtils.write(response,toDateJson(hashMaps));
         }catch(Exception e){
             logger.error("getAlreadyPurchasedWorks e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 根据作品类别获取作品分类
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getWorkClassification.do")
+    public String getWorkClassification(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getWorkClassification");
+        String workstype = request.getParameter("workstype") == null ? "" : request.getParameter("workstype");
+        try{
+            List<Dict> dictList=dictServices.getDictForValue(workstype);
+            ResultUtils.write(response,dictList);
+        }catch(Exception e){
+            logger.error("getWorkClassification e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;
