@@ -24,7 +24,11 @@
 			  $(this).find(".nav_list").hide();
 			  }
 		  
-		  )
+		  );
+
+     $('.ss_btn').click(function () {
+         document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
+     })
 	 
 	 })
 

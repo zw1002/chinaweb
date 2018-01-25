@@ -69,7 +69,7 @@
 
       $('.ss_btn').click(function () {
           document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
-      })
+      });
 
       outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
 

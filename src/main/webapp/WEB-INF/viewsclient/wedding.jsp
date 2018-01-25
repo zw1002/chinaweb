@@ -72,7 +72,7 @@
 
         $('.ss_btn').click(function () {
             document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
-        })
+        });
         function getAjaxData(url,para,isAsync) {
             var rtnVal=null;
             $.ajax({

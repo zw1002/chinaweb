@@ -14,6 +14,14 @@
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
 <script src="<%=basePath%>/static/js/fs_forse.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $('.ss_btn').click(function () {
+                document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
+            });
+        })
+    </script>
 </head>
 <body>
 <!--获取作品ID-->
