@@ -182,7 +182,7 @@
       or worksname LIKE CONCAT(CONCAT('%', #{data, jdbcType=VARCHAR}),'%')
     </if>
     <if test="label != null and label != ''">
-      or worklabel #{label, jdbcType=VARCHAR}
+      or #{label}
     </if>
     <if test="freePrice != null and freePrice != ''">
       AND price &lt;=0

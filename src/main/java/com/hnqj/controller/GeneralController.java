@@ -353,7 +353,7 @@ public class GeneralController extends BaseController{
             String strLblFilter="(";
             for (String str: labels) {
                 if(str.equals("")) continue;
-                strLblFilter+=" LIKE '%"+str+"%' or ";
+                strLblFilter+=" worklabel LIKE '%"+str+"%' or ";
             }
             if(strLblFilter.length()>4){
                 strLblFilter=strLblFilter.substring(0,strLblFilter.length()-4);
