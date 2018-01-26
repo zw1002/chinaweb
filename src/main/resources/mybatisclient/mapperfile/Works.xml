@@ -188,7 +188,7 @@
       AND price &lt;=0
     </if>
     <if test="type != null and type != ''">
-      AND workstype in (select keyvalue from tb_dict where keyvalue =#{type})
+      AND workstype in (select DISTINCT keyvalue from tb_dict where uid=(SELECT uid from tb_dict WHERE keyvalue=#{type }) or parentid=(SELECT uid from tb_dict WHERE keyvalue=#{type }))
     </if>
     <if test="orderField != null and orderField != ''">
       order by #{orderField} desc
