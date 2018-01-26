@@ -1,7 +1,9 @@
 package com.hnqj.controller;
 
 import com.hnqj.core.PageData;
+import com.hnqj.services.WorksServices;
 import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,9 @@ import java.util.*;
 @Controller
 @RequestMapping("/uploadFile")
 public class UploadFileController extends  BaseController {
+    @Autowired
+    WorksServices worksServices;
+
     private String UPLOADDIR = "upload" + File.separator;
 
     //跳转到上传作品页面
@@ -66,20 +71,18 @@ public class UploadFileController extends  BaseController {
     //requestParam要写才知道是前台的那个数组
     public String filesUpload(@RequestParam("file") MultipartFile[] files, HttpServletRequest request) {
         String worktype = request.getParameter("worktype") == null ? "" : request.getParameter("worktype");
-        String worklael = request.getParameter("worklael") == null ? "" : request.getParameter("worklael");
-        String label = request.getParameter("label") == null ? "" : request.getParameter("label");
+        String workclassification = request.getParameter("workclassification") == null ? "" : request.getParameter("workclassification");
+        String worklabel = request.getParameter("worklabel") == null ? "" : request.getParameter("worklabel");
         String HOMEPATH = request.getSession().getServletContext().getRealPath("/") + "static/uploadImg/";
         DateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         String today = dateFormate.format(new Date());
         String savePath = HOMEPATH + UPLOADDIR
                 + today + File.separator;
-        String relativePath = UPLOADDIR + today + File.separator;
         File f1 = new File(savePath);
         if (!f1.exists()) {
             f1.mkdirs();
         }
         for(MultipartFile file:files){
-            Long time = new Date().getTime();
             String myFileName = file.getOriginalFilename();
             String extName = "";
             if (myFileName.trim() != "") {
@@ -89,8 +92,28 @@ public class UploadFileController extends  BaseController {
                     extName = myFileName.substring(myFileName.lastIndexOf("."));
                 }
                 File localFile = new File(savePath + myFileName);//上传文件是真实名称
+                BigDecimal fileSize = null;
+                String measuring = "";
+                if (byteSize >= 1024 * 1024) {
+                    double f = byteSize * 1.0 / (1024 * 1000);
+                    fileSize = new BigDecimal(f);
+                    measuring = "MB";
+                } else {
+                    double f = byteSize * 1.0 / (1024);
+                    fileSize = new BigDecimal(f);
+                    measuring = "KB";
+                }
+                PageData pageData = new PageData();
+                pageData.put("uid",UUID.randomUUID().toString());
+                pageData.put("worksurl",savePath + myFileName);
+                pageData.put("imgsize",fileSize + measuring);
+                pageData.put("imgformart",extName);
+                pageData.put("worksname",myFileName);
+                pageData.put("workstype",worktype);
+                pageData.put("uptime",new Date());
                 try {
                     file.transferTo(localFile);
+                    worksServices.addWorks(pageData);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

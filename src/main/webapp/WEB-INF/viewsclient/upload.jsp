@@ -64,6 +64,22 @@
              form.render('select'); //这个很重要
          });
      });
+
+ });
+ //根据作品分类获取标签下拉列表
+ layui.use(['layer', 'form'], function() {
+     var form = layui.form;
+     form.on('select(workclassificationselect)', function(data){
+         $.getJSON("<%=basePath%>/personalcenter/getWorklabelByWorktype.do?code="+data.value, function(data){
+             var msg=eval(data);
+             $("#worklabel").html("");
+             var str="";
+             $.each(msg, function(name, value) {
+                 str += value.labelname+",";
+             });
+             $("#worklabel").val(str);
+         });
+     });
  });
  //跳转到首页
  function toIndex(){
@@ -204,7 +220,7 @@
                            </div>
                        <form action="filesUpload.do" method="POST" name="xiangmu" id="xiangmu" enctype="multipart/form-data" style="margin-top: 8px" class="layui-form batchinput-form">
                            <div class="layui-form-item">
-                               <label class="layui-form-label">作品类型</label>
+                               <label class="layui-form-label">作品类型：</label>
                                <div class="layui-input-block">
                                    <select lay-filter="workstypeselect" name="workstype" id="workstype" lay-verify="required">
                                        <option value=""></option>
@@ -216,23 +232,16 @@
                                </div>
                            </div>
                            <div class="layui-form-item">
-                               <label class="layui-form-label">作品分类</label>
+                               <label class="layui-form-label">作品分类：</label>
                                <div class="layui-input-block">
                                    <select lay-filter="workclassificationselect" name="workclassification" id="workclassification" lay-verify="required">
                                    </select>
                                </div>
                            </div>
-                           <div class="layui-form-item">
-                               <label class="layui-form-label">作品标签</label>
-                               <div class="layui-input-block">
-                                   <select id="worklael" name="worklael" lay-verify="required">
-                                   </select>
-                               </div>
-                           </div>
                            <div class="layui-form-item layui-form-text">
-                               <label class="layui-form-label">自定义标签</label>
+                               <label class="layui-form-label">作品标签：</label>
                                <div class="layui-input-block">
-                                   <textarea id="label" name="label" placeholder="以逗号分隔，加上选择标签，标签总数不能超过10个" class="layui-textarea"></textarea>
+                                   <textarea id="worklabel" name="worklabel" placeholder="以逗号分隔，标签总数不能超过10个" class="layui-textarea"></textarea>
                                </div>
                            </div>
                            <div class="layui-upload">

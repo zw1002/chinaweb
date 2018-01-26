@@ -35,6 +35,8 @@ public class PersonalCenterController extends  BaseController{
     MerchServices merchServices;
     @Autowired
     DictServices dictServices;
+    @Autowired
+    WorklabelServices worklabelServices;
     //跳转到开店页面
     @RequestMapping(value = "/toShop.do")
     public String toShop(){
@@ -249,6 +251,26 @@ public class PersonalCenterController extends  BaseController{
             ResultUtils.write(response,dictList);
         }catch(Exception e){
             logger.error("getWorkClassification e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 根据作品分类获取作品标签
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getWorklabelByWorktype.do")
+    public String getWorklabelByWorktype(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getWorklabelByWorktype");
+        String code = request.getParameter("code") == null ? "" : request.getParameter("code");
+        try{
+            List<Worklabel> worklabelList=worklabelServices.getWorksForCode(code);
+            ResultUtils.write(response,worklabelList);
+        }catch(Exception e){
+            logger.error("getWorklabelByWorktype e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;

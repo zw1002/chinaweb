@@ -46,6 +46,7 @@
         <typeAlias type="com.hnqj.model.Unsubscribe" alias="Unsubscribe"/>
         <typeAlias type="com.hnqj.model.Userinfo" alias="Userinfo"/>
         <typeAlias type="com.hnqj.model.Works" alias="Works"/>
+        <typeAlias type="com.hnqj.model.Worklabel" alias="Worklabel"/>
         <typeAlias type="com.hnqj.model.Proportions" alias="Proportions"/>
         <typeAlias type="com.hnqj.model.Props" alias="Props"/>
         <typeAlias type="com.hnqj.model.PropsImage" alias="PropsImage"/>

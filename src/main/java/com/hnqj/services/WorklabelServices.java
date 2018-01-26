@@ -85,4 +85,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return worklabelList; 
 	}
+
+	public List<Worklabel> getWorksForCode(String code) {
+		logger.info("通过作品分类value查询数据");
+		List<Worklabel>	worklabelList=null;
+		try {
+			worklabelList = (List<Worklabel>) daoSupport.findForList("WorklabelMapper.getWorksForCode",code);
+		}catch (Exception e){
+			e.printStackTrace();
+			worklabelList=null;
+		}
+		return worklabelList;
+	}
 }

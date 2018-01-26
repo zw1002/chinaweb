@@ -83,7 +83,7 @@ public class Works {
      *
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
-    private Double imgsize;
+    private String imgsize;
 
     /**
      *
@@ -411,7 +411,7 @@ public class Works {
      *
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
-    public Double getImgsize() {
+    public String getImgsize() {
         return imgsize;
     }
 
@@ -423,7 +423,7 @@ public class Works {
      *
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
-    public void setImgsize(Double imgsize) {
+    public void setImgsize(String imgsize) {
         this.imgsize = imgsize;
     }
 

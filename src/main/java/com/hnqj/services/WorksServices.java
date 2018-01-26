@@ -2,6 +2,7 @@ package com.hnqj.services;
 
 import com.hnqj.core.PageData;
 
+import com.hnqj.model.Worklabel;
 import com.hnqj.model.Works;
 
 import javax.annotation.Resource;
@@ -170,4 +171,5 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return worksList;
 	}
+
 }

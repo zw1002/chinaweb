@@ -10,7 +10,7 @@
     <result column="worksurl" jdbcType="VARCHAR" property="worksurl" />
     <result column="watermakeurl" jdbcType="VARCHAR" property="watermakeurl" />
     <result column="dpinum" jdbcType="VARCHAR" property="dpinum" />
-    <result column="imgsize" jdbcType="DOUBLE" property="imgsize" />
+    <result column="imgsize" jdbcType="VARCHAR" property="imgsize" />
     <result column="imgformart" jdbcType="VARCHAR" property="imgformart" />
     <result column="colrmodel" jdbcType="VARCHAR" property="colrmodel" />
     <result column="downcount" jdbcType="INTEGER" property="downcount" />
@@ -41,7 +41,7 @@
     delete from tb_works
     where uid = #{uid,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.hnqj.model.Works">
+  <insert id="addWorks" parameterType="pd">
     insert into tb_works (uid, workstype, worksname,
       uptime, samllurl, worksurl, 
       watermakeurl, dpinum, imgsize, 
@@ -52,7 +52,7 @@
       worklabel, price)
     values (#{uid,jdbcType=VARCHAR}, #{workstype,jdbcType=VARCHAR}, #{worksname,jdbcType=VARCHAR}, 
       #{uptime,jdbcType=TIMESTAMP}, #{samllurl,jdbcType=VARCHAR}, #{worksurl,jdbcType=VARCHAR}, 
-      #{watermakeurl,jdbcType=VARCHAR}, #{dpinum,jdbcType=VARCHAR}, #{imgsize,jdbcType=DOUBLE}, 
+      #{watermakeurl,jdbcType=VARCHAR}, #{dpinum,jdbcType=VARCHAR}, #{imgsize,jdbcType=VARCHAR},
       #{imgformart,jdbcType=VARCHAR}, #{colrmodel,jdbcType=VARCHAR}, #{downcount,jdbcType=INTEGER}, 
       #{favcount,jdbcType=INTEGER}, #{displayflag,jdbcType=VARCHAR}, #{delflag,jdbcType=VARCHAR}, 
       #{checkuser,jdbcType=VARCHAR}, #{chacktime,jdbcType=TIMESTAMP}, #{merchid,jdbcType=VARCHAR}, 
@@ -68,7 +68,7 @@
       worksurl = #{worksurl,jdbcType=VARCHAR},
       watermakeurl = #{watermakeurl,jdbcType=VARCHAR},
       dpinum = #{dpinum,jdbcType=VARCHAR},
-      imgsize = #{imgsize,jdbcType=DOUBLE},
+      imgsize = #{imgsize,jdbcType=VARCHAR},
       imgformart = #{imgformart,jdbcType=VARCHAR},
       colrmodel = #{colrmodel,jdbcType=VARCHAR},
       downcount = #{downcount,jdbcType=INTEGER},
