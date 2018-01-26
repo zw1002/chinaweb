@@ -147,7 +147,7 @@ $(".tempWrap").css("width","694");
                    <!--<li><a class="mem_icon5" href="income.jsp">收支</a></li>-->
                    <li><a class="mem_icon7" href="#" onclick="toWithdrawals()">提现</a></li>
                    <!--<li><a class="mem_icon8" href="task.html">任务</a></li>-->
-                   <li><a class="mem_icon9" href="#">个人资料</a></li>
+                   <li><a class="mem_icon9" href="<%=basePath%>/persondata/toPersonData.do">个人资料</a></li>
                 </ul>
              </div>
            </div><!-- wid260px -->

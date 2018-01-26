@@ -74,22 +74,10 @@
                <ul>
                    <div class="login_box">
                       <ul>
-                          <li style="height:24px; padding:0 15px;">
-                           <table width="100%">
-                              <tr>
-                                 <td><input name="aa" type="radio" class="fx_wid" value="" checked>&nbsp; &nbsp;设计师 </td>
-                                 <td><input name="aa" type="radio" class="fx_wid" value="">&nbsp; &nbsp;摄影师   </td>
-                                 <td width="24%"><input name="aa" type="radio" class="fx_wid" value="">&nbsp; &nbsp;婚秀达人 </td>
-                              </tr>
-                           </table>      
-                          </li>
                           <li><div class="inp_bg"><input name="" type="text" placeholder="手机号"></div></li>
                           <li><div class="inp_bg"><input name="" type="text" placeholder="用户名"></div></li>
-                          <li><div class="inp_bg" style="width:55%;"><input name="" type="text" placeholder="图行验证码"></div>
-                          <a href="javascript:" class="yzm_btn"><img src="<%=basePath%>/static/images/yzm_img.png" /></a>
                           <li><div class="inp_bg" style="width:55%;"><input name="" type="text" placeholder="手机验证码"></div>
                           <a href="javascript:" class="yzm_btn">获取验证码</a>
-                          
                           </li>
                           <input name="bb" type="checkbox" class="fx_wid" value="" checked>阅读并同意《婚秀中国网服务协议》《委托代收付款协议》
                           <input type="text" id="submitBtns" value="注册并登录" class="login_btn" />

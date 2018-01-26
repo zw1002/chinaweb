@@ -86,15 +86,15 @@ public class imageUtil {
 		thumbnailImage(imgFile, w, h, prevfix, force);
 	}
 
-	public void thumbnailImage(String imagePath, int w, int h, boolean force){
-		thumbnailImage(imagePath, w, h, DEFAULT_PREVFIX, force);
+	public void thumbnailImage(File file, int w, int h, boolean force){
+		thumbnailImage(file, w, h, DEFAULT_PREVFIX, force);
 	}
 
-	public void thumbnailImage(String imagePath, int w, int h){
-		thumbnailImage(imagePath, w, h, DEFAULT_FORCE);
+	public void thumbnailImage(File file, int w, int h){
+		thumbnailImage(file, w, h, DEFAULT_FORCE);
 	}
 
 	public static void main(String[] args) {
-		new imageUtil().thumbnailImage("I:\\myyy\\src\\main\\webapp\\static\\img\\cbd2.png", 100, 150);
+		new imageUtil().thumbnailImage(new File("I:\\myyy\\src\\main\\webapp\\static\\img\\cbd2.png") ,100, 150);
 	}
 }

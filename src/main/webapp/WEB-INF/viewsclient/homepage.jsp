@@ -147,7 +147,7 @@ function getMerchData(){
             var str="";
             for(var i=0;i<msg.length;i++){
                 str += '<li><div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
-                +'<a href="#" onclick="toDesignDel('+msg[i].uid+')"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
+                +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
                 +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
             }
             $("#userWorks").append(str);
@@ -170,7 +170,7 @@ function getMerchData(){
              var str="";
              for(var i=0;i<msg.length;i++){
                  str += '<li> <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
-                         +'<a href="#"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
+                         +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
                          +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
              }
              $("#userBestSellers").append(str);
@@ -184,6 +184,7 @@ function getMerchData(){
      $.ajax({
          url: "<%=basePath%>/homepage/latestRecommendation.do",
          type: "POST",
+         async:false,
          data: {
              uid: uid,
              count:count
@@ -192,17 +193,13 @@ function getMerchData(){
              var msg = eval("(" + data + ")");
              var str="";
              for(var i=0;i<msg.length;i++){
-                 str += '<li> <div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
-                         +'<a href="#"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
+                 str += '<li><div class="btn_pos"><a href="#">收藏</a> <a href="#" class="buy_nowd">立即购买</a></div>'
+                         +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
                          +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
              }
              $("#latestRecommendation").append(str);
          }
      });
- }
- //跳转到设计明细页面
- function toDesignDel(uid){
-     document.location.href = '<%=basePath%>/design/toDesignDel.do?uid='+uid;
  }
  //跳转到首页
  function toIndex(){

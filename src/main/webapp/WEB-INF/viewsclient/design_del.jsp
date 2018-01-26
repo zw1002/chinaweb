@@ -51,7 +51,7 @@
             },
             success: function (data) {
                 var msg = eval("(" + data + ")");
-                var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.worksurl+"' title='点击查看大图' alt=''  ><img src='<%=basePath%>"+msg.worksurl+"' /></a></li>";
+                var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.worksurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.worksurl+"' /></a></li>";
                 $("#gallery ul").append(str);
                 $("#title").text(msg.worksname);
                 var stt='<tr> <td width="50"><div class="tx_img"><a href="homepage.jsp"><img src="<%=basePath%>/static/images/head_img.png" /></a></div></td>'
@@ -213,7 +213,7 @@
          </div>
       </div><!-- top_line -->
       <div class="top_wid logo_con">
-         <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
+         <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="ss_bg fl">
             <input name="" type="text" placeholder="请输入搜索内容"  class="inp_txt">
             <input type="submit" value="搜 索" class="ss_btn" /> 
@@ -281,18 +281,12 @@
               <div class="jj_tabd">
                 <table width="100%">
                    <tr>
-                      <td colspan="2">编号：13452373</td>
-                   </tr>
-                   <tr>
                       <td id="imgformart"></td>
                       <td id="dpinum"></td>
                    </tr>
                    <tr>
                       <td id="imgsize"></td>
-                      <td> 像素：4960X3781PX</td>
-                   </tr>
-                   <tr>
-                      <td  colspan="2" id="uptime"></td>
+                       <td  colspan="2" id="uptime"></td>
                    </tr>
                    <tr>
                       <td  colspan="2"><p class="fl">分享到：</p>

@@ -121,6 +121,10 @@
      var uid="${userinfo.getUid()}";
      document.location.href = '<%=basePath%>/personworks/toPersonWorks.do?uid='+uid;
  }
+ function toHomepage(){
+     var uid="${userinfo.getUid()}";
+     document.location.href = '<%=basePath%>/homepage/toHomepage.do?uid='+uid;
+ }
  //跳转到提现页面
  function toWithdrawals(){
      var uid="${userinfo.getUid()}";
@@ -242,9 +246,22 @@
                                </div>
                            </div>
                            <div class="layui-form-item layui-form-text">
+                               <label class="layui-form-label">作品价格：</label>
+                               <div class="layui-input-block">
+                                   <input id="price" name="price" class="layui-input">
+                               </div>
+                           </div>
+                           <div class="layui-form-item layui-form-text">
                                <label class="layui-form-label">作品标签：</label>
                                <div class="layui-input-block">
                                    <textarea id="worklabel" name="worklabel" placeholder="以逗号分隔，标签总数不能超过10个" class="layui-textarea"></textarea>
+                               </div>
+                           </div>
+
+                           <div class="layui-form-item layui-form-text">
+                               <label class="layui-form-label">作品简介：</label>
+                               <div class="layui-input-block">
+                                   <textarea id="workremark" name="workremark" class="layui-textarea"></textarea>
                                </div>
                            </div>
                            <div class="layui-upload">

@@ -1,6 +1,9 @@
 package com.hnqj.controller;
 
 import com.hnqj.core.PageData;
+import com.hnqj.core.imageUtil;
+import com.hnqj.model.Merch;
+import com.hnqj.services.MerchServices;
 import com.hnqj.services.WorksServices;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import sun.misc.BASE64Encoder;
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -23,11 +28,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.hnqj.core.ImageRemarkUtil.markImageByText;
+import static com.hnqj.core.ImageRemarkUtil.markImageByTexts;
+
 @Controller
 @RequestMapping("/uploadFile")
 public class UploadFileController extends  BaseController {
     @Autowired
     WorksServices worksServices;
+    @Autowired
+    MerchServices merchServices;
 
     private String UPLOADDIR = "upload" + File.separator;
 
@@ -71,6 +81,8 @@ public class UploadFileController extends  BaseController {
     //requestParam要写才知道是前台的那个数组
     public String filesUpload(@RequestParam("file") MultipartFile[] files, HttpServletRequest request) {
         String worktype = request.getParameter("worktype") == null ? "" : request.getParameter("worktype");
+        String workremark = request.getParameter("workremark") == null ? "" : request.getParameter("workremark");
+        String price = request.getParameter("price") == null ? "" : request.getParameter("price");
         String workclassification = request.getParameter("workclassification") == null ? "" : request.getParameter("workclassification");
         String worklabel = request.getParameter("worklabel") == null ? "" : request.getParameter("worklabel");
         String HOMEPATH = request.getSession().getServletContext().getRealPath("/") + "static/uploadImg/";
@@ -78,6 +90,7 @@ public class UploadFileController extends  BaseController {
         String today = dateFormate.format(new Date());
         String savePath = HOMEPATH + UPLOADDIR
                 + today + File.separator;
+        String relativePath = "/static/uploadImg/"+UPLOADDIR + today + File.separator;
         File f1 = new File(savePath);
         if (!f1.exists()) {
             f1.mkdirs();
@@ -94,25 +107,45 @@ public class UploadFileController extends  BaseController {
                 File localFile = new File(savePath + myFileName);//上传文件是真实名称
                 BigDecimal fileSize = null;
                 String measuring = "";
+                double fileSizes=0;
                 if (byteSize >= 1024 * 1024) {
                     double f = byteSize * 1.0 / (1024 * 1000);
                     fileSize = new BigDecimal(f);
+                    fileSizes = fileSize.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     measuring = "MB";
                 } else {
                     double f = byteSize * 1.0 / (1024);
                     fileSize = new BigDecimal(f);
+                    fileSizes = fileSize.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     measuring = "KB";
                 }
                 PageData pageData = new PageData();
                 pageData.put("uid",UUID.randomUUID().toString());
-                pageData.put("worksurl",savePath + myFileName);
-                pageData.put("imgsize",fileSize + measuring);
+                pageData.put("worksurl",relativePath + myFileName);
+                pageData.put("samllurl",relativePath +"thumb_"+ myFileName);
+                pageData.put("imgsize",fileSizes + measuring);
                 pageData.put("imgformart",extName);
                 pageData.put("worksname",myFileName);
-                pageData.put("workstype",worktype);
+                pageData.put("workstype",workclassification);
                 pageData.put("uptime",new Date());
+                pageData.put("worklabel",worklabel);
+                pageData.put("downcount",0);
+                pageData.put("favcount",0);
+                pageData.put("displayflag",0);
+                pageData.put("delflag",0);
+                pageData.put("ticknums",0);
+                pageData.put("oknums",0);
+                pageData.put("workremark",workremark);
+                Merch merch=merchServices.getMerchForUserId(getUser().getUid());
+                pageData.put("merchid",merch.getUid());
+                pageData.put("price",price);
+                BufferedImage image = null;
                 try {
-                    file.transferTo(localFile);
+                    file.transferTo(localFile);//原图
+                    new imageUtil().thumbnailImage(localFile,280,280);//缩略图
+                    image = ImageIO.read(new File(savePath + myFileName));
+                    String dpinum=image.getWidth() + "x" + image.getHeight();
+                    pageData.put("dpinum",dpinum);
                     worksServices.addWorks(pageData);
                 } catch (IOException e) {
                     e.printStackTrace();
