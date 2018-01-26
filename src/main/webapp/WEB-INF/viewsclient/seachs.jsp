@@ -2,29 +2,29 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    String seachTxt=request.getAttribute("seachTxt").toString();
 %>
 <html>
 <head>
-<meta charset="utf-8">
-<title>婚秀中国网</title>
+    <meta charset="utf-8">
+    <title>婚秀中国网</title>
     <link rel="icon" href="<%=basePath%>/static/images/ico.ico" type="image/x-icon"/>
-<link href="<%=basePath%>/static/css/global.css" rel="stylesheet" type="text/css" />
-<link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/normalize.css" />
-<link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/demo.css" />
-<link href="<%=basePath%>/static/css/laypage.css" type="text/css" rel="stylesheet" >
-<script src="<%=basePath%>/static/js/laypage.js"></script>
-<script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
+    <link href="<%=basePath%>/static/css/global.css" rel="stylesheet" type="text/css" />
+    <link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/demo.css" />
+    <link href="<%=basePath%>/static/css/laypage.css" type="text/css" rel="stylesheet" >
+    <script src="<%=basePath%>/static/js/laypage.js"></script>
+    <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
 
     <script src="<%=basePath%>/static/js/imagesloaded.pkgd.min.js"></script>
     <script src="<%=basePath%>/static/js/masonry.pkgd.min.js"></script>
     <script src="<%=basePath%>/static/js/anime.min.js"></script>
     <script src="<%=basePath%>/static/js/main.js"></script>
     <script type="text/javascript">
-        $(function(){
-        });
-        var queryPara={worktype:'00',downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
+
+        var queryPara={data:"<%=seachTxt%>",label:"<%=seachTxt%>",worktype:'',workprice:0,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
         $(document).ready(function () {
             //隐藏注册/按钮登录    显示个人中心/个人空间
             var firstname="${userinfo.getFristname()}";
@@ -32,32 +32,24 @@
                 $("#beferLogin").css("display","none");
                 $("#backLogin").css("display","block");
             }
-            //初始设计分类
-            var classData=getAjaxData('<%=basePath%>/general/getGroupClass.do',{type:'婚秀分类'},false);
-            if(classData!=null) {
-                $('.fl_nav').html('');
-                var htmlVal=" <a uid=\"00\" href=\"javascript:\" class=\"on\">全部</a>";
-                for(var i=0;i<classData.content.length;i++){
-                    htmlVal+="<a uid='"+classData.content[i].keyvalue+"' href=\"javascript:\">"+classData.content[i].typename+"</a>";
+
+            $('.ss_btn').click(function () {
+                var seachTxt =$('.inp_txt').val();
+                if(seachTxt==""){
+                    alert("请输入查询内容！！！");
+                    return;
                 }
-
-                $('.fl_nav').html(htmlVal);
-            }
-
-            $(".fl_nav>a").click(function(){
-                $(this).parents(".fl_nav").find("a").removeClass("on");
-                $(this).addClass("on");
-                queryPara.worktype = $(this).attr('uid')==""?'00':$(this).attr('uid');
+                queryPara.data=seachTxt;
+                queryPara.label=seachTxt;
                 outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
             });
-
-            $(".px_box>a").click(function(){
-                $(this).parents(".px_box").find("a").removeClass("on");
+            $("#sortDiv>a").click(function(){
+                $(this).parents("div").find("a").removeClass("on");
                 $(this).addClass("on");
 
-                queryPara={worktype:0,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
-
-                queryPara.worktype = $(".fl_nav .on").attr('uid')==""?'00':$(".fl_nav .on").attr('uid');
+                //queryPara={data:null,label:null,worktype:null,workprice:0,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
+                queryPara.downloadcount=0;queryPara.newup=0;queryPara.collectioncount=0;
+                //queryPara.worktype = $(".fl_nav .on").attr('uid')==""?'00':$(".fl_nav .on").attr('uid');
                 if($(this).text()=="热门下载")
                     queryPara.downloadcount=1;
                 else  if($(this).text()=="默认排序")
@@ -68,10 +60,6 @@
             });
             outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
 
-        });
-
-        $('.ss_btn').click(function () {
-            document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
         });
         function getAjaxData(url,para,isAsync) {
             var rtnVal=null;
@@ -111,7 +99,7 @@
                 }
                 for(var i=0;i<resultData.length;i++){
                     gridItems+="\t<div class=\"grid__item\">\n" +
-                        "\t\t\t\t\t\t<a class=\"grid__link\" href=\"#\" onclick='toWeddingDel("+resultData[i].uid+")'><img class=\"grid__img\" src=\"<%=basePath%>"+resultData[i].worksurl+"\" alt=\"\" /></a>\n" +
+                        "\t\t\t\t\t\t<a class=\"grid__link\" href=\"#\" onclick='toFreeDel("+resultData[i].uid+")'><img class=\"grid__img\" src=\"<%=basePath%>"+resultData[i].worksurl+"\" alt=\"\" /></a>\n" +
                         "                        <div class=\"list_txt_box\">\n" +
                         "                          <h2>"+resultData[i].worksname+"</h2>\n" +
                         "                          <p><a href=\"javascript:\" class=\"zan\">"+resultData[i].ticknums+"</a> | <a href=\"javascript:\" class=\"down\">"+resultData[i].downcount+"</a></p>\n" +
@@ -124,14 +112,18 @@
             }
             else {$('.grid,.grid--type-a').html('未加载到数据');
                 $('.grid,.grid--type-a').css('height','0px');}
-            if(isCount==0){
+            if(isCount==0) {
                 //重新获取查询结果记录数
-                var recordCounts=0;
-                queryPara.count=null;
-                var rdata =getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,false)
-                queryPara.count=20;
-                if(rdata!=null)
-                    recordCounts=Math.ceil(rdata.length/queryPara.count);
+                var recordCounts = 0;
+                queryPara.count = null;
+                var rdata = getAjaxData('<%=basePath%>/general/seachWorks.do', queryPara, false);
+
+                $('.px_box b').text("当前位置：首页>搜索中心> 搜索\""+$('.inp_txt').val()+"\",共0条");
+                queryPara.count = 20;
+                if (rdata != null) {
+                    recordCounts = Math.ceil(rdata.length / queryPara.count);
+                    $('.px_box b').text("当前位置：首页>搜索中心> 搜索\""+$('.inp_txt').val()+"\",共"+rdata.length+"条");
+                }
                 //初始化分页控制
                 laypage({
                     cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,
@@ -174,10 +166,6 @@
   function toWedding(){
       document.location.href = '<%=basePath%>/wedding/toWedding.do';
   }
-  //跳转到婚秀详情页面
-  function toWeddingDel(uid){
-      document.location.href = '<%=basePath%>/wedding/toWeddingDel.do?uid='+uid;
-  }
   //跳转到道具页面
   function toMultimedia(){
       document.location.href = '<%=basePath%>/multimedia/toMultimedia.do';
@@ -185,6 +173,10 @@
   //跳转到免费下载页面
   function toFree(){
       document.location.href = '<%=basePath%>/free/toFree.do';
+  }
+  //跳转免费下载页面
+  function toFreeDel(uid){
+      document.location.href = '<%=basePath%>/free/toFreeDel.do?uid='+uid;
   }
   //跳转到求助求图页面
   function toHelp(){
@@ -227,12 +219,11 @@
              </div>
          </div>
       </div><!-- top_line -->
-      
       <div class="top_wid logo_con">
           <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="ss_bg fl">
-            <input name="" type="text" placeholder="请输入搜索内容"  class="inp_txt">
-            <input type="submit" value="搜 索" class="ss_btn" /> 
+            <input name="" type="text" placeholder="请输入搜索内容" value="<%=seachTxt%>" class="inp_txt">
+            <input type="button" value="搜 索" class="ss_btn" />
          </div>
          
          <div class="phone_fr">
@@ -243,13 +234,13 @@
       
       <div class="nav">
           <ul class="clearfix">
-              <li><a href="#" onclick="toIndex()">首 页 </a> <p class="point_d"></p></li>
+              <li><a class="active" href="#" onclick="toIndex()">首 页 </a> <p class="point_d"></p></li>
               <li><a href="#" onclick="toDesign()">设 计</a> <p class="point_d"></p></li>
               <li><a href="#" onclick="toPhotography()">摄影图库</a> <p class="point_d"></p></li>
               <li><a href="#" onclick="toMultimedia()">道具新品</a> <p class="point_d"></p></li>
-              <li><a class="active" href="#" onclick="toWedding()">婚 秀</a> <p class="point_d"></p></li>
+              <li><a href="#" onclick="toWedding()">婚 秀</a> <p class="point_d"></p></li>
               <li><a href="#" onclick="toHelp()">求图求助</a> <p class="point_d"></p></li>
-              <li><a href="#" onclick="toFree()">免费下载</a> <p class="point_d"></p></li>
+              <li><a  href="#" onclick="toFree()">免费下载</a> <p class="point_d"></p></li>
           </ul>
       </div><!-- nav -->
       
@@ -258,85 +249,25 @@
       </div><!-- top -->
    </header>
    
-     <div class="bg_f5"> 
-     
-   <div class="hlx_banner" style="background:url(<%=basePath%>/static/images/list_banner.png) no-repeat top center;"></div>
-   
- 
+     <div class="bg_f5">
      <div class="wrap">
-     
-            <div class="hlx_fld">
-              <table width="100%">
-                 <tr>
-                    <td><b>系列分类：</b></td>
-                    <td>
-                     <div class="fl_nav">
-                       <a href="javascript:" class="on">全部</a>
-                       <a href="javascript:">中式</a>
-                       <a href="javascript:">新中式</a>
-                       <a href="javascript:">韩式</a>
-                       <a href="javascript:">欧式</a>
-                       <a href="javascript:">冰雪奇缘</a>
-                       <a href="javascript:">英伦风</a>
-                       <a href="javascript:">老上海</a>
-                       <a href="javascript:">百老汇</a>
-                       <a href="javascript:">海洋风</a>
-                       <a href="javascript:">生日</a>
-                       <a href="javascript:">路引牌</a>
-                     </div>
-                    </td>
-                 </tr>
-                 <tr>
-                    <td><b>颜色分类：</b></td>
-                    <td>
-                     <div class="fl_nav">
-                       <a href="javascript:" class="on">全部</a>
-                       <a href="javascript:">红色</a>
-                       <a href="javascript:">粉色</a>
-                       <a href="javascript:">香槟色</a>
-                       <a href="javascript:">白色</a>
-                       <a href="javascript:">金色</a>
-                       <a href="javascript:">蓝色</a>
-                       <a href="javascript:">绿色</a>
-                     </div>
-                    </td>
-                 </tr>
-                 <tr>
-                    <td><b>场地分类：</b></td>
-                    <td>
-                     <div class="fl_nav">
-                       <a href="javascript:" class="on">全部</a>
-                       <a href="javascript:">婚宴城             </a>
-                       <a href="javascript:">草地</a>
-                       <a href="javascript:">海边</a>
-                       
-                     </div>
-                    </td>
-                 </tr>
-              </table>
+
+            <div class="px_box" >
+                <b>当前位置：首页&gt;搜索中心&gt; 搜索"",共2234条</b>
+                <div id="sortDiv" style="float:right;right:0px;"> 排序方式：
+                    <a href="javascript:" class="on">默认排序</a>|<a href="javascript:">收藏</a>|<a href="javascript:">热门下载</a>
+                </div>
             </div>
-            
-            
-            <div class="px_box">
-               <a href="javascript:" class="on">默认排序</a>|<a href="javascript:">收藏</a>|<a href="javascript:">热门下载</a>        
-            
-            </div>
-            
             
             <main>
 			<div class="content content--center">
 				<div class="grid grid--type-a">
 
-                    
-					
 				</div><!-- grid -->
 				</div>
-			
 		</main>
-                    <div id="pages" class="pages_box"></div>
 
-
-   
+<div id="pages" class="pages_box"></div>
     </div><!-- wrap -->
     </div><!-- bg_f5 -->
    

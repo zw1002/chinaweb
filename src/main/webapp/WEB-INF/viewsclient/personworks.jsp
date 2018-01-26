@@ -15,6 +15,12 @@
 <script src="<%=basePath%>/static/js/laypage.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+
+        })
+    </script>
 <script type="text/javascript">
  $(function(){
 	  $(".nav_new ul li").hover(function(){
@@ -24,7 +30,10 @@
 			   $(this).find("a.ztit").removeClass("active"); 
 			  $(this).find(".nav_list").hide();
 			  }
-		  )
+		  );
+	  $('.ss_btn').click(function () {
+         document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
+     });
  });
  $(document).ready(function () {
  });

@@ -74,6 +74,12 @@
 
 </div>
 <script type="text/javascript">
+    $(function(){
+
+        $('.ss_btn').click(function () {
+            document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
+        });
+    });
     var flag=1;
     $(document).ready(function () {
         //隐藏注册/按钮登录    显示个人中心/个人空间
