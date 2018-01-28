@@ -36,6 +36,8 @@ public class GeneralController extends BaseController{
     LeavemsgServices leavemsgServices;
     @Autowired
     DealuidchildServices dealuidchildServices;
+    @Autowired
+    UserinfoServices userinfoServices;
     /**
      * 获取分类接口
      * @param request
@@ -103,6 +105,8 @@ public class GeneralController extends BaseController{
                 map.put("colrmodel",relWorks.getColrmodel());
                 map.put("merchid",relWorks.getMerchid());
                 Merch merchModel =merchServices.getMerchforId(relWorks.getMerchid());
+                Userinfo userinfo=userinfoServices.getUserinfoforId(merchModel.getUserinfouid());
+                map.put("picurl",userinfo.getUsrpicurl());
                 map.put("userid",merchModel.getUserinfouid());
                 map.put("merchname",merchModel.getMerchname());
                 map.put("workcount",merchModel.getWorksnums().toString());

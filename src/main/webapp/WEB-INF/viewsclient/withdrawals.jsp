@@ -30,6 +30,7 @@
              });
  });
  $(document).ready(function () {
+     getUserMerch();
  });
  //跳转到首页
  function toIndex(){
@@ -88,6 +89,36 @@
  //开店
  function applyShop(){
      document.location.href = '<%=basePath%>/applyshop/toApplyShop.do';
+ }
+ //获取会员店铺信息
+ function getUserMerch(){
+     //会员ID
+     var uid="${userinfo.getUid()}";
+     $.ajax({
+         url: "<%=basePath%>/merch/getMerchData.do",
+         type: "POST",
+         data: {
+             uid: uid
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             if(data == "null"){
+                 $("#isSeller").css("display","none");
+                 $("#sellering").css("display","none");
+             }else{
+                 if(msg.statu == 0){
+                     $("#becomeSeller").css("display","none");
+                     $("#isSeller").css("display","none");
+                 }else if(msg.statu == 1){
+                     $("#sellering").css("display","none");
+                     $("#becomeSeller").css("display","none");
+                 }else{
+                     $("#isSeller").css("display","none");
+                     $("#sellering").css("display","none");
+                 }
+             }
+         }
+     });
  }
  //根据状态分页获取会员提现数据
  function getUserAllCashRecordByType(offset,count,state){
@@ -175,7 +206,7 @@
                  <div class="mj_tab">
                     <table width="100%">
                        <tr>
-                           <td width="50%"> <a href="#" onclick="applyShop()">成为卖家</a></td>
+                           <td id="becomeSeller" width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td><td id="isSeller" width="50%">我是卖家</td><td id="sellering" width="50%">店铺信息审核中...</td>
                        </tr>
                     </table>
                  </div>

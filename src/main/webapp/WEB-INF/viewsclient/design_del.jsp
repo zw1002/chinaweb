@@ -54,7 +54,7 @@
                 var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.worksurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
                 $("#gallery ul").append(str);
                 $("#title").text(msg.worksname);
-                var stt='<tr> <td width="50"><div class="tx_img"><a href="homepage.jsp"><img src="<%=basePath%>/static/images/head_img.png" /></a></div></td>'
+                var stt='<tr> <td width="50"><div class="tx_img"><img style="width:45px" src="<%=basePath%>'+msg.picurl+'" /></div></td>'
                         +'<td> <a href="#" id='+msg.uid+'>'+msg.merchname+'</a>'+msg.grade+' <img src="<%=basePath%>/static/images/icon_dj.png" height="15" width="22" />'
                         +'<p>交易：'+msg.count+' &nbsp; &nbsp;|&nbsp; &nbsp;作品数量：'+msg.workcount+'</p> </td> </tr>';
                 $("#merchMessage").append(stt);
@@ -182,47 +182,57 @@
     }
     //收藏店铺
     function addFocusOthers(){
-        var focus=document.getElementById("focus").innerText;
-        if(focus.indexOf("收藏店铺") != -1){
-            var focus_merchid=$("#merchid").val();
-            var flag="2";
-            $.ajax({
-                url: "<%=basePath%>/homepage/addFocusOthers.do",
-                type: "POST",
-                data: {
-                    flag:flag,
-                    focus_userid: userid,
-                    focus_merchid: focus_merchid
-                },
-                success: function (data) {
-                    if(data!=="failed"){
-                        alert("收藏成功");
-                        $("#focus").text("已收藏");
-                    }else{
-                        alert("收藏失败");
+        var firstname="${userinfo.getFristname()}";
+        if(firstname != ""){
+            var focus=document.getElementById("focus").innerText;
+            if(focus.indexOf("收藏店铺") != -1){
+                var focus_merchid=$("#merchid").val();
+                var flag="2";
+                $.ajax({
+                    url: "<%=basePath%>/homepage/addFocusOthers.do",
+                    type: "POST",
+                    data: {
+                        flag:flag,
+                        focus_userid: userid,
+                        focus_merchid: focus_merchid
+                    },
+                    success: function (data) {
+                        if(data!=="failed"){
+                            alert("收藏成功");
+                            $("#focus").text("已收藏");
+                        }else{
+                            alert("收藏失败");
+                        }
                     }
-                }
-            });
+                });
+            }else{
+                alert("已收藏");
+            }
         }else{
-            alert("已收藏");
+            document.location.href = '<%=basePath%>/signin/login.do';
         }
     }
     //添加作品到购物车
     function addShopCar(){
-        $.ajax({
-            url: "<%=basePath%>/pay/addShopCar.do",
-            type: "POST",
-            data: {
-                uid: uid
-            },
-            success: function (data) {
-                if(data!=="failed"){
-                    document.location.href = '<%=basePath%>/pay/toCar.do';
-                }else{
-                    alert("添加作品失败");
+        var firstname="${userinfo.getFristname()}";
+        if(firstname != ""){
+            $.ajax({
+                url: "<%=basePath%>/pay/addShopCar.do",
+                type: "POST",
+                data: {
+                    uid: uid
+                },
+                success: function (data) {
+                    if(data!=="failed"){
+                        document.location.href = '<%=basePath%>/pay/toCar.do';
+                    }else{
+                        alert("添加作品失败");
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            document.location.href = '<%=basePath%>/signin/login.do';
+        }
     }
 </script>
    <header>
