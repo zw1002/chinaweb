@@ -23,7 +23,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             java.io.PrintWriter out = response.getWriter();
             out.println("<html>");
             out.println("<script>");
-            out.println("window.open ('"+request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+request.getContextPath()+"/login.do','_top')");
+            out.println("window.open ('"+request.getScheme() + "://" + request.getServerName() + ":" +
+                    request.getServerPort()+request.getContextPath()+"/signin/login.do','_top')");
             out.println("</script>");
             out.println("</html>");
             out.close();

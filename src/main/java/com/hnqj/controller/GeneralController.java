@@ -361,7 +361,10 @@ public class GeneralController extends BaseController{
 //            }
 //            else strLblFilter=null;
             //System.out.println("kkkkkkkk:"+strLblFilter);
-            pageData.put("labels",labels);
+            if(label.equals(""))
+                pageData.put("labels",null);
+            else
+                pageData.put("labels",labels);
 
             pageData.put("freePrice",null);
             if(clickcount>0)
