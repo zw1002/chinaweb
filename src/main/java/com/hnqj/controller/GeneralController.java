@@ -350,18 +350,18 @@ public class GeneralController extends BaseController{
             PageData pageData = new PageData();
             pageData.put("data",data);
             String[] labels = label.split(",");
-            String strLblFilter="(";
-            for (String str: labels) {
-                if(str.equals("")) continue;
-                strLblFilter+=" worklabel LIKE '%"+str+"%' or ";
-            }
-            if(strLblFilter.length()>4){
-                strLblFilter=strLblFilter.substring(0,strLblFilter.length()-4);
-                strLblFilter+=")";
-            }
-            else strLblFilter=null;
+//            String strLblFilter="(";
+//            for (String str: labels) {
+//                if(str.equals("")) continue;
+//                strLblFilter+=" worklabel LIKE '%"+str+"%' or ";
+//            }
+//            if(strLblFilter.length()>4){
+//                strLblFilter=strLblFilter.substring(0,strLblFilter.length()-4);
+//                strLblFilter+=")";
+//            }
+//            else strLblFilter=null;
             //System.out.println("kkkkkkkk:"+strLblFilter);
-            pageData.put("label",strLblFilter);
+            pageData.put("labels",labels);
 
             pageData.put("freePrice",null);
             if(clickcount>0)
