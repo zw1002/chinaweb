@@ -139,17 +139,23 @@ public class UploadFileController extends  BaseController {
                 BufferedImage image = null;
                 try {
                     file.transferTo(localFile);//原图
-                    if(extName.equalsIgnoreCase(".cdr") || extName.equalsIgnoreCase(".psd")){
-                        Works works=worksServices.getWorksforId(uuid);
-                        pageData.put("uid",uuid);
-                        pageData.put("worksurl",relativePath + myFileName);
-                        pageData.put("imgsize",fileSizes + measuring);
-                        pageData.put("imgformart",extName);
-                        if(works == null){
+                    if(extName.equalsIgnoreCase(".cdr") || extName.equalsIgnoreCase(".psd")) {
+                        Works works = worksServices.getWorksforId(uuid);
+                        pageData.put("uid", uuid);
+                        pageData.put("worksurl", relativePath + myFileName);
+                        pageData.put("imgsize", fileSizes + measuring);
+                        pageData.put("imgformart", extName);
+                        if (works == null) {
                             worksServices.addWorks(pageData);
-                        }else{
+                        } else {
                             worksServices.updateworksurl(pageData);
                         }
+                    }else if(extName.equalsIgnoreCase(".mp4")){
+                        pageData.put("uid", uuid);
+                        pageData.put("worksurl", relativePath + myFileName);
+                        pageData.put("imgsize", fileSizes + measuring);
+                        pageData.put("imgformart", extName);
+                        worksServices.addWorks(pageData);
                     }else{
                         Works works=worksServices.getWorksforId(uuid);
                         pageData.put("uid",uuid);
