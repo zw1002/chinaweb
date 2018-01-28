@@ -31,7 +31,7 @@
     </script>
     <script type="text/javascript">
 
-        var queryPara={worktype:'00',downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
+        var queryPara={worktype:'20',downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
         $(document).ready(function () {
             //隐藏注册/按钮登录    显示个人中心/个人空间
             var firstname="${userinfo.getFristname()}";
@@ -54,7 +54,7 @@
             $(".fl_nav>a").click(function(){
                 $(this).parents(".fl_nav").find("a").removeClass("on");
                 $(this).addClass("on");
-                queryPara.worktype = $(this).attr('uid')==""?'00':$(this).attr('uid');
+                queryPara.worktype = $(this).attr('uid')==""?'20':$(this).attr('uid');
                 outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
             });
 
@@ -64,7 +64,7 @@
 
                 queryPara={worktype:0,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
 
-                queryPara.worktype = $(".fl_nav .on").attr('uid')==""?'00':$(".fl_nav .on").attr('uid');
+                queryPara.worktype = $(".fl_nav .on").attr('uid')==""?'20':$(".fl_nav .on").attr('uid');
                 if($(this).text()=="热门下载")
                     queryPara.downloadcount=1;
                 else  if($(this).text()=="最新上传")

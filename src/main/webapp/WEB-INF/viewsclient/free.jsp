@@ -36,22 +36,22 @@
                 $("#beferLogin").css("display","none");
                 $("#backLogin").css("display","block");
             }
-            //初始设计分类
-            var classData=getAjaxData('<%=basePath%>/general/getGroupClass.do',{type:'设计分类'},false);
-            if(classData!=null) {
-                $('.fl_nav').html('');
-                var htmlVal=" <a uid=\"00\" href=\"javascript:\" class=\"on\">全部</a>";
-                for(var i=0;i<classData.content.length;i++){
-                    htmlVal+="<a uid='"+classData.content[i].keyvalue+"' href=\"javascript:\">"+classData.content[i].typename+"</a>";
-                }
+            <%--//初始设计分类--%>
+            <%--var classData=getAjaxData('<%=basePath%>/general/getGroupClass.do',{type:'设计分类'},false);--%>
+            <%--if(classData!=null) {--%>
+                <%--$('.fl_nav').html('');--%>
+                <%--var htmlVal=" <a uid=\"00\" href=\"javascript:\" class=\"on\">全部</a>";--%>
+                <%--for(var i=0;i<classData.content.length;i++){--%>
+                    <%--htmlVal+="<a uid='"+classData.content[i].keyvalue+"' href=\"javascript:\">"+classData.content[i].typename+"</a>";--%>
+                <%--}--%>
 
-                $('.fl_nav').html(htmlVal);
-            }
+                <%--$('.fl_nav').html(htmlVal);--%>
+            <%--}--%>
 
             $(".fl_nav>a").click(function(){
                 $(this).parents(".fl_nav").find("a").removeClass("on");
                 $(this).addClass("on");
-                queryPara.worktype = $(this).attr('uid')==""?'00':$(this).attr('uid');
+                queryPara.worktype = $(this).attr('utype')==""?'00':$(this).attr('utype');
                 outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
             });
 
@@ -61,7 +61,7 @@
 
                 queryPara={worktype:0,workprice:2,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
 
-                queryPara.worktype = $(".fl_nav .on").attr('uid')==""?'00':$(".fl_nav .on").attr('uid');
+                queryPara.worktype = $(".fl_nav .on").attr('utype')==""?'00':$(".fl_nav .on").attr('utype');
                 if($(this).text()=="热门下载")
                     queryPara.downloadcount=1;
                 else  if($(this).text()=="默认排序")
@@ -271,17 +271,10 @@
                     <td>
                      <div class="fl_nav">
                        <a href="javascript:" class="on">全部</a>
-                       <a href="javascript:">中式</a>
-                       <a href="javascript:">新中式</a>
-                       <a href="javascript:">韩式</a>
-                       <a href="javascript:">欧式</a>
-                       <a href="javascript:">冰雪奇缘</a>
-                       <a href="javascript:">英伦风</a>
-                       <a href="javascript:">老上海</a>
-                       <a href="javascript:">百老汇</a>
-                       <a href="javascript:">海洋风</a>
-                       <a href="javascript:">生日</a>
-                       <a href="javascript:">路引牌</a>
+                       <a utype="00" href="javascript:">设计</a>
+                       <a utype="10" href="javascript:">摄影</a>
+                       <a utype="30" href="javascript:">婚秀</a>
+                       <a utype="20" href="javascript:">道具</a>
                      </div>
                     </td>
                  </tr>
