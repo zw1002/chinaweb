@@ -32,6 +32,7 @@
 
  $(document).ready(function () {
      getCollectionData();
+     getUserMerch();
  });
  //初始化收藏数据
  function getCollectionData(offset,count){
@@ -48,7 +49,7 @@
              var msg = eval("(" + data + ")");
              var str="";
              for(var i=0;i<msg.length;i++){
-                 str += '<tr id="'+msg[i].worksid+'"> <td width="120"><a href="#"><img src="<%=basePath%>'+msg[i].worksurl+'"></a></td>'
+                 str += '<tr id="'+msg[i].worksid+'"> <td width="120"><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].worksid+'"><img src="<%=basePath%>'+msg[i].worksurl+'"></a></td>'
                  +'<td><h2>'+msg[i].worksname+'</h2> <p>[价格] ￥'+msg[i].price+'</p>'
                  +'<p>[标签] '+msg[i].worklabel+'</p><p>[收藏日期] '+msg[i].collectiontime+'</p>'
                  +'</td><td width="50"><a href="#" onclick="delCollection('+msg[i].worksid+')">取消收藏</a></td></tr>';
@@ -132,6 +133,36 @@
  function applyShop(){
      document.location.href = '<%=basePath%>/applyshop/toApplyShop.do';
  }
+ //获取会员店铺信息
+ function getUserMerch(){
+     //会员ID
+     var uid="${userinfo.getUid()}";
+     $.ajax({
+         url: "<%=basePath%>/merch/getMerchData.do",
+         type: "POST",
+         data: {
+             uid: uid
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             if(data == "null"){
+                 $("#isSeller").css("display","none");
+                 $("#sellering").css("display","none");
+             }else{
+                 if(msg.statu == 0){
+                     $("#becomeSeller").css("display","none");
+                     $("#isSeller").css("display","none");
+                 }else if(msg.statu == 1){
+                     $("#sellering").css("display","none");
+                     $("#becomeSeller").css("display","none");
+                 }else{
+                     $("#isSeller").css("display","none");
+                     $("#sellering").css("display","none");
+                 }
+             }
+         }
+     });
+ }
 </script>
 </head>
 <body>
@@ -174,7 +205,7 @@
                  <div class="mj_tab">
                     <table width="100%">
                        <tr>
-                           <td width="50%"> <a href="#" onclick="applyShop()">成为卖家</a></td>
+                           <td id="becomeSeller" width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td><td id="isSeller" width="50%">我是卖家</td><td id="sellering" width="50%">店铺信息审核中...</td>
                        </tr>
                     </table>
                  </div>
