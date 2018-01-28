@@ -172,8 +172,8 @@
       LIMIT #{offset},#{count}
     </if>
   </select>
-  <!--作品搜索接口-->
-  <select id="serchWorks" parameterType="pd" resultMap="BaseResultMap">
+  <!--作品搜索接口 statementType="STATEMENT"-->
+  <select id="serchWorks" parameterType="pd" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List" />
     from tb_works
@@ -196,9 +196,21 @@
     <if test="type != null and type != ''">
       AND workstype in (select DISTINCT keyvalue from tb_dict where uid in (SELECT uid from tb_dict WHERE locate(keyvalue,#{type })) or parentid in (SELECT uid from tb_dict WHERE locate(keyvalue,#{type })))
     </if>
-    <if test="orderField != null and orderField != ''">
-      order by #{orderField}
+    <if test="orderField =='downcount'">
+      order by downcount desc
     </if>
+    <if test="orderField =='favcount'">
+      order by favcount desc
+    </if>
+    <if test="orderField =='ticknums'">
+      order by ticknums desc
+    </if>
+    <if test="orderField =='uptime'">
+      order by uptime desc
+    </if>
+    <!--<if test="orderField != null and orderField != ''">-->
+      <!--order by ${orderField} DESC-->
+    <!--</if>-->
     <if test="count != null and count != '0'">
       LIMIT #{offset},#{count}
     </if>
