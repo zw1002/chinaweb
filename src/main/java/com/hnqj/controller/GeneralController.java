@@ -22,7 +22,6 @@ import static com.hnqj.core.ResultUtils.toDateJson;
 @Controller
 @RequestMapping("/general")
 public class GeneralController extends BaseController{
-
     @Autowired
     DictServices dictServices;
     @Autowired
@@ -91,6 +90,7 @@ public class GeneralController extends BaseController{
                 Map<String, Object> map = new HashMap<>();
                 map.put("uid",relWorks.getUid());
                 map.put("worksurl",relWorks.getWorksurl());
+                map.put("workstype",relWorks.getWorkstype());
                 map.put("watermakeurl",relWorks.getWatermakeurl());
                 map.put("worksname",relWorks.getWorksname());
                 map.put("favcount",relWorks.getFavcount().toString());

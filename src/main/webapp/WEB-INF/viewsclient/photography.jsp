@@ -112,7 +112,7 @@
           }
           for(var i=0;i<resultData.length;i++){
               gridItems+="\t<div class=\"grid__item\">\n" +
-                  "\t\t\t\t\t\t<a class=\"grid__link\" href=\"#\" onclick='toPhotographyDel("+resultData[i].uid+")'><img class=\"grid__img\" src=\"<%=basePath%>"+resultData[i].worksurl+"\" alt=\"\" /></a>\n" +
+                  "\t\t\t\t\t\t<a class=\"grid__link\" href=\"<%=basePath%>/design/toDesignDel.do?uid="+resultData[i].uid+"\"><img class=\"grid__img\" src=\"<%=basePath%>"+resultData[i].worksurl+"\" alt=\"\" /></a>\n" +
                   "                        <div class=\"list_txt_box\">\n" +
                   "                          <h2>"+resultData[i].worksname+"</h2>\n" +
                   "                          <p><a href=\"javascript:\" class=\"zan\">"+resultData[i].ticknums+"</a> | <a href=\"javascript:\" class=\"down\">"+resultData[i].downcount+"</a></p>\n" +

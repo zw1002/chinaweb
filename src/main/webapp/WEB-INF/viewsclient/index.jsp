@@ -166,15 +166,15 @@
                                 +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
                         $("#design").append(str);
                     }else if(type == "10"){
-                        str = "<li><a href='#' onclick='toPhotographyDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                        str = "<li><a href='#' onclick='toDesignDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
                                 +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
                         $("#photography").append(str);
                     }else if(type == "30"){
-                        str = "<li><a href='#' onclick='toWeddingDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                        str = "<li><a href='#' onclick='toDesignDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
                                 +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
                         $("#wedding").append(str);
                     }else{
-                        str = "<li><a href='#' onclick='toMultimediaDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                        str = "<li><a href='#' onclick='toDesignDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
                                 +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
                         $("#multimedia").append(str);
                     }

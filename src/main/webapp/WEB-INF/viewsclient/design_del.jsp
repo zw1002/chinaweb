@@ -35,7 +35,6 @@
         interested();
         //会员作品推荐
         getUserInfoWorks();
-
         $('.ss_btn').click(function () {
             document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
         });
@@ -68,6 +67,17 @@
                 $("#price").text(msg.price+"元");
                 $("#merchid").val(msg.merchid);
                 userid=msg.userid;
+                if(msg.workstype.substring(0,1) == 0){//设计
+                    $("#deisgn").attr("class","active");
+                }else if(msg.workstype.substring(0,1) == 1) {//摄影
+                    $("#photo").attr("class","active");
+                }else if(msg.workstype.substring(0,1) == 2) {//道具
+                    $("#prop").attr("class","active");
+                }else if(msg.workstype.substring(0,1) == 3) {//婚秀
+                    $("#wedding").attr("class","active");
+                }else{//免费
+                    $("#free").attr("class","active");
+                }
             }
         });
     }
@@ -245,12 +255,12 @@
       <div class="nav">
           <ul class="clearfix">
               <li><a href="#" onclick="toIndex()">首 页 </a> <p class="point_d"></p></li>
-              <li><a class="active" href="#" onclick="toDesign()">设 计</a> <p class="point_d"></p></li>
-              <li><a href="#" onclick="toPhotography()">摄影图库</a> <p class="point_d"></p></li>
-              <li><a href="#" onclick="toMultimedia()">道具新品</a> <p class="point_d"></p></li>
-              <li><a href="#" onclick="toWedding()">婚 秀</a> <p class="point_d"></p></li>
+              <li><a id="deisgn" href="#" onclick="toDesign()">设 计</a> <p class="point_d"></p></li>
+              <li><a id="photo" href="#" onclick="toPhotography()">摄影图库</a> <p class="point_d"></p></li>
+              <li><a id="prop" href="#" onclick="toMultimedia()">道具新品</a> <p class="point_d"></p></li>
+              <li><a id="wedding" href="#" onclick="toWedding()">婚 秀</a> <p class="point_d"></p></li>
               <li><a href="#" onclick="toHelp()">求图求助</a> <p class="point_d"></p></li>
-              <li><a href="#" onclick="toFree()">免费下载</a> <p class="point_d"></p></li>
+              <li><a id="free" href="#" onclick="toFree()">免费下载</a> <p class="point_d"></p></li>
           </ul>
       </div><!-- nav -->
       </div><!-- top -->
