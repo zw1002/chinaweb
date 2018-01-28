@@ -1,4 +1,5 @@
 package com.hnqj.controller;
+import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
 import com.hnqj.model.Merch;
 import com.hnqj.model.Userinfo;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * 店铺信息控制层
@@ -22,6 +25,38 @@ public class MerchController extends BaseController{
     UserinfoServices userinfoServices;
     @Autowired
     MerchServices merchServices;
+
+    /**
+     * 开店
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/addMerchData.do")
+    public String addMerchData(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("addMerchData");
+        String merchname = request.getParameter("merchname") == null ? "" : request.getParameter("merchname");
+        String merchremark = request.getParameter("merchremark") == null ? "" : request.getParameter("merchremark");
+        PageData pageData=new PageData();
+        pageData.put("uid", UUID.randomUUID().toString());
+        pageData.put("merchname",merchname);
+        pageData.put("userinfouid",getUser().getUid());
+        pageData.put("builddatetime",new Date());
+        pageData.put("bondvalue",0);
+        pageData.put("merchscroe",0);
+        pageData.put("statu",0);
+        pageData.put("worksnums",0);
+        pageData.put("dealnums",0);
+        pageData.put("remark",merchremark);
+        try{
+            merchServices.addMerch(pageData);
+            ResultUtils.writeSuccess(response);
+        }catch (Exception e){
+            logger.error("addMerchData e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
 
     /**
      * 根据ID获取店铺信息
@@ -37,9 +72,10 @@ public class MerchController extends BaseController{
             Merch merch=merchServices.getMerchForUserId(uid);
             ResultUtils.write(response,merch);
         }catch (Exception e){
-            logger.error("getUserInfo e="+e.getMessage());
+            logger.error("getMerchData e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;
     }
+
 }

@@ -172,4 +172,27 @@ protected final Log logger = LogFactory.getLog(getClass());
 		return worksList;
 	}
 
+	public int updateworksurl(PageData pageData1) {
+		logger.info("修改Works原图地址");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("WorksMapper.updateworksurl",pageData1);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
+
+	public int updateWorkSamllurlandWatermakeurl(PageData pageData) {
+		logger.info("修改Works水印图地址和缩略图");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("WorksMapper.updateWorkSamllurlandWatermakeurl",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
 }

@@ -203,4 +203,20 @@
       LIMIT #{offset},#{count}
     </if>
   </select>
+  <!--修改作品原图地址-->
+  <update id="updateworksurl"  parameterType="pd">
+    update tb_works
+    set worksurl = #{worksurl}
+    imgsize = #{imgsize},
+    imgformart = #{imgformart},
+    where uid = #{uid}
+  </update>
+  <!--修改Works水印图地址和缩略图-->
+  <update id="updateWorkSamllurlandWatermakeurl" parameterType="pd">
+    update tb_works
+    set samllurl = #{samllurl},
+    watermakeurl = #{watermakeurl},
+    dpinum = #{dpinum}
+    where uid = #{uid}
+  </update>
 </mapper>

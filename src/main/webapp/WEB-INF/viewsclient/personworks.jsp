@@ -91,6 +91,10 @@
      var uid="${userinfo.getUid()}";
      document.location.href = '<%=basePath%>/withdrawals/toWithdrawals.do?uid='+uid;
  }
+ //开店
+ function applyShop(){
+     document.location.href = '<%=basePath%>/applyshop/toApplyShop.do';
+ }
  //根据分类获取会员全部作品
  function getUserAllWorksByType(offset,count,type){
      var uid=$("#uid").val();
@@ -189,7 +193,7 @@
                  <div class="mj_tab">
                     <table width="100%">
                        <tr>
-                           <td width="50%"> <a href="#">成为卖家</a></td>
+                           <td width="50%"> <a href="#" onclick="applyShop()">成为卖家</a></td>
                        </tr>
                     </table>
                  </div>

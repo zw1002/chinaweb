@@ -20,6 +20,7 @@
 <input id="uid" name="uid" type="hidden" value="<%= request.getAttribute("uid")%>"/>
 <input id="merchid" name="merchid" type="hidden"/>
 <script type="text/javascript">
+    var uid=$("#uid").val();
     var userid;
     $(document).ready(function () {
         //隐藏注册/按钮登录    显示个人中心/个人空间
@@ -51,7 +52,7 @@
             },
             success: function (data) {
                 var msg = eval("(" + data + ")");
-                var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.worksurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.worksurl+"' /></a></li>";
+                var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.worksurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
                 $("#gallery ul").append(str);
                 $("#title").text(msg.worksname);
                 var stt='<tr> <td width="50"><div class="tx_img"><a href="homepage.jsp"><img src="<%=basePath%>/static/images/head_img.png" /></a></div></td>'
@@ -64,6 +65,7 @@
                 $("#imgsize").text("大小:"+msg.imgsize);
                 $("#dpinum").text("分辨率:"+msg.dpinum);
                 $("#uptime").text("发布时间:"+msg.uptime);
+                $("#price").text(msg.price+"元");
                 $("#merchid").val(msg.merchid);
                 userid=msg.userid;
             }
@@ -195,6 +197,23 @@
             alert("已收藏");
         }
     }
+    //添加作品到购物车
+    function addShopCar(){
+        $.ajax({
+            url: "<%=basePath%>/pay/addShopCar.do",
+            type: "POST",
+            data: {
+                uid: uid
+            },
+            success: function (data) {
+                if(data!=="failed"){
+                    document.location.href = '<%=basePath%>/pay/toCar.do';
+                }else{
+                    alert("添加作品失败");
+                }
+            }
+        });
+    }
 </script>
    <header>
      <div class="top">
@@ -207,7 +226,7 @@
              </div>
              <!-- 登录后 -->
              <div id="backLogin" class="top_pos" style="display:none;">
-                 <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>
+                 <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>|<a href="<%=basePath%>/pay/toCar.do">购物车</a>
                  <!--<a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.html" class="sc_icon">我要上传</a>|<a href="collection_2.html">我的收藏（<span class="col_f00">2</span>）</a>-->
              </div>
          </div>
@@ -269,10 +288,10 @@
              <h2>婚庆场景设计模板</h2>
              <p><span class="col_f00">[原创设计]</span> AI矢量图，可任意设置精度，拉大，可做喷绘，写真，内送PSD分层文件放心下载</p>
              <div class="jg_ttx">
-              价格：<b class="col_f00">100元</b>  <a href="javascript:" class="sh_pos">贴心售后></a>
+              价格：<b id="price" class="col_f00"></b>  <a href="javascript:" class="sh_pos">贴心售后></a>
              </div> 
              <div class="buy_btn">
-               <a href="javascript:" class="fl">我要购买</a>
+               <a class="fl" href="#" onclick="addShopCar()">我要购买</a>
                <a href="javascript:" class="wydz fr"><img src="<%=basePath%>/static/images/icon_dz.png" /> 我要定制</a>
              </div>
              <p class="small_txt"><span class="yzx_icon" id="downCount"></span><span class="ll_icon">浏览：8454</span><span class="sc_icon" id="favcount"></span></p>

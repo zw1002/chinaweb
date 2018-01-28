@@ -3,6 +3,7 @@ package com.hnqj.controller;
 import com.hnqj.core.PageData;
 import com.hnqj.core.imageUtil;
 import com.hnqj.model.Merch;
+import com.hnqj.model.Works;
 import com.hnqj.services.MerchServices;
 import com.hnqj.services.WorksServices;
 import org.apache.commons.fileupload.disk.DiskFileItem;
@@ -95,6 +96,7 @@ public class UploadFileController extends  BaseController {
         if (!f1.exists()) {
             f1.mkdirs();
         }
+        String uuid=UUID.randomUUID().toString();
         for(MultipartFile file:files){
             String myFileName = file.getOriginalFilename();
             String extName = "";
@@ -120,12 +122,7 @@ public class UploadFileController extends  BaseController {
                     measuring = "KB";
                 }
                 PageData pageData = new PageData();
-                pageData.put("uid",UUID.randomUUID().toString());
-                pageData.put("worksurl",relativePath + myFileName);
-                pageData.put("samllurl",relativePath +"thumb_"+ myFileName);
-                pageData.put("imgsize",fileSizes + measuring);
-                pageData.put("imgformart",extName);
-                pageData.put("worksname",myFileName);
+                pageData.put("worksname",myFileName.substring(0,myFileName.indexOf(".")));
                 pageData.put("workstype",workclassification);
                 pageData.put("uptime",new Date());
                 pageData.put("worklabel",worklabel);
@@ -142,11 +139,32 @@ public class UploadFileController extends  BaseController {
                 BufferedImage image = null;
                 try {
                     file.transferTo(localFile);//原图
-                    new imageUtil().thumbnailImage(localFile,280,280);//缩略图
-                    image = ImageIO.read(new File(savePath + myFileName));
-                    String dpinum=image.getWidth() + "x" + image.getHeight();
-                    pageData.put("dpinum",dpinum);
-                    worksServices.addWorks(pageData);
+                    if(extName.equalsIgnoreCase(".cdr") || extName.equalsIgnoreCase(".psd")){
+                        Works works=worksServices.getWorksforId(uuid);
+                        pageData.put("uid",uuid);
+                        pageData.put("worksurl",relativePath + myFileName);
+                        pageData.put("imgsize",fileSizes + measuring);
+                        pageData.put("imgformart",extName);
+                        if(works == null){
+                            worksServices.addWorks(pageData);
+                        }else{
+                            worksServices.updateworksurl(pageData);
+                        }
+                    }else{
+                        Works works=worksServices.getWorksforId(uuid);
+                        pageData.put("uid",uuid);
+                        image = ImageIO.read(new File(savePath + myFileName));
+                        String dpinum=image.getWidth() + "x" + image.getHeight();
+                        pageData.put("dpinum",dpinum);
+                        pageData.put("watermakeurl",relativePath + myFileName);
+                        pageData.put("samllurl",relativePath +"thumb_"+ myFileName);
+                        new imageUtil().thumbnailImage(localFile,280,320);//缩略图
+                        if(works == null){
+                            worksServices.addWorks(pageData);
+                        }else{
+                            worksServices.updateWorkSamllurlandWatermakeurl(pageData);
+                        }
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

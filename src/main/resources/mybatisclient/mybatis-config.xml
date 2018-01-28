@@ -50,5 +50,6 @@
         <typeAlias type="com.hnqj.model.Proportions" alias="Proportions"/>
         <typeAlias type="com.hnqj.model.Props" alias="Props"/>
         <typeAlias type="com.hnqj.model.PropsImage" alias="PropsImage"/>
+        <typeAlias type="com.hnqj.model.Shoppingcart" alias="Shoppingcart"/>
     </typeAliases>
 </configuration>

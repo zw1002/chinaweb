@@ -33,62 +33,6 @@
                  document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
              });
  });
- //上传
- layui.use('upload', function() {
-     var $ = layui.jquery;
-     var upload = layui.upload;
-     //选完文件后不自动上传
-     upload.render({
-         elem: '#test8'
-         ,url: '/upload/'
-         ,auto: false
-         ,accept:'file'
-         ,exts:'jpg|png|mp4|cdr|psd'
-         ,number:'2'
-         ,multiple: true
-         ,bindAction: '#test9'
-         ,before: function(obj){
-             $('#demo2').html("");
-             //预读本地文件示例，不支持ie8
-             obj.preview(function(index, file, result){
-                 obj.preview(function(index, file, result){
-                     $('#demo2').append('<img style="width:200px" src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')
-                 });
-             });
-         }
-     });
- });
- //根据作品类型获取作品分类下拉列表
- layui.use(['layer', 'form'], function() {
-     var form = layui.form;
-     form.on('select(workstypeselect)', function(data){
-         $.getJSON("<%=basePath%>/personalcenter/getWorkClassification.do?workstype="+data.value, function(data){
-             var msg=eval(data);
-             $("#workclassification").html("");
-             $.each(msg, function(name, value) {
-                 var varItem2 = new Option(value.keyname,value.keyvalue);
-                 $("#workclassification").append(varItem2);
-             });
-             form.render('select'); //这个很重要
-         });
-     });
-
- });
- //根据作品分类获取标签下拉列表
- layui.use(['layer', 'form'], function() {
-     var form = layui.form;
-     form.on('select(workclassificationselect)', function(data){
-         $.getJSON("<%=basePath%>/personalcenter/getWorklabelByWorktype.do?code="+data.value, function(data){
-             var msg=eval(data);
-             $("#worklabel").html("");
-             var str="";
-             $.each(msg, function(name, value) {
-                 str += value.labelname+",";
-             });
-             $("#worklabel").val(str);
-         });
-     });
- });
  //跳转到首页
  function toIndex(){
      document.location.href = '<%=basePath%>/signin/index.do';
@@ -139,10 +83,29 @@
  function applyShop(){
      document.location.href = '<%=basePath%>/applyshop/toApplyShop.do';
  }
+    //开店提交
+    function subMerch(){
+        var merchname=$("#merchname").val();
+        var merchremark=$("#merchremark").val();
+        $.ajax({
+           url:"<%=basePath%>/merch/addMerchData.do",
+           type:"POST",
+           data:{
+               merchname:merchname,
+               merchremark:merchremark
+           },
+           success:function(data){
+               if(data!=="failed"){
+                   document.location.href = '<%=basePath%>/member/toMember.do';
+               }else{
+                   errorInfo("开店失败");
+               }
+           }
+        });
+    }
 </script>
 </head>
 <body>
-<input type="hidden" id="saveFile" name="saveFile" class="layui-input">
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
@@ -182,7 +145,7 @@
                  <div class="mj_tab">
                      <table width="100%">
                          <tr>
-                             <td width="50%"> <a href="#" onclick="applyShop()">成为卖家</a></td>
+                             <td width="50%"> <a href="#" onclick="applyShop()" class="active">成为卖家</a></td>
                          </tr>
                      </table>
                  </div>
@@ -190,12 +153,12 @@
              <div class="mem_nav">
              <h2>个人中心</h2>
                 <ul>
-                    <li><a class="mem_icon1 active" href="#" onclick="toUpload()">上传作品</a></li>
+                    <li><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
                     <li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
                     <li><a class="mem_icon2" href="#" onclick="toCollection()">收藏</a></li>
                     <li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>
                     <li><a class="mem_icon7" href="#" onclick="toWithdrawals()">提现</a></li>
-                    <li><a class="mem_icon9" href="<%=basePath%>/persondata/toPersonData.do">个人资料</a></li>
+                    <li><a class="mem_icon9" href="#">个人资料</a></li>
                 </ul>
              </div>
            </div><!-- wid260px -->
@@ -204,87 +167,30 @@
                    <div class="jy_tab_con">
                        <!-- 设计 -->
                        <div style="margin-top: -20px">
-                           <div class="hei40px">
-                               提示：源文件和预览图批量上传文件命名必须相同才能匹配成功（批量上传每次限10个）
-                               <div class="jyzt_txt"><a href="#">上传帮助中心？</a></div>
-                           </div>
-                       <form action="filesUpload.do" method="POST" name="xiangmu" id="xiangmu" enctype="multipart/form-data" style="margin-top: 8px" class="layui-form batchinput-form">
-                           <div class="layui-form-item">
-                               <label class="layui-form-label">作品类型：</label>
+                       <form style="margin-top: 8px" class="layui-form batchinput-form">
+                           <div class="layui-form-item layui-form-text">
+                               <label class="layui-form-label">店铺名称：</label>
                                <div class="layui-input-block">
-                                   <select lay-filter="workstypeselect" name="workstype" id="workstype" lay-verify="required">
-                                       <option value=""></option>
-                                       <option value="00">设计</option>
-                                       <option value="10">摄影</option>
-                                       <option value="20">道具</option>
-                                       <option value="30">婚秀</option>
-                                   </select>
-                               </div>
-                           </div>
-                           <div class="layui-form-item">
-                               <label class="layui-form-label">作品分类：</label>
-                               <div class="layui-input-block">
-                                   <select lay-filter="workclassificationselect" name="workclassification" id="workclassification" lay-verify="required">
-                                   </select>
+                                   <input id="merchname" name="merchname" class="layui-input">
                                </div>
                            </div>
                            <div class="layui-form-item layui-form-text">
-                               <label class="layui-form-label">作品价格：</label>
+                               <label class="layui-form-label">店铺简介：</label>
                                <div class="layui-input-block">
-                                   <input id="price" name="price" class="layui-input">
+                                   <textarea id="merchremark" name="merchremark" class="layui-textarea"></textarea>
                                </div>
-                           </div>
-                           <div class="layui-form-item layui-form-text">
-                               <label class="layui-form-label">作品标签：</label>
-                               <div class="layui-input-block">
-                                   <textarea id="worklabel" name="worklabel" placeholder="以逗号分隔，标签总数不能超过10个" class="layui-textarea"></textarea>
-                               </div>
-                           </div>
-
-                           <div class="layui-form-item layui-form-text">
-                               <label class="layui-form-label">作品简介：</label>
-                               <div class="layui-input-block">
-                                   <textarea id="workremark" name="workremark" class="layui-textarea"></textarea>
-                               </div>
-                           </div>
-                           <div class="layui-upload">
-                               <button style="margin-left: 110px" type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
-                               <button type="button" class="layui-btn" id="test9">图片预览</button>
-                               <blockquote id="test10" class="layui-elem-quote layui-quote-nm" style="margin-top: 15px;margin-left: 108px;">
-                                   预览图：
-                                   <div class="layui-upload-list" id="demo2"></div>
-                               </blockquote>
                            </div>
                            <div class="anniu">
-                               <button type="submit" style="margin-left: 450px" class="layui-btn layui-btn-normal">提交</button>
+                               <button onclick="subMerch()" style="margin-left: 450px" class="layui-btn layui-btn-normal">提交</button>
                            </div>
                            </form>
                            </div>
-                       <!-- 摄影 -->
-                       <ul id="alreadyPurchased">
-                           <table width="100%">
-
-                           </table>
-                           <div id="pagess" class="pages_box"></div>
-                       </ul>
-                       <!-- 婚秀 -->
-                       <!-- 道具 -->
                    </div>
                </div>
                <script type="text/javascript">
                    jQuery(".tran_con").slide({titCell:".jy_nav li",mainCell:".jy_tab_con", trigger:"click"});
                </script>
               <!-- mem_ty_box -->
-             <div class="mem_ty_box">
-                 <div class="gxq_tit"><h2>注意事项</h2> </div>
-                 <div class="txt_ppad">
-                     <p>1、所上传作品需为源文件(可编辑模板)，预览图与上传的源文件需保持一致</p>
-                    <p>2、预览图有人物脸部需模糊，不得含有明显的联系方式，如QQ、电话、网址、二维码</p>
-                    <p>3、请勿上传国产卡通动画形象，如灰太狼、喜洋洋等</p>
-                    <p>4、辩题请用一句话来描述，关键词包含素材风格、内容、行业等词组，一般3组以上，关键词之间请用空格隔开查看标题/关键字教程</p>
-                    <p>温馨提示：第一次上传用户请认真阅读<a href="#" class="col_blue">《版权声明》</a></p>
-                </div>                    
-             </div> <!-- wid925px -->  
            </div><!-- mem_ty_box -->
            <div class="clear"></div>
         </div><!-- memder_con -->

@@ -12,8 +12,22 @@
     <link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
     <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script type="text/javascript" src="<%=basePath%>/static/js/common.js"></script>
+    <script type="text/javascript" src="<%=basePath%>/static/js/quick_links.js"></script>
+    <link href="<%=basePath%>/static/layui/css/layui.css" rel="stylesheet" type="text/css"/>
+    <link href="<%=basePath%>/static/css/base.css" rel="stylesheet" type="text/css" />
+    <style>
+        .layui-icon{
+            font-size: 30px;
+            margin-top: 15px;
+            margin-left: 15px;
+        }
+        .cart_num{
+            z-index: 999;
+            position: fixed;
+        }
+    </style>
 </head>
-
 <body>
 <header>
     <div class="top">
@@ -27,7 +41,7 @@
                 </div>
                 <!-- 登录后 -->
                 <div id="backLogin" class="top_pos" style="display:none;">
-                    <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>
+                    <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>|<a href="<%=basePath%>/pay/toCar.do">购物车</a>
                     <!--<a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.html" class="sc_icon">我要上传</a>|<a href="collection_2.html">我的收藏（<span class="col_f00">2</span>）</a>-->
                 </div>
             </div>
@@ -727,7 +741,26 @@
     <h2>找我们，您就对了</h2>
     欢迎全国行业领先品牌企业、知名集团联系洽谈合作
 </div>
-
+<!--购物车-->
+<!--
+<div class="mui-mbar-tabs">
+    <div class="quick_link_mian">
+        <div class="quick_links_panel">
+            <div id="quick_links" class="quick_links">
+                <li id="shopCart">
+                    <a href="#" class="message_list">
+                        <i class="layui-icon"></i>
+                        <div class="span">购物车</div>
+                        <span class="cart_num">0</span>
+                    </a>
+                </li>
+            </div>
+        </div>
+        <div style="margin-top: 60px" id="quick_links_pop" class="quick_links_pop hide">
+        </div>
+    </div>
+</div>
+-->
 <!-- 公共底部 -->
 <footer>
     <div class="wrap">

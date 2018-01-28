@@ -91,6 +91,7 @@ public class GeneralController extends BaseController{
                 Map<String, Object> map = new HashMap<>();
                 map.put("uid",relWorks.getUid());
                 map.put("worksurl",relWorks.getWorksurl());
+                map.put("watermakeurl",relWorks.getWatermakeurl());
                 map.put("worksname",relWorks.getWorksname());
                 map.put("favcount",relWorks.getFavcount().toString());
                 map.put("downcount",relWorks.getDowncount().toString());

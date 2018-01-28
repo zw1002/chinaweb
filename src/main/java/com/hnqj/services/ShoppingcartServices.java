@@ -85,4 +85,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return shoppingcartList; 
 	}
+
+	public List<Shoppingcart> getShoppingcartForUserId(String uid) {
+		logger.info("查询个人所有Shoppingcart");
+		List<Shoppingcart>	shoppingcartList=null;
+		try {
+			shoppingcartList = (List<Shoppingcart>) daoSupport.findForList("ShoppingcartMapper.getShoppingcartForUserId",uid);
+		}catch (Exception e){
+			e.printStackTrace();
+			shoppingcartList=null;
+		}
+		return shoppingcartList;
+	}
 }

@@ -28,7 +28,7 @@
     delete from tb_merch
     where uid = #{uid,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.hnqj.model.Merch">
+  <insert id="addMerch" parameterType="pd">
     insert into tb_merch (uid, merchname, userinfouid,
       bondvalue, builddatetime, merchscroe, 
       statu, cycle, worksnums, 
