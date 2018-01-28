@@ -71,7 +71,6 @@
                 outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
             });
             outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
-
         });
 
         function getAjaxData(url,para,isAsync) {
@@ -112,7 +111,7 @@
                 }
                 for(var i=0;i<resultData.length;i++){
                     gridItems+="\t<div class=\"grid__item\">\n" +
-                        "\t\t\t\t\t\t<a class=\"grid__link\" href=\"<%=basePath%>/design/toDesignDel.do?uid="+resultData[i].uid+"\"><img class=\"grid__img\" src=\"<%=basePath%>"+resultData[i].worksurl+"\" alt=\"\" /></a>\n" +
+                        "\t\t\t\t\t\t<a class=\"grid__link\" href=\"<%=basePath%>/design/toDesignDel.do?uid="+resultData[i].uid+"\"><div class=\"video_box\"><video name=\"video\" width=\"100%\" height=\"220\"  src=\"<%=basePath%>"+resultData[i].relworksurl+"\" poster=\"images/gzc_pic.png\" controls></video></div></a>\n" +
                         "                        <div class=\"list_txt_box\">\n" +
                         "                          <h2>"+resultData[i].worksname+"</h2>\n" +
                         "                          <p><a href=\"javascript:\" class=\"zan\">"+resultData[i].ticknums+"</a> | <a href=\"javascript:\" class=\"down\">"+resultData[i].downcount+"</a></p>\n" +
@@ -359,9 +358,8 @@
           <dl >
              <dt>联系我们</dt>
              <dd>客服电话：<b class="col_f00">400-879-51747</b></dd>
-             
+
           </dl>
-          
           <div class="botm_fr">
             <img src="<%=basePath%>/static/images/logo.png" height="62" width="217" />
             <p>婚庆行业专业的咨询平台</p>

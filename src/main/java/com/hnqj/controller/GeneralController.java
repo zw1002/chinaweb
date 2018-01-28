@@ -396,6 +396,7 @@ public class GeneralController extends BaseController{
                 Map<String, String> map = new HashMap<>();
                 map.put("uid",work.getUid());
                 map.put("worksurl",work.getSamllurl());
+                map.put("relworksurl",work.getWorksurl());
                 map.put("workstype",work.getWorkstype());
                 map.put("worksname",work.getWorksname());
                 map.put("favcount",work.getFavcount().toString());
