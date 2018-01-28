@@ -41,6 +41,12 @@
 		 
 	  }  
    });
+     //隐藏注册/按钮登录    显示个人中心/个人空间
+     var firstname="${userinfo.getFristname()}";
+     if(firstname != ""){
+         $("#beferLogin").css("display","none");
+         $("#backLogin").css("display","block");
+     }
  });
 </script>
 </head>
@@ -50,30 +56,21 @@
      <div class="top">
      
       <div class="top_line">
-         <div class="top_wid">
-            欢迎来到婚秀中国网
-            
-            <!-- 登录前 -->
-            <div class="top_pos">
-              <a href="login.jsp">登录</a>|<a href="regist.jsp">注册</a>
-            </div>
-            
-            <!-- 登录后 -->
-            <div class="top_pos" style="display:none;">
-              <a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.jsp" class="sc_icon">我要上传</a>|<a href="collection_2.jsp">我的收藏（<span class="col_f00">2</span>）</a>
-            </div>
-            
-            
-         </div>
+          <div class="top_wid">
+              欢迎来到婚秀中国网
+              <!-- 登录前 -->
+              <div id="beferLogin" class="top_pos">
+                  <a href="#" onclick="toLogin()">登录</a>|<a href="#" onclick="toRegister()">注册</a>
+              </div>
+              <!-- 登录后 -->
+              <div id="backLogin" class="top_pos" style="display:none;">
+                  <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>|<a href="<%=basePath%>/pay/toCar.do">购物车</a>
+              </div>
+          </div>
       </div><!-- top_line -->
       
       <div class="top_wid logo_con">
-         <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
-         <div class="ss_bg fl">
-            <input name="" type="text" placeholder="请输入搜索内容"  class="inp_txt">
-            <input type="submit" value="搜 索" class="ss_btn" /> 
-         </div>
-         
+         <a href="<%=basePath%>/signin/index.do" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="phone_fr">
             <h2>400-879-51747</h2>
             <p>24小时服务热线</p>
@@ -88,13 +85,8 @@
    
    <div class="help_nav">
            <ul>
-              <li><a href="javascript:">首页</a></li>
-              <li><a href="javascript:">关于我们</a></li>
-              <li><a href="javascript:">成为婚秀达人</a></li>
-              <li><a href="javascript:">通知公告</a></li>
-              <li><a href="javascript:" class="active">帮助中心</a></li>
-              <li><a href="javascript:">法务专栏</a></li>
-              <li><a href="javascript:">合作伙伴</a></li>
+               <li><a href="<%=basePath%>/helpd/toHelpd.do">帮助首页</a></li>
+               <li><a href="<%=basePath%>/helpd/toAboutUs.do" class="active">关于我们</a></li>
            </ul>
        </div>
    

@@ -276,20 +276,15 @@
      <div class="wrap">
       <div class="bottom clearfix">
           <dl>
-             <dt>新手帮助</dt>
-             <dd><a href="javascript:">注册/登录</a></dd>
-             <dd><a href="javascript:">认证/签约</a></dd>
-             
-             <dd><a href="javascript:">条款协议</a></dd>
-             <dd><a href="javascript:">版权声明</a></dd>
+              <dt>新手帮助</dt>
+              <dd><a href="<%=basePath%>/helpd/toHelpd.do">注册/登录</a></dd>
+              <dd><a href="<%=basePath%>/helpd/toHelpd.do">认证/签约</a></dd>
+              <dd><a href="<%=basePath%>/helpd/toHelpd.do">条款协议</a></dd>
+              <dd><a href="<%=basePath%>/helpd/toHelpd.do">版权声明</a></dd>
           </dl>
-          
           <dl>
-             <dt>关于婚秀中国</dt>
-             <dd><a href="javascript:">婚秀中国简介</a></dd>
-            
-        
-             
+              <dt>关于婚秀中国</dt>
+              <dd><a href="<%=basePath%>/helpd/toHelpd.do">婚秀中国简介</a></dd>
           </dl>
           <dl >
              <dt>联系我们</dt>

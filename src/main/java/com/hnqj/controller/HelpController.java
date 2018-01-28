@@ -5,23 +5,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * 求图控制层
+ * 客服中心控制层
  * 2018-01-10  张威
  */
 @Controller
-@RequestMapping("/help")
+@RequestMapping("/helpd")
 public class HelpController extends BaseController{
-    @Autowired
-    WorksServices worksServices;
-    //跳转到设计页面
-    @RequestMapping(value = "/toHelp.do")
-    public String toHelp(){
-        return  "help";
-    }
-    //跳转到设计明细页面
-    @RequestMapping(value = "/toHelpDel.do")
-    public String toHelpDel(){
+    //跳转到客服中心页面
+    @RequestMapping(value = "/toHelpd.do")
+    public String toHelpd(){
         return  "helpd_del";
     }
-
+    //跳转到关于我们页面
+    @RequestMapping(value = "/toAboutUs.do")
+    public String toAboutUs(){
+        return  "helpd_del2";
+    }
 }

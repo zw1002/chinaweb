@@ -251,16 +251,7 @@
         <div class="jy_tit"><img src="<%=basePath%>/static/images/jydt_tit.png" height="25" width="77" /></div>
         <div class="bd">
             <ul class="infoList">
-                <!--
-                <li><a href="javascript:" target="_blank">韩式婚纱背景设计<span class="col_f00">￥40</span>    8分钟前</a></li>
-                <li><a href="javascript:" target="_blank">简约3D风给 <span class="col_f00">￥50</span> 12分钟前    </a></li
-                ><li><a href="javascript:" target="_blank">中式婚礼背景设计<span class="col_f00">￥50</span> 13分钟前</a></li>
-                <li><a href="javascript:" target="_blank">中式婚礼背景设计<span class="col_f00">￥50</span> 13分钟前</a></li>
-                <li><a href="javascript:" target="_blank">韩式婚纱背景设计<span class="col_f00">￥40</span>    8分钟前</a></li>
-                <li><a href="javascript:" target="_blank">简约3D风给 <span class="col_f00">￥50</span> 12分钟前    </a></li
-                ><li><a href="javascript:" target="_blank">中式婚礼背景设计<span class="col_f00">￥50</span> 13分钟前</a></li>
-                <li><a href="javascript:" target="_blank">中式婚礼背景设计<span class="col_f00">￥50</span> 13分钟前</a></li>
-                -->
+
             </ul>
         </div>
     </div>
@@ -272,44 +263,7 @@
     <div class="hei380px">
         <div class="design_list da_img">
             <ul class="clearfix" id="design">
-                <!--
-                <li class="long_wid"><a href="design.html"><img src="<%=basePath%>/static/images/pic_chang3.png" />
-                    <div class="botm_txtd">
-                        <p>我是标题</p>
-                    </div>
-                </a></li>
 
-                <li><a href="design.html"><img src="<%=basePath%>/static/images/sjtka_pic1.png" />
-                    <div class="botm_txtd">
-                        <p>我是标题我是标题我是标题我是标题我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="design.html"><img src="<%=basePath%>/static/images/sjtka_pic2.png" />
-                    <div class="botm_txtd">
-                        <p>我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="design.html"><img src="<%=basePath%>/static/images/sjtka_pic3.png" />
-                    <div class="botm_txtd">
-                        <p>我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="design.html"><img src="<%=basePath%>/static/images/sjtka_pic4.png" />
-                    <div class="botm_txtd">
-                        <p>我是标题我是标题我是标题我是标题我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="design.html"><img src="<%=basePath%>/static/images/sjtka_pic5.png" />
-                    <div class="botm_txtd">
-                        <p>我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="design.html"><img src="<%=basePath%>/static/images/sjtka_pic6.png" />
-                    <div class="botm_txtd">
-                        <p>我是标题</p>
-                    </div>
-                </a></li>
-            -->
             </ul>
         </div><!-- design_list -->
 
@@ -400,56 +354,6 @@
 
             <div class="design_list">
                 <ul class="clearfix" id="photography">
-                    <!--
-                    <li><a href="design.html"><img src="<%=basePath%>/static/images/hlxa_pic1.png" />
-                        <div class="txt_over">
-                            <h2>我是标题</h2>
-                            <p>我是简介我是简介我是简介我是简介我是简介</p>
-                        </div>
-                    </a></li>
-                    <li><a href="design.html"><img src="<%=basePath%>/static/images/hlxa_pic2.png" />
-                        <div class="txt_over">
-                            <h2>我是标题</h2>
-                            <p>我是简介我是简介我是简介我是简介我是简介</p>
-                        </div>
-                    </a></li>
-                    <li><a href="design.html"><img src="<%=basePath%>/static/images/pbl_6.png" />
-                        <div class="txt_over">
-                            <h2>我是标题</h2>
-                            <p>我是简介我是简介我是简介我是简介我是简介</p>
-                        </div>
-                    </a></li>
-                    <li><a href="design.html"><img src="<%=basePath%>/static/images/pbl_5.png" />
-                        <div class="txt_over">
-                            <h2>我是标题</h2>
-                            <p>我是简介我是简介我是简介我是简介我是简介</p>
-                        </div>
-                    </a></li>
-                    <li><a href="design.html"><img src="<%=basePath%>/static/images/sytk_pic1.png" />
-                        <div class="txt_over">
-                            <h2>我是标题</h2>
-                            <p>我是简介我是简介</p>
-                        </div>
-                    </a></li>
-                    <li><a href="design.html"><img src="<%=basePath%>/static/images/sytk_pic2.png" />
-                        <div class="txt_over">
-                            <h2>我是标题</h2>
-                            <p>我是简介我是简介</p>
-                        </div>
-                    </a></li>
-                    <li><a href="design.html"><img src="<%=basePath%>/static/images/sytk_pic3.png" />
-                        <div class="txt_over">
-                            <h2>我是标题</h2>
-                            <p>我是简介我是简介</p>
-                        </div>
-                    </a></li>
-                    <li><a href="design.html"><img src="<%=basePath%>/static/images/sytk_pic4.png" />
-                        <div class="txt_over">
-                            <h2>我是标题</h2>
-                            <p>我是简介我是简介</p>
-                        </div>
-                    </a></li>
--->
 
                 </ul>
             </div><!-- design_list -->
@@ -553,54 +457,9 @@
 
         <div class="design_list da_img hl_listd">
             <ul class="clearfix" id="wedding">
-<!--
-                <li><a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic6.png" /><span class="bofang_icon"></span>
-
-                    <div class="botm_txtd">
-                        <p>我是标题我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic1.png" /><span class="bofang_icon"></span>
-                    <div class="botm_txtd">
-                        <p>我是标题我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic2.png" /><span class="bofang_icon"></span>
-                    <div class="botm_txtd">
-                        <p>我标题我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic3.png" /><span class="bofang_icon"></span>
-                    <div class="botm_txtd">
-                        <p>我是标题我是标题我是标题我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic4.png" /><span class="bofang_icon"></span>
-                    <div class="botm_txtd">
-                        <p>我是标题我是标题我是标题我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="wedding_del.html"><img src="<%=basePath%>/static/images/sjtka_pic3.png" /><span class="bofang_icon"></span>
-                    <div class="botm_txtd">
-                        <p>我是标题我是标题我是标题我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="wedding_del.html"><img src="<%=basePath%>/static/images/sjtka_pic2.png" /><span class="bofang_icon"></span>
-                    <div class="botm_txtd">
-                        <p>我是标题我是标题我是标题我是标题</p>
-                    </div>
-                </a></li>
-                <li><a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic5.png" /><span class="bofang_icon"></span>
-                    <div class="botm_txtd">
-                        <p>我是标题我是标题我是标题我是标题</p>
-                    </div>
-                </a></li>
--->
 
             </ul>
         </div><!-- design_list -->
-
-
         <div class="sj_fr">
             <div class="hong_tit col_hx"><h2>婚秀排行榜</h2> <a href="#" onclick="toWedding()">更多 ></a></div>
 
@@ -668,8 +527,6 @@
         </div><!-- sj_fr -->
 
     </div><!-- hei380px -->
-
-
 </div><!-- wrap -->
 
 <!-- 道具新品 -->
@@ -679,64 +536,17 @@
         <div class="hei380px">
             <div class="design_list da_img">
                 <ul class="clearfix" id="multimedia">
-                    <!--
-                    <li><a href="media_del.html"><img src="<%=basePath%>/static/images/dmtk_pic1.png" />
-                        <div class="botm_txtd">
-                            <p>我是标题</p>
-                        </div>
-                    </a></li>
-                    <li><a href="media_del.html"><img src="<%=basePath%>/static/images/dmtk_pic2.png" />
-                        <div class="botm_txtd">
-                            <p>我是标题我是标题我是标题我是标题我是标题我是标题</p>
-                        </div>
-                    </a></li>
-                    <li><a href="media_del.html"><img src="<%=basePath%>/static/images/dmtk_pic3.png" />
-                        <div class="botm_txtd">
-                            <p>我是标题</p>
-                        </div>
-                    </a></li>
-                    <li><a href="media_del.html"><img src="<%=basePath%>/static/images/dmt_pic4.png" />
-                        <div class="botm_txtd">
-                            <p>我是标题</p>
-                        </div>
-                    </a></li>
-                    <li class="long_wid"><a href="media_del.html"><img src="<%=basePath%>/static/images/dmt_pic1.png" />
-                        <div class="botm_txtd">
-                            <p>我是标题</p>
-                        </div>
-                    </a></li>
-                    <li><a href="media_del.html"><img src="<%=basePath%>/static/images/dmt_pic6.png" />
-                        <div class="botm_txtd">
-                            <p>我是标题</p>
-                        </div>
-                    </a></li>
-                    <li><a href="media_del.html"><img src="<%=basePath%>/static/images/dmt_pic7.png" />
-                        <div class="botm_txtd">
-                            <p>我是标题</p>
-                        </div>
-                    </a></li>
--->
 
                 </ul>
             </div><!-- design_list -->
-
-
             <div class="sj_fr">
                 <div class="hong_tit xp_titd col_djxp"><h2>新品发布</h2> <a href="#" onclick="toMultimedia()">更多 ></a></div>
                 <div class="xpfb_img"> <a href="javascript:"><img src="<%=basePath%>/static/images/xpfb_pic.png" /></a></div>
             </div><!-- sj_fr -->
 
         </div><!-- hei380px -->
-
-
-
     </div><!-- wrap -->
 </div><!-- bg_hs -->
-
-
-
-
-
 <div class="find_box">
     <h2>找我们，您就对了</h2>
     欢迎全国行业领先品牌企业、知名集团联系洽谈合作
@@ -767,32 +577,24 @@
         <div class="bottom clearfix">
             <dl>
                 <dt>新手帮助</dt>
-                <dd><a href="javascript:">注册/登录</a></dd>
-                <dd><a href="javascript:">认证/签约</a></dd>
-
-                <dd><a href="javascript:">条款协议</a></dd>
-                <dd><a href="javascript:">版权声明</a></dd>
+                <dd><a href="<%=basePath%>/helpd/toHelpd.do">注册/登录</a></dd>
+                <dd><a href="<%=basePath%>/helpd/toHelpd.do">认证/签约</a></dd>
+                <dd><a href="<%=basePath%>/helpd/toHelpd.do">条款协议</a></dd>
+                <dd><a href="<%=basePath%>/helpd/toHelpd.do">版权声明</a></dd>
             </dl>
-
             <dl>
                 <dt>关于婚秀中国</dt>
-                <dd><a href="javascript:">婚秀中国简介</a></dd>
-
-
-
+                <dd><a href="<%=basePath%>/helpd/toHelpd.do">婚秀中国简介</a></dd>
             </dl>
             <dl >
                 <dt>联系我们</dt>
                 <dd>客服电话：<b class="col_f00">400-879-51747</b></dd>
-
             </dl>
-
             <div class="botm_fr">
                 <img src="<%=basePath%>/static/images/logo.png" height="62" width="217" />
                 <p>婚庆行业专业的咨询平台</p>
                 <div class="zx_box"><img src="<%=basePath%>/static/images/zx_pic.png" height="17" width="22" />咨询时间：8:30-17:00</div>
             </div>
-
         </div>
     </div>
 </footer>
