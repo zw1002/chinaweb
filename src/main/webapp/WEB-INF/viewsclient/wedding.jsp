@@ -23,6 +23,10 @@
     <script src="<%=basePath%>/static/js/main.js"></script>
     <script type="text/javascript">
         $(function(){
+
+            $('.ss_btn').click(function () {
+                document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
+            });
         });
         var queryPara={worktype:'30',downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
         $(document).ready(function () {
@@ -70,9 +74,6 @@
 
         });
 
-        $('.ss_btn').click(function () {
-            document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
-        });
         function getAjaxData(url,para,isAsync) {
             var rtnVal=null;
             $.ajax({

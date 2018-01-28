@@ -49,23 +49,23 @@
           <bean class="com.yutu.interceptor.LoginHandlerInterceptor"/>
        </mvc:interceptor>
     </mvc:interceptors>-->
-	<!--
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/**"/>
-			<mvc:exclude-mapping path="/**/fonts/*"/>
-			<mvc:exclude-mapping path="/**/*.css"/>
-			<mvc:exclude-mapping path="/**/*.js"/>
-			<mvc:exclude-mapping path="/**/*.png"/>
-			<mvc:exclude-mapping path="/**/*.gif"/>
-			<mvc:exclude-mapping path="/**/*.jpg"/>
-			<mvc:exclude-mapping path="/**/*.jpeg"/>
-			<mvc:exclude-mapping path="/**/*login*"/>
-			<mvc:exclude-mapping path="/**/*Login*"/>
-			<bean class="com.hnqj.interceptor.LoginInterceptor"/>
-		</mvc:interceptor>
-	</mvc:interceptors>
--->
+
+	<!--<mvc:interceptors>-->
+		<!--<mvc:interceptor>-->
+			<!--<mvc:mapping path="/**"/>-->
+			<!--&lt;!&ndash;<mvc:exclude-mapping path="/**/fonts/*"/>&ndash;&gt;-->
+			<!--&lt;!&ndash;<mvc:exclude-mapping path="/**/*.css"/>&ndash;&gt;-->
+			<!--&lt;!&ndash;<mvc:exclude-mapping path="/**/*.js"/>&ndash;&gt;-->
+			<!--&lt;!&ndash;<mvc:exclude-mapping path="/**/*.png"/>&ndash;&gt;-->
+			<!--&lt;!&ndash;<mvc:exclude-mapping path="/**/*.gif"/>&ndash;&gt;-->
+			<!--&lt;!&ndash;<mvc:exclude-mapping path="/**/*.jpg"/>&ndash;&gt;-->
+			<!--&lt;!&ndash;<mvc:exclude-mapping path="/**/*.jpeg"/>&ndash;&gt;-->
+			<!--&lt;!&ndash;<mvc:exclude-mapping path="/**/*login*"/>&ndash;&gt;-->
+			<!--&lt;!&ndash;&lt;!&ndash;<mvc:exclude-mapping path="/**/*Login*"/>&ndash;&gt;&ndash;&gt;-->
+			<!--<bean class="com.hnqj.interceptor.LoginInterceptor"/>-->
+		<!--</mvc:interceptor>-->
+	<!--</mvc:interceptors>-->
+
 	<!-- 配置SpringMVC的视图解析器 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
