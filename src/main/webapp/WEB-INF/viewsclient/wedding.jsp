@@ -287,33 +287,33 @@
                      </div>
                     </td>
                  </tr>
-                 <tr>
-                    <td><b>颜色分类：</b></td>
-                    <td>
-                     <div class="fl_nav">
-                       <a href="javascript:" class="on">全部</a>
-                       <a href="javascript:">红色</a>
-                       <a href="javascript:">粉色</a>
-                       <a href="javascript:">香槟色</a>
-                       <a href="javascript:">白色</a>
-                       <a href="javascript:">金色</a>
-                       <a href="javascript:">蓝色</a>
-                       <a href="javascript:">绿色</a>
-                     </div>
-                    </td>
-                 </tr>
-                 <tr>
-                    <td><b>场地分类：</b></td>
-                    <td>
-                     <div class="fl_nav">
-                       <a href="javascript:" class="on">全部</a>
-                       <a href="javascript:">婚宴城             </a>
-                       <a href="javascript:">草地</a>
-                       <a href="javascript:">海边</a>
-                       
-                     </div>
-                    </td>
-                 </tr>
+                 <%--<tr>--%>
+                    <%--<td><b>颜色分类：</b></td>--%>
+                    <%--<td>--%>
+                     <%--<div class="fl_nav">--%>
+                       <%--<a href="javascript:" class="on">全部</a>--%>
+                       <%--<a href="javascript:">红色</a>--%>
+                       <%--<a href="javascript:">粉色</a>--%>
+                       <%--<a href="javascript:">香槟色</a>--%>
+                       <%--<a href="javascript:">白色</a>--%>
+                       <%--<a href="javascript:">金色</a>--%>
+                       <%--<a href="javascript:">蓝色</a>--%>
+                       <%--<a href="javascript:">绿色</a>--%>
+                     <%--</div>--%>
+                    <%--</td>--%>
+                 <%--</tr>--%>
+                 <%--<tr>--%>
+                    <%--<td><b>场地分类：</b></td>--%>
+                    <%--<td>--%>
+                     <%--<div class="fl_nav">--%>
+                       <%--<a href="javascript:" class="on">全部</a>--%>
+                       <%--<a href="javascript:">婚宴城             </a>--%>
+                       <%--<a href="javascript:">草地</a>--%>
+                       <%--<a href="javascript:">海边</a>--%>
+                       <%----%>
+                     <%--</div>--%>
+                    <%--</td>--%>
+                 <%--</tr>--%>
               </table>
             </div>
             

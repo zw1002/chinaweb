@@ -244,7 +244,7 @@ public class Works {
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
     public String getWorkstype() {
-        return workstype;
+        return workstype==null?"":workstype;
     }
 
     /**
@@ -268,7 +268,7 @@ public class Works {
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
     public String getWorksname() {
-        return worksname;
+        return worksname==null?"":worksname;
     }
 
     /**
@@ -316,7 +316,7 @@ public class Works {
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
     public String getSamllurl() {
-        return samllurl;
+        return samllurl==null?"":samllurl;
     }
 
     /**
@@ -484,7 +484,7 @@ public class Works {
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
     public Integer getDowncount() {
-        return downcount;
+        return downcount==null?0:downcount;
     }
 
     /**
@@ -508,7 +508,7 @@ public class Works {
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
     public Integer getFavcount() {
-        return favcount;
+        return favcount==null?0:favcount;
     }
 
     /**
@@ -652,7 +652,7 @@ public class Works {
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
     public Integer getTicknums() {
-        return ticknums;
+        return ticknums==null?0:ticknums;
     }
 
     /**
@@ -748,7 +748,7 @@ public class Works {
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
     public BigDecimal getPrice() {
-        return price;
+        return price==null?BigDecimal.ZERO:price;
     }
 
     /**

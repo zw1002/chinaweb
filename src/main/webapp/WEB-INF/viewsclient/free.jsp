@@ -28,7 +28,7 @@
                 document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
             });
         });
-        var queryPara={worktype:'00',workprice:2,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
+        var queryPara={worktype:'00,10,20,30',workprice:2,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
         $(document).ready(function () {
             //隐藏注册/按钮登录    显示个人中心/个人空间
             var firstname="${userinfo.getFristname()}";
@@ -51,7 +51,7 @@
             $(".fl_nav>a").click(function(){
                 $(this).parents(".fl_nav").find("a").removeClass("on");
                 $(this).addClass("on");
-                queryPara.worktype = $(this).attr('utype')==""?'00':$(this).attr('utype');
+                queryPara.worktype = $(this).attr('utype')==""?'00,10,20,30':$(this).attr('utype');
                 outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
             });
 
