@@ -44,19 +44,27 @@
          },
          success: function (data) {
              var msg = eval("(" + data + ")");
+             var res="";
              if(data == "null"){
-                 $("#isSeller").css("display","none");
-                 $("#sellering").css("display","none");
+                 $("#role").html("");
+                 res = '<td width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td>';
+                 $("#role").append(res);
+                 $("#uploadwork").css("display","none");
              }else{
                  if(msg.statu == 0){
-                     $("#becomeSeller").css("display","none");
-                     $("#isSeller").css("display","none");
+                 $("#role").html("");
+                 res = '<td width="50%">店铺信息审核中...</td>';
+                 $("#role").append(res);
+                     $("#uploadwork").css("display","none");
                  }else if(msg.statu == 1){
-                     $("#sellering").css("display","none");
-                     $("#becomeSeller").css("display","none");
+                     $("#role").html("");
+                     res = '<td width="50%">我是卖家</td>';
+                     $("#role").append(res);
                  }else{
-                     $("#isSeller").css("display","none");
-                     $("#sellering").css("display","none");
+                     $("#role").html("");
+                     res = '<td width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td>';
+                     $("#role").append(res);
+                     $("#uploadwork").css("display","none");
                  }
              }
          }
@@ -157,7 +165,7 @@
              <div class="grzl_box">
                  <a href="#" onclick="toHomepage()" class="kj_lj">个人空间 ></a>
                  <div class="tx_infor">
-                      <img src="<%=basePath%>/static/images/head_img2.png" />
+                      <img src="<%=basePath%>${userinfo.getUsrpicurl()}" />
                       <h2>${userinfo.getFristname()}</h2>
                      <!--
                       <p class="sjss">设计师</p>
@@ -166,8 +174,8 @@
                  </div>
                  <div class="mj_tab">
                     <table width="100%">
-                       <tr>
-                           <td id="becomeSeller" width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td><td id="isSeller" width="50%">我是卖家</td><td id="sellering" width="50%">店铺信息审核中...</td>
+                       <tr id="role">
+
                        </tr>
                     </table>
                  </div>
@@ -175,7 +183,7 @@
              <div class="mem_nav">
              <h2>个人中心</h2>
                 <ul>
-                   <li><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
+                   <li id="uploadwork"><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
                     <li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
                    <li><a class="mem_icon2" href="#" onclick="toCollection()">收藏</a></li>
                    <li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>
@@ -332,13 +340,8 @@
             <p>婚庆行业专业的咨询平台</p>
             <div class="zx_box"><img src="<%=basePath%>/static/images/zx_pic.png" height="17" width="22" />咨询时间：8:30-17:00</div>
           </div>
-      
         </div>
       </div>
    </footer>
-   
-
-   
-   
 </body>
 </html>

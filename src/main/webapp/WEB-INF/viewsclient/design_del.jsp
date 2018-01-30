@@ -57,19 +57,19 @@
                 var msg = eval("(" + data + ")");
                 if(msg.workstype.substring(0,1) == 0){//设计
                     $("#deisgn").attr("class","active");
-                    var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.worksurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
+                    var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.watermakeurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
                 }else if(msg.workstype.substring(0,1) == 1) {//摄影
                     $("#photo").attr("class","active");
-                    var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.worksurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
+                    var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.watermakeurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
                 }else if(msg.workstype.substring(0,1) == 2) {//道具
                     $("#prop").attr("class","active");
-                    var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.worksurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
+                    var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.watermakeurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
                 }else if(msg.workstype.substring(0,1) == 3) {//婚秀
                     $("#wedding").attr("class","active");
                     var str="<div class='video_box'><video width='100%' height='720'  src='<%=basePath%>"+msg.worksurl+"' poster='images/gzc_pic.png' controls autoplay></video></div>";
                 }else{//免费
                     $("#free").attr("class","active");
-                    var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.worksurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
+                    var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.watermakeurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
                 }
                 $("#gallery ul").append(str);
                 $("#title").text(msg.worksname);

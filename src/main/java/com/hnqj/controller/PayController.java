@@ -167,7 +167,7 @@ public class PayController extends BaseController{
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\""+uuid+"\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-                "    \"total_amount\":0.01," +
+                "    \"total_amount\":"+dealprice+"," +
                 "    \"subject\":\""+strs+"\"," +
                 "    \"body\":\""+strs+"\"," +
                 "    \"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"," +

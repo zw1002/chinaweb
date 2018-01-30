@@ -1,6 +1,8 @@
 package com.hnqj.controller;
 
 import com.hnqj.core.PageData;
+import com.hnqj.core.ResponseUtil;
+import com.hnqj.core.ResultUtils;
 import com.hnqj.core.imageUtil;
 import com.hnqj.model.Merch;
 import com.hnqj.model.Works;
@@ -20,6 +22,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -177,5 +180,35 @@ public class UploadFileController extends  BaseController {
             }
         }
         return "upload";
+    }
+
+    /**
+     * 文件下载
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/downloadFile.do")
+    public String downloadFile(HttpServletRequest request, HttpServletResponse response) {
+        String HOMEPATH = request.getSession().getServletContext().getRealPath("/");
+        try {
+                // 首先清理缓冲区的内容
+                response.reset();
+                String destFileName = "A303.cdr";//文件名称
+                String sourceFilePathName = "/static/uploadImg/upload\\2018-01-30\\A303.cdr";
+                File newfile = new File(sourceFilePathName);
+                if (!newfile.exists()) {
+                    sourceFilePathName = HOMEPATH + sourceFilePathName;
+                    // 处理兼容老数据
+                    newfile = new File(sourceFilePathName);
+                    if (!newfile.exists()) {
+                        return null;
+                    }
+                }
+                ResponseUtil.downloadFile(response, newfile, destFileName);
+        } catch (Exception e) {
+            ResultUtils.writeFailed(response);
+        }
+        return null;
     }
 }

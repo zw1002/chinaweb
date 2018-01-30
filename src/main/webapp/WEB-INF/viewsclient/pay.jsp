@@ -171,6 +171,7 @@
 			function orderPay(){
 				var uid=$("#uid").val();
 				var price=$("#price").val();
+				alert(price);
 				document.location.href = '<%=basePath%>/pay/orderPay.do?uid='+uid+"&price="+price;
 			}
 		</script>

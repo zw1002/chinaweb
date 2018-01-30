@@ -32,6 +32,7 @@
              $('.ss_btn').click(function () {
                  document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
              });
+     getUserMerch();
  });
  //跳转到首页
  function toIndex(){
@@ -79,6 +80,45 @@
      var uid="${userinfo.getUid()}";
      document.location.href = '<%=basePath%>/withdrawals/toWithdrawals.do?uid='+uid;
  }
+ //获取会员店铺信息
+ function getUserMerch(){
+     //会员ID
+     var uid="${userinfo.getUid()}";
+     $.ajax({
+         url: "<%=basePath%>/merch/getMerchData.do",
+         type: "POST",
+         data: {
+             uid: uid
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             var res="";
+             if(data == "null"){
+                 $("#role").html("");
+                 res = '<td width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td>';
+                 $("#role").append(res);
+                 $("#uploadwork").css("display","none");
+             }else{
+                 if(msg.statu == 0){
+                     $("#role").html("");
+                     res = '<td width="50%">店铺信息审核中...</td>';
+                     $("#role").append(res);
+                     $("#uploadwork").css("display","none");
+                     $("#submerch").css("display","none");
+                 }else if(msg.statu == 1){
+                     $("#role").html("");
+                     res = '<td width="50%">我是卖家</td>';
+                     $("#role").append(res);
+                 }else{
+                     $("#role").html("");
+                     res = '<td width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td>';
+                     $("#role").append(res);
+                     $("#uploadwork").css("display","none");
+                 }
+             }
+         }
+     });
+ }
  //开店
  function applyShop(){
      document.location.href = '<%=basePath%>/applyshop/toApplyShop.do';
@@ -97,6 +137,7 @@
            success:function(data){
                if(data!=="failed"){
                    document.location.href = '<%=basePath%>/member/toMember.do';
+                   $("#submerch").css("display","none");
                }else{
                    errorInfo("开店失败");
                }
@@ -144,8 +185,8 @@
                  </div>
                  <div class="mj_tab">
                      <table width="100%">
-                         <tr>
-                             <td width="50%"> <a href="#" onclick="applyShop()" class="active">成为卖家</a></td>
+                         <tr id="role">
+
                          </tr>
                      </table>
                  </div>
@@ -181,7 +222,7 @@
                                </div>
                            </div>
                            <div class="anniu">
-                               <button onclick="subMerch()" style="margin-left: 450px" class="layui-btn layui-btn-normal">提交</button>
+                               <button id="submerch" onclick="subMerch()" style="margin-left: 450px" class="layui-btn layui-btn-normal">提交</button>
                            </div>
                            </form>
                            </div>

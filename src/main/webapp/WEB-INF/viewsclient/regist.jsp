@@ -164,8 +164,6 @@
                 password:password
             },
             success:function(data){
-                alert("www");
-                alert(data);
                 if(data!=="failed"){
                     successInfo("注册成功，三秒后跳转到登录页面");
                     setTimeout("toLogin()","3000");  //3000毫秒后执行函数，只执行一次。
