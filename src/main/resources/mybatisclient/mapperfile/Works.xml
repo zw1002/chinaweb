@@ -177,7 +177,7 @@
     select
     <include refid="Base_Column_List" />
     from tb_works
-    where 1=1
+    where displayflag=&apos;2&apos;
     <if test="data != null and data != ''">
       AND worksname LIKE CONCAT(CONCAT('%', #{data, jdbcType=VARCHAR}),'%')
     </if>
