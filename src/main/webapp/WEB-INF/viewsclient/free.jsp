@@ -59,9 +59,9 @@
                 $(this).parents(".px_box").find("a").removeClass("on");
                 $(this).addClass("on");
 
-                queryPara={worktype:0,workprice:2,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
+                queryPara={worktype:'00,10,20,30',workprice:2,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
 
-                queryPara.worktype = $(".fl_nav .on").attr('utype')==""?'00':$(".fl_nav .on").attr('utype');
+                queryPara.worktype = $(".fl_nav .on").attr('utype')==""?'00,10,20,30':$(".fl_nav .on").attr('utype');
                 if($(this).text()=="热门下载")
                     queryPara.downloadcount=1;
                 else  if($(this).text()=="默认排序")
