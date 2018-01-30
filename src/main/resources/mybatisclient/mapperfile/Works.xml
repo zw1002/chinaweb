@@ -194,7 +194,7 @@
       AND price &lt;=0
     </if>
     <if test="type != null and type != ''">
-      AND workstype in (select DISTINCT keyvalue from tb_dict where uid in (SELECT uid from tb_dict WHERE locate(keyvalue,#{type })) or parentid in (SELECT uid from tb_dict WHERE locate(keyvalue,#{type })))
+      AND workstype in (select DISTINCT keyvalue from tb_dict where uid in (SELECT uid from tb_dict WHERE locate(keyvalue,#{type})) or parentid in (SELECT uid from tb_dict WHERE locate(keyvalue,#{type})))
     </if>
     <if test="orderField =='downcount'">
       order by downcount desc

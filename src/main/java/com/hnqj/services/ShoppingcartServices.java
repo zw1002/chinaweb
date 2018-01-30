@@ -97,4 +97,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return shoppingcartList;
 	}
+
+	public int delShoppingcartByUseridAndWorkid(PageData carpageData) {
+		logger.info("通过userid和workid删除Shoppingcart");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.delete("ShoppingcartMapper.delShoppingcartByUseridAndWorkid",carpageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
 }

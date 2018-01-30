@@ -11,7 +11,7 @@
     <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
     <result column="payuserid" jdbcType="VARCHAR" property="payuserid" />
   </resultMap>
-  <insert id="insert" parameterType="pd">
+  <insert id="addDealuidchild" parameterType="pd">
     insert into tb_dealuidchild (dealuid, worksid, worksprice,
       worksname, merchid, merchname, 
       addtime, payuserid)

@@ -10,10 +10,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.hnqj.core.AlipayUtil;
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
-import com.hnqj.model.Merch;
-import com.hnqj.model.Shoppingcart;
-import com.hnqj.model.Userinfo;
-import com.hnqj.model.Works;
+import com.hnqj.model.*;
 import com.hnqj.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,10 +42,20 @@ public class PayController extends BaseController{
     UserinfoServices userinfoServices;
     @Autowired
     DealrecordServices dealrecordServices;
+    @Autowired
+    DealuidchildServices dealuidchildServices;
 
     //跳转到购物车页面
     @RequestMapping(value = "/toCar.do")
     public String toCar(){
+        return  "car";
+    }
+    //付款成功后跳转到购物车页面
+    @RequestMapping(value = "/toCarAfertPay.do")
+    public String toCarAfertPay(HttpServletRequest request, Model model){
+        String userid = request.getParameter("userid") == null ? "" : request.getParameter("userid");
+        Userinfo userinfo=userinfoServices.getUserinfoforId(userid);
+        request.getSession().setAttribute("userinfo",userinfo);
         return  "car";
     }
     //跳转到支付页面
@@ -155,8 +162,8 @@ public class PayController extends BaseController{
                 AlipayUtil.ALIPAY_PUBLIC_KEY, AlipayConstants.SIGN_TYPE_RSA2);
         //AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE); //获得初始化的AlipayClient
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl("https://hao.360.cn");//付款成功后跳转页面
-        alipayRequest.setNotifyUrl("https://www.baidu.com");//在公共参数中设置回跳和通知地址
+        alipayRequest.setReturnUrl("http://117.158.202.179:8090/chinaweb/pay/toCarAfertPay.do?userid="+getUser().getUid());//付款成功后跳转页面
+        alipayRequest.setNotifyUrl("http://117.158.202.179:8090/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\""+uuid+"\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
@@ -186,7 +193,6 @@ public class PayController extends BaseController{
      * @param response
      */
     @RequestMapping(value = "/orderPayNotify")
-    @Transactional(value = "transactionManager", propagation = Propagation.REQUIRED, rollbackFor = Exception.class, timeout = 1, isolation = Isolation.DEFAULT)
     public void orderPayNotify(HttpServletRequest request, HttpServletResponse response) {
         // 获取到返回的所有参数 先判断是否交易成功trade_status 再做签名校验
         // 1、商户需要验证该通知数据中的out_trade_no是否为商户系统中创建的订单号，
@@ -203,7 +209,40 @@ public class PayController extends BaseController{
                 }
                 boolean signVerified = AlipaySignature.rsaCheckV1(param,AlipayUtil.ALIPAY_PUBLIC_KEY, AlipayConstants.CHARSET_UTF8,AlipayConstants.SIGN_TYPE_RSA2);
                 if (signVerified) {
-                    ResultUtils.write(response,"success");
+                    String ordercode=request.getParameter("out_trade_no");//验证订单编号
+                    Dealrecord dealrecord=dealrecordServices.getDealrecordforId(ordercode);
+                    if(dealrecord != null){
+                        String cash=request.getParameter("total_amount");//验证订单金额
+                        if(cash.equalsIgnoreCase(String.valueOf(dealrecord.getDealprice()))){
+                            String app_id=request.getParameter("app_id");
+                            if(app_id.equalsIgnoreCase(AlipayUtil.ALIPAY_APPID)) {//验证支付宝账号
+                                //处理业务
+                                PageData carpageData=new PageData();
+                                //修改交易状态
+                                dealrecordServices.updateDealrecordStateForId(ordercode);
+                                String [] workids=dealrecord.getBusinesid().split(",");
+                                PageData pageData=new PageData();
+                                pageData.put("addtime",new Date());
+                                pageData.put("payuserid",dealrecord.getPayuserid());
+                                for(int i=0;i<workids.length;i++){
+                                    Works works=worksServices.getWorksforId(workids[i]);
+                                    pageData.put("worksid",workids[i]);
+                                    pageData.put("worksprice",works.getPrice());
+                                    pageData.put("worksname",works.getWorksname());
+                                    Merch merch=merchServices.getMerchforId(works.getMerchid());
+                                    pageData.put("merchid",merch.getUid());
+                                    pageData.put("merchname",merch.getMerchname());
+                                    //交易子表添加作品数据
+                                    dealuidchildServices.addDealuidchild(pageData);
+                                    carpageData.put("userid",dealrecord.getPayuserid());
+                                    carpageData.put("workid",workids[i]);
+                                    //删除购物车作品
+                                    shoppingcartServices.delShoppingcartByUseridAndWorkid(carpageData);
+                                }
+                                ResultUtils.write(response,"success");
+                            }
+                        }
+                    }
                     // TODO 验签成功后
                     // 按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
                 } else {

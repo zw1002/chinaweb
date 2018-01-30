@@ -38,13 +38,23 @@
  layui.use('upload', function() {
      var $ = layui.jquery;
      var upload = layui.upload;
+     upload.render({
+         elem: '#test5'
+         ,url: '/upload/'
+         ,auto: false
+         ,accept:'file'
+         ,exts:'mp4|cdr|psd'
+         ,number:'2'
+         ,multiple: true
+         ,bindAction: '#test'
+     });
      //选完文件后不自动上传
      upload.render({
          elem: '#test8'
          ,url: '/upload/'
          ,auto: false
          ,accept:'file'
-         ,exts:'jpg|png|mp4|cdr|psd'
+         ,exts:'jpg|png'
          ,number:'2'
          ,multiple: true
          ,bindAction: '#test9'
@@ -72,6 +82,11 @@
              });
              form.render('select'); //这个很重要
          });
+         if(data.value == 30){
+             $("#upsamll").css("display","none");
+         }else{
+             $("#upsamll").css("display","block");
+         }
      });
 
  });
@@ -236,8 +251,8 @@
                        <!-- 设计 -->
                        <div style="margin-top: -20px">
                            <div class="hei40px">
-                               提示：源文件和预览图批量上传文件命名必须相同才能匹配成功（批量上传每次限10个）
-                               <div class="jyzt_txt"><a href="#">上传帮助中心？</a></div>
+                               提示：作品原件仅支持cdr、psd格式，作品预览图仅支持png、jsp格式。
+                               <div class="jyzt_txt"><a href="<%=basePath%>/helpd/toHelpd.do">上传帮助中心？</a></div>
                            </div>
                        <form action="filesUpload.do" method="POST" name="xiangmu" id="xiangmu" enctype="multipart/form-data" style="margin-top: 8px" class="layui-form batchinput-form">
                            <div class="layui-form-item">
@@ -279,7 +294,12 @@
                                </div>
                            </div>
                            <div class="layui-upload">
-                               <button style="margin-left: 110px" type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
+                               <label class="layui-form-label">作品原件：</label>
+                               <button type="button" class="layui-btn layui-btn-normal" id="test5">选择文件</button>
+                           </div>
+                           <div id="upsamll" style="margin-top: 20px" class="layui-upload">
+                               <label style="width:84px;margin-left: -4px" class="layui-form-label">作品缩略图：</label>
+                               <button style="" type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
                                <button type="button" class="layui-btn" id="test9">图片预览</button>
                                <blockquote id="test10" class="layui-elem-quote layui-quote-nm" style="margin-top: 15px;margin-left: 108px;">
                                    预览图：
@@ -309,11 +329,11 @@
              <div class="mem_ty_box">
                  <div class="gxq_tit"><h2>注意事项</h2> </div>
                  <div class="txt_ppad">
-                     <p>1、所上传作品需为源文件(可编辑模板)，预览图与上传的源文件需保持一致</p>
-                    <p>2、预览图有人物脸部需模糊，不得含有明显的联系方式，如QQ、电话、网址、二维码</p>
-                    <p>3、请勿上传国产卡通动画形象，如灰太狼、喜洋洋等</p>
-                    <p>4、辩题请用一句话来描述，关键词包含素材风格、内容、行业等词组，一般3组以上，关键词之间请用空格隔开查看标题/关键字教程</p>
-                    <p>温馨提示：第一次上传用户请认真阅读<a href="#" class="col_blue">《版权声明》</a></p>
+                     <p>1、作品原件为用户购买的源文件，作品缩略图用于作品展示。</p>
+                    <p>2、预览图有人物脸部需模糊，不得含有明显的联系方式，如QQ、电话、网址、二维码。</p>
+                    <p>3、请勿上传国产卡通动画形象，如灰太狼、喜洋洋等。</p>
+                    <p>4、作品标签之间用英文","分割。</p>
+                    <p>温馨提示：第一次上传用户请认真阅读<a href="<%=basePath%>/helpd/toHelpd.do" class="col_blue">《版权声明》。</a></p>
                 </div>                    
              </div> <!-- wid925px -->  
            </div><!-- mem_ty_box -->

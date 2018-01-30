@@ -30,6 +30,8 @@ public class PersonalCenterController extends  BaseController{
     @Autowired
     DealuidchildServices dealuidchildServices;
     @Autowired
+    DealrecordServices dealrecordServices;
+    @Autowired
     UserinfoServices userinfoServices;
     @Autowired
     MerchServices merchServices;
@@ -231,6 +233,45 @@ public class PersonalCenterController extends  BaseController{
             ResultUtils.write(response,toDateJson(hashMaps));
         }catch(Exception e){
             logger.error("getAlreadyPurchasedWorks e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 获取个人待付款交易
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getWaitPayDealrecode.do")
+    public String getWaitPayDealrecode(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getWaitPayDealrecode");
+        try{
+            String userid=getUser().getUid();
+            int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
+            int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
+            PageData pageData = new PageData();
+            pageData.put("userid",userid);
+            pageData.put("offset",offset);
+            pageData.put("count",count);
+            List<Dealrecord> dealrecordList=dealrecordServices.getDealrecordForPayUserId(pageData);
+            List<Map<String, Object>> hashMaps=new ArrayList<>();
+            for(Dealrecord dealrecord:dealrecordList){
+                Map<String, Object> map = new HashMap<>();
+                String [] workids=dealrecord.getBusinesid().split(",");
+                String worknames="";
+                for(int i=0;i<workids.length;i++){
+                    worknames += worksServices.getWorksforId(workids[i]).getWorksname()+",";
+                }
+                map.put("dealuid",dealrecord.getDealuid());
+                map.put("worksname",worknames);
+                map.put("price",dealrecord.getDealprice());
+                hashMaps.add(map);
+            }
+            ResultUtils.write(response,toDateJson(hashMaps));
+        }catch(Exception e){
+            logger.error("getWaitPayDealrecode e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;

@@ -48,6 +48,15 @@
          $("#backLogin").css("display","block");
      }
  });
+ //跳转到会员中心页面
+ function toMember(){
+     document.location.href = '<%=basePath%>/member/toMember.do';
+ }
+ //跳转到会员空间页面
+ function toHomepage(){
+     var uid="${userinfo.getUid()}";
+     document.location.href = '<%=basePath%>/homepage/toHomepage.do?uid='+uid;
+ }
 </script>
 </head>
 

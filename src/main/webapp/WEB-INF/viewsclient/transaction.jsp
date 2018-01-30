@@ -84,6 +84,30 @@
          }
      });
  }
+ //待付款
+ function waitpaydealrecod(offset,count){
+     var sss='<tr> <th>作品信息</th> <th>金额</th> <th>交易状态</th> <th>操作</th> </tr>';
+     $("#waitPay table").find("tr").remove();
+     $.ajax({
+         url: "<%=basePath%>/personalcenter/getWaitPayDealrecode.do",
+         type: "POST",
+         async:false,
+         data: {
+             offset:offset,
+             count:count
+         },
+         success: function (data) {
+             var msg = eval("(" + data + ")");
+             var str="";
+             for(var i=0;i<msg.length;i++){
+                 str += '<tr id="'+msg[i].dealuid+'"><td>'+msg[i].worksname+'</td>'
+                         +'<td><p>￥'+msg[i].price+'</p></td> <td><p class="col_f00">待付款</p></td><td><a href="#">删除</a></td></tr>';
+             }
+             $("#waitPay table").append(sss);
+             $("#waitPay table").append(str);
+         }
+     });
+ }
  //跳转到首页
  function toIndex(){
      document.location.href = '<%=basePath%>/signin/index.do';
@@ -237,6 +261,7 @@
                     <ul class=" clearfix">
                        <li>已出售</li>
                        <li>已购买</li>
+                       <li>待付款</li>
                     </ul>
                   </div>
                   <div class="jy_tab_con">
@@ -254,6 +279,13 @@
                           </table>
                          <div id="pagess" class="pages_box"></div>
                      </ul>
+                      <!-- 待付款 -->
+                      <ul id="waitPay">
+                          <table width="100%">
+
+                          </table>
+                          <div id="waitPayPage" class="pages_box"></div>
+                      </ul>
                   </div>
                  </div>
 <script type="text/javascript">
@@ -262,6 +294,7 @@
 <script>
     var alreadlysoldpage=0;
     var alreadyPurchasedpage=0;
+    var waitpaydealrecodepage=0;
     var groups=6;
     $.ajax({
         url: "<%=basePath%>/personalcenter/getAlreadySoldWorks.do",
@@ -319,6 +352,35 @@
             var curr = obj.curr;
             var offset=(curr-1)*groups;
             alreadyPurchased(offset,groups);
+        }
+    });
+    $.ajax({
+        url: "<%=basePath%>/personalcenter/getWaitPayDealrecode.do",
+        type: "POST",
+        async:false,
+        success: function (data) {
+            var msg = eval("(" + data + ")");
+            if(msg.length > 0){
+                waitpaydealrecodepage=Math.ceil(msg.length/groups);
+            }
+        }
+    });
+    laypage({
+        cont: ('waitPayPage'),   //容器。值支持id名、原生dom对象，jquery对象,
+        pages: waitpaydealrecodepage,              //分页数。一般通过服务端返回得到
+        curr:1,                 //当前页。默认为1
+        groups: groups,              //连续显示分页数  默认为5
+        skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
+        skip: true,             //是否开启跳页
+        first:'首页',           //用于控制首页  默认false
+        last: '尾页',           //用于控制尾页  如：last: '尾页' 如：last: false，则表示不显示首页项
+        prev:'上一页',           //用于控制上一页。若不显示，设置false即可
+        next:'下一页',           //用于控制下一页。若不显示，设置false即可
+        jump: function(obj, first){
+            //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
+            var curr = obj.curr;
+            var offset=(curr-1)*groups;
+            waitpaydealrecod(offset,groups);
         }
     });
 </script>

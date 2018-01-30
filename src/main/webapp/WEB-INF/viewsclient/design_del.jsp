@@ -38,6 +38,10 @@
         $('.ss_btn').click(function () {
             document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
         });
+        //取消整个页面的右击事件
+        document.oncontextmenu = function(){
+            return false;
+        }
     });
     function getDisginDel(){
         //作品ID

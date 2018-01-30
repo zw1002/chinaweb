@@ -16,7 +16,7 @@
     dealuid, dealtype, businesstype, dealtime, dealprice, dealstate, businesid, businesstbname,
     payuserid
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="getDealrecordForId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_dealrecord
@@ -48,4 +48,21 @@
       payuserid = #{payuserid,jdbcType=VARCHAR}
     where dealuid = #{dealuid,jdbcType=VARCHAR}
   </update>
+  <!--修改订单交易状态-->
+  <update id="updateDealrecordStateForId" parameterType="java.lang.String">
+    update tb_dealrecord
+    set dealstate = '1'
+    where dealuid = #{dealuid,jdbcType=VARCHAR}
+  </update>
+  <!--获取个人待付款数据-->
+  <select id="getDealrecordForPayUserId" parameterType="pd" resultMap="BaseResultMap">
+    select
+    *
+    from tb_dealrecord
+    where payuserid = #{userid}
+    order by dealtime desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
 </mapper>

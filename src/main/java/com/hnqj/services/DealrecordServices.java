@@ -85,4 +85,28 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return dealrecordList; 
 	}
+
+	public int updateDealrecordStateForId(String ordercode) {
+		logger.info("修改订单交易状态");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.delete("DealrecordMapper.updateDealrecordStateForId",ordercode);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
+
+	public List<Dealrecord> getDealrecordForPayUserId(PageData pageData) {
+		logger.info("获取个人待付款记录");
+		List<Dealrecord>	dealrecordList=null;
+		try {
+			dealrecordList = (List<Dealrecord>) daoSupport.findForList("DealrecordMapper.getDealrecordForPayUserId",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			dealrecordList=null;
+		}
+		return dealrecordList;
+	}
 }

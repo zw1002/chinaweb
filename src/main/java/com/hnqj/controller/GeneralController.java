@@ -355,17 +355,6 @@ public class GeneralController extends BaseController{
             PageData pageData = new PageData();
             pageData.put("data",data);
             String[] labels = label.split(",");
-//            String strLblFilter="(";
-//            for (String str: labels) {
-//                if(str.equals("")) continue;
-//                strLblFilter+=" worklabel LIKE '%"+str+"%' or ";
-//            }
-//            if(strLblFilter.length()>4){
-//                strLblFilter=strLblFilter.substring(0,strLblFilter.length()-4);
-//                strLblFilter+=")";
-//            }
-//            else strLblFilter=null;
-            //System.out.println("kkkkkkkk:"+strLblFilter);
             if(label.equals(""))
                 pageData.put("labels",null);
             else
