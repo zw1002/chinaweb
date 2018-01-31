@@ -59,4 +59,17 @@
     from tb_merch
     where userinfouid = #{userinfouid,jdbcType=VARCHAR}
   </select>
+  <!--修改店铺交易量和积分-->
+  <update id="updateWorkDealCount" parameterType="pd">
+    update tb_merch
+    set merchscroe = #{merchscroe},
+    dealnums = #{dealnums}
+    where uid = #{uid}
+  </update>
+  <!--修改店铺作品量-->
+  <update id="updateWorkNums" parameterType="pd">
+    update tb_merch
+    set worksnums = #{worksnums}
+    where uid = #{uid}
+  </update>
 </mapper>

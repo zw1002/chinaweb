@@ -97,4 +97,28 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return merch;
 	}
+
+	public int updateWorkDealCount(PageData workdealpageData) {
+		logger.info("修改店铺交易量和积分");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("MerchMapper.updateWorkDealCount",workdealpageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
+
+	public int updateWorkNums(PageData workcountpageData) {
+		logger.info("修改店铺作品量");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("MerchMapper.updateWorkNums",workcountpageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
 }

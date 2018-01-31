@@ -248,6 +248,20 @@ public class PayController extends BaseController{
                                     downpageData.put("merchid",merch.getUid());
                                     downpageData.put("merchname",merch.getMerchname());
                                     downloadServices.addDownload(downpageData);
+                                    //修改作品下载量
+                                    PageData downcountpageData=new PageData();
+                                    int count=works.getDowncount()+1;
+                                    downcountpageData.put("downcount",count);
+                                    downcountpageData.put("uid",works.getUid());
+                                    worksServices.updateWorkDownloadCount(downcountpageData);
+                                    //修改店铺交易量和积分
+                                    PageData workdealpageData=new PageData();
+                                    int dealnums=merch.getDealnums()+1;
+                                    int merchscroe= merch.getMerchscroe()+Integer.parseInt(cash);
+                                    workdealpageData.put("dealnums",dealnums);
+                                    workdealpageData.put("merchscroe",merchscroe);
+                                    workdealpageData.put("uid",merch.getUid());
+                                    merchServices.updateWorkDealCount(workdealpageData);
                                     //交易子表添加作品数据
                                     dealuidchildServices.addDealuidchild(pageData);
                                     //删除购物车作品

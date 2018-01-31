@@ -1,7 +1,9 @@
 package com.hnqj.controller;
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
+import com.hnqj.model.Merch;
 import com.hnqj.model.Works;
+import com.hnqj.services.MerchServices;
 import com.hnqj.services.WorksServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ import java.util.List;
 public class PersonWorksController extends BaseController{
     @Autowired
     WorksServices worksServices;
+    @Autowired
+    MerchServices merchServices;
     //跳转到我的作品页面
     @RequestMapping(value = "/toPersonWorks.do")
     public String toPersonWorks(HttpServletRequest request, Model model){
@@ -69,6 +73,14 @@ public class PersonWorksController extends BaseController{
         try{
             String workid = request.getParameter("workid") == null ? "" : request.getParameter("workid");
             worksServices.delWorksByFid(workid);
+            Works works=worksServices.getWorksforId(workid);
+            Merch merch=merchServices.getMerchforId(works.getMerchid());
+            int worksnums=merch.getWorksnums()-1;
+            PageData pageData=new PageData();
+            pageData.put("worksnums",worksnums);
+            pageData.put("uid",merch.getUid());
+            //修改店铺作品数
+            merchServices.updateWorkNums(pageData);
             ResultUtils.writeSuccess(response);
         }catch (Exception e){
             logger.error("workOffShelf e="+e.getMessage());

@@ -195,4 +195,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return iFlag;
 	}
+
+	public int updateWorkDownloadCount(PageData downcountpageData) {
+		logger.info("修改作品下载量");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("WorksMapper.updateWorkDownloadCount",downcountpageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
 }

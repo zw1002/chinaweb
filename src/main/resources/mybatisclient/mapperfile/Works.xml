@@ -234,4 +234,10 @@
     dpinum = #{dpinum}
     where uid = #{uid}
   </update>
+  <!--修改作品下载量-->
+  <update id="updateWorkDownloadCount" parameterType="pd">
+    update tb_works
+    set downcount = #{downcount}
+    where uid = #{uid}
+  </update>
 </mapper>
