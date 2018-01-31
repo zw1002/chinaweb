@@ -139,9 +139,15 @@ public class UploadFileController extends  BaseController {
                 Merch merch=merchServices.getMerchForUserId(getUser().getUid());
                 pageData.put("merchid",merch.getUid());
                 pageData.put("price",price);
+                PageData workcountpageData = new PageData();
+                int worksnums=merch.getWorksnums()+1;
+                workcountpageData.put("worksnums",worksnums);
+                workcountpageData.put("uid",merch.getUid());
                 BufferedImage image = null;
                 try {
                     file.transferTo(localFile);//原图
+                    //修改店铺作品数量
+                    merchServices.updateWorkNums(workcountpageData);
                     if(extName.equalsIgnoreCase(".cdr") || extName.equalsIgnoreCase(".psd")) {
                         Works works = worksServices.getWorksforId(uuid);
                         pageData.put("uid", uuid);
