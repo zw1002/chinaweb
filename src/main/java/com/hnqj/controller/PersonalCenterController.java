@@ -39,6 +39,8 @@ public class PersonalCenterController extends  BaseController{
     DictServices dictServices;
     @Autowired
     WorklabelServices worklabelServices;
+    @Autowired
+    DownloadServices downloadServices;
     //跳转到开店页面
     @RequestMapping(value = "/toShop.do")
     public String toShop(){
@@ -58,6 +60,11 @@ public class PersonalCenterController extends  BaseController{
     @RequestMapping(value = "/toWithdrawals.do")
     public String toWithdrawals(){
         return  "transaction";
+    }
+    //跳转到我的下载页面
+    @RequestMapping(value = "/toDownload.do")
+    public String toDownload(){
+        return  "download";
     }
 
     /**
@@ -312,6 +319,32 @@ public class PersonalCenterController extends  BaseController{
             ResultUtils.write(response,worklabelList);
         }catch(Exception e){
             logger.error("getWorklabelByWorktype e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 和获取个人付款成功后可下载的作品
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getDownloadWorksByUserid.do")
+    public String getDownloadWorksByUserid(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getDownloadWorksByUserid");
+        String userid=getUser().getUid();
+        int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
+        int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
+        PageData pageData = new PageData();
+        pageData.put("userid",userid);
+        pageData.put("offset",offset);
+        pageData.put("count",count);
+        try{
+            List<Download> downloadList=downloadServices.selectDownloadListByUserId(pageData);
+            ResultUtils.write(response,toDateJson(downloadList));
+        }catch(Exception e){
+            logger.error("getDownloadWorksByUserid e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;

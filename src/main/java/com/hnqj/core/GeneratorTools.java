@@ -185,6 +185,6 @@ public class GeneratorTools {
         generator.getServiceImpl("Works");
         generator.getServiceImpl("Userinfo");
         */
-        generator.getServiceImpl("Merch");
+        generator.getServiceImpl("Download");
     }
 }

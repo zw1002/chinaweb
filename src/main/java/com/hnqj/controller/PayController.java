@@ -44,19 +44,21 @@ public class PayController extends BaseController{
     DealrecordServices dealrecordServices;
     @Autowired
     DealuidchildServices dealuidchildServices;
+    @Autowired
+    DownloadServices downloadServices;
 
     //跳转到购物车页面
     @RequestMapping(value = "/toCar.do")
     public String toCar(){
         return  "car";
     }
-    //付款成功后跳转到购物车页面
-    @RequestMapping(value = "/toCarAfertPay.do")
-    public String toCarAfertPay(HttpServletRequest request, Model model){
+    //付款成功后跳转到下载页面
+    @RequestMapping(value = "/toDownload.do")
+    public String toDownload(HttpServletRequest request, Model model){
         String userid = request.getParameter("userid") == null ? "" : request.getParameter("userid");
         Userinfo userinfo=userinfoServices.getUserinfoforId(userid);
         request.getSession().setAttribute("userinfo",userinfo);
-        return  "car";
+        return  "download";
     }
     //跳转到支付页面
     @RequestMapping(value = "/toPay.do")
@@ -162,8 +164,10 @@ public class PayController extends BaseController{
                 AlipayUtil.ALIPAY_PUBLIC_KEY, AlipayConstants.SIGN_TYPE_RSA2);
         //AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE); //获得初始化的AlipayClient
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl("http://117.158.202.179:8090/chinaweb/pay/toCarAfertPay.do?userid="+getUser().getUid());//付款成功后跳转页面
-        alipayRequest.setNotifyUrl("http://117.158.202.179:8090/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
+        //alipayRequest.setReturnUrl("http://117.158.202.179:8090/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
+        //alipayRequest.setNotifyUrl("http://117.158.202.179:8090/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
+        alipayRequest.setReturnUrl("http://47.104.163.68:3306/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
+        alipayRequest.setNotifyUrl("http://47.104.163.68:3306/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\""+uuid+"\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
@@ -222,8 +226,12 @@ public class PayController extends BaseController{
                                 dealrecordServices.updateDealrecordStateForId(ordercode);
                                 String [] workids=dealrecord.getBusinesid().split(",");
                                 PageData pageData=new PageData();
+                                PageData downpageData=new PageData();
                                 pageData.put("addtime",new Date());
+                                pageData.put("dealuid",ordercode);
                                 pageData.put("payuserid",dealrecord.getPayuserid());
+                                downpageData.put("uid",UUID.randomUUID().toString());
+                                downpageData.put("paydate",new Date());
                                 for(int i=0;i<workids.length;i++){
                                     Works works=worksServices.getWorksforId(workids[i]);
                                     pageData.put("worksid",workids[i]);
@@ -232,11 +240,19 @@ public class PayController extends BaseController{
                                     Merch merch=merchServices.getMerchforId(works.getMerchid());
                                     pageData.put("merchid",merch.getUid());
                                     pageData.put("merchname",merch.getMerchname());
+                                    //向个人已付款作品表添加作品信息
+                                    downpageData.put("workid",workids[i]);
+                                    downpageData.put("price",works.getPrice());
+                                    downpageData.put("workname",works.getWorksname());
+                                    downpageData.put("smallurl",works.getSamllurl());
+                                    downpageData.put("merchid",merch.getUid());
+                                    downpageData.put("merchname",merch.getMerchname());
+                                    downloadServices.addDownload(downpageData);
                                     //交易子表添加作品数据
                                     dealuidchildServices.addDealuidchild(pageData);
+                                    //删除购物车作品
                                     carpageData.put("userid",dealrecord.getPayuserid());
                                     carpageData.put("workid",workids[i]);
-                                    //删除购物车作品
                                     shoppingcartServices.delShoppingcartByUseridAndWorkid(carpageData);
                                 }
                                 ResultUtils.write(response,"success");

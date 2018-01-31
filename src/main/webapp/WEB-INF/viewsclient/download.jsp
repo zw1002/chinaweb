@@ -31,17 +31,14 @@
 
 
  $(document).ready(function () {
-     getCollectionData();
      getUserMerch();
  });
  //初始化收藏数据
- function getCollectionData(offset,count){
-     var userid="${userinfo.getUid()}";
+ function getDownloadData(offset,count){
      $.ajax({
-         url: "<%=basePath%>/personalcenter/getCollectionData.do",
+         url: "<%=basePath%>/personalcenter/getDownloadWorksByUserid.do",
          type: "POST",
          data:{
-             userid:userid,
              offset:offset,
              count:count
          },
@@ -49,29 +46,12 @@
              var msg = eval("(" + data + ")");
              var str="";
              for(var i=0;i<msg.length;i++){
-                 str += '<tr id="'+msg[i].worksid+'"> <td width="120"><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].worksid+'"><img src="<%=basePath%>'+msg[i].worksurl+'"></a></td>'
-                 +'<td><h2>'+msg[i].worksname+'</h2> <p>[价格] ￥'+msg[i].price+'</p>'
-                 +'<p>[标签] '+msg[i].worklabel+'</p><p>[收藏日期] '+msg[i].collectiontime+'</p>'
-                 +'</td><td width="50"><a href="#" onclick="delCollection('+msg[i].worksid+')">取消收藏</a></td></tr>';
+                 str += '<tr id="'+msg[i].workid+'"> <td width="120"><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].workid+'"><img src="<%=basePath%>'+msg[i].smallurl+'"></a></td>'
+                 +'<td><h2>'+msg[i].workname+'</h2> <p>[价格] ￥'+msg[i].price+'</p>'
+                 +'<p>[店铺名称] '+msg[i].merchname+'</p><p>[购买日期] '+msg[i].paydate+'</p>'
+                 +'</td><td width="50"><a href="<%=basePath%>/uploadFile/downloadFile.do?workid='+msg[i].workid+'">下载</a></td></tr>';
              }
              $(".collect_tab table").append(str);
-         }
-     });
- }
- //取消收藏
- function delCollection(workid){
-     $.ajax({
-         url: "<%=basePath%>/personalcenter/delCollection.do",
-         type: "POST",
-         data:{
-             workid:workid
-         },
-         success: function (data) {
-             if(data!=="failed"){
-                $("#"+workid).css("display","none");
-             }else{
-                 errorInfo("取消失败");
-             }
          }
      });
  }
@@ -223,8 +203,8 @@
                 <ul>
                     <li id="uploadwork"><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
                     <li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
-                    <li><a class="mem_icon9" href="<%=basePath%>/personalcenter/toDownload.do" onclick="persoDownload()">我的下载</a></li>
-                    <li><a class="mem_icon2 active" active href="#" onclick="toCollection()">收藏</a></li>
+                    <li><a class="mem_icon9 active" href="<%=basePath%>/personalcenter/toDownload.do" onclick="persoDownload()">我的下载</a></li>
+                    <li><a class="mem_icon2" active href="#" onclick="toCollection()">收藏</a></li>
                     <li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>
                     <li><a class="mem_icon7" href="#" onclick="toWithdrawals()">提现</a></li>
                     <li><a class="mem_icon9" href="<%=basePath%>/persondata/toPersonData.do">个人资料</a></li>
@@ -244,23 +224,20 @@
 <script>
     var page=0;
     var groups=9;
-    var uid=$("#uid").val();
     $.ajax({
-        url: "<%=basePath%>/personalcenter/getCollectionData.do",
+        url: "<%=basePath%>/personalcenter/getDownloadWorksByUserid.do",
         type: "POST",
         async:false,
-        data: {
-            uid: uid
-        },
         success: function (data) {
             var msg = eval("(" + data + ")");
             page=Math.ceil(msg.length/groups);
         }
     });
     laypage({
-        cont: ('pagess'),   //容器。值支持id名、原生dom对象，jquery对象,
+        cont: ('pages'),   //容器。值支持id名、原生dom对象，jquery对象,
         pages: page,              //分页数。一般通过服务端返回得到
         curr:1,                 //当前页。默认为1
+        groups: groups,              //连续显示分页数  默认为5
         skin: '#e8474b',           //控制分页皮肤。目前支持：molv、yahei、flow  也可以自定义
         skip: true,             //是否开启跳页
         first:'首页',           //用于控制首页  默认false
@@ -271,7 +248,7 @@
             //触发分页后的回调，函数返回两个参数。 得到了当前页，用于向服务端请求对应数据
             var curr = obj.curr;
             var offset=(curr-1)*groups;
-            userAllCollection(offset,groups);
+            getDownloadData(offset,groups);
         }
     });
 </script>  

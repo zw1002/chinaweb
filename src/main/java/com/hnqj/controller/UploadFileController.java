@@ -190,12 +190,14 @@ public class UploadFileController extends  BaseController {
      */
     @RequestMapping("/downloadFile.do")
     public String downloadFile(HttpServletRequest request, HttpServletResponse response) {
+        String workid = request.getParameter("workid") == null ? "" : request.getParameter("workid");
         String HOMEPATH = request.getSession().getServletContext().getRealPath("/");
         try {
+                Works works=worksServices.getWorksforId(workid);
                 // 首先清理缓冲区的内容
                 response.reset();
-                String destFileName = "A303.cdr";//文件名称
-                String sourceFilePathName = "/static/uploadImg/upload\\2018-01-30\\A303.cdr";
+                String destFileName = works.getWorksname()+works.getImgformart();//文件名称
+                String sourceFilePathName = works.getWorksurl();//原件地址
                 File newfile = new File(sourceFilePathName);
                 if (!newfile.exists()) {
                     sourceFilePathName = HOMEPATH + sourceFilePathName;

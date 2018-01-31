@@ -41,7 +41,7 @@
                 </div>
                 <!-- 登录后 -->
                 <div id="backLogin" class="top_pos" style="display:none;">
-                    <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>|<a href="<%=basePath%>/pay/toCar.do">购物车</a>|<a href="<%=basePath%>/uploadFile/downloadFile.do">接口测试</a>
+                    <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>|<a href="<%=basePath%>/pay/toCar.do">购物车</a>
                     <!--<a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.html" class="sc_icon">我要上传</a>|<a href="collection_2.html">我的收藏（<span class="col_f00">2</span>）</a>-->
                 </div>
             </div>
@@ -258,19 +258,14 @@
 </div><!-- hei50px -->
 <!-- 设计 -->
 <div class="wrap">
-    <div class="tit_pic"><a href="#" onclick="toDesign()"><img src="<%=basePath%>/static/images/tit_pic1.png" height="70" width="207" /></a></div>
-
+    <div class="tit_pic"><a href="<%=basePath%>/design/toDesign.do"><img src="<%=basePath%>/static/images/tit_pic1.png" height="70" width="207" /></a></div>
     <div class="hei380px">
         <div class="design_list da_img">
             <ul class="clearfix" id="design">
-
             </ul>
         </div><!-- design_list -->
-
-
         <div class="sj_fr">
             <div class="hong_tit"><h2>交易排行榜</h2> <a href="#">更多 ></a></div>
-
             <div class="phb_con" id="jyphb">
                 <div class="hd">
                     <ul></ul>
