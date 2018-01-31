@@ -363,17 +363,17 @@ public class GeneralController extends BaseController{
             pageData.put("freePrice",null);
             if(clickcount>0)
                 pageData.put("orderField","ticknums");
-            else if(collectioncount>0)
+            if(collectioncount>0)
                 pageData.put("orderField","favcount");
-            else if(downloadcount>0)
+            if(downloadcount>0)
                 pageData.put("orderField","downcount");
-            else if(workprice==1)
+            if(workprice==1)
                 pageData.put("orderField","price");
             else if(workprice==2)
                 pageData.put("freePrice",0);
-            else if(newup.equals("1"))
+            if(newup.equals("1"))
                 pageData.put("orderField","uptime");
-            else pageData.put("orderField",null);
+            //else pageData.put("orderField",null);
             pageData.put("type",worktype);
             pageData.put("offset",Integer.parseInt(startCount));
             if(limit.equals(""))
