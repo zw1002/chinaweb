@@ -98,37 +98,7 @@ public class PersonDataController extends BaseController{
     {
         String strVal="";
         logger.info("userSfzUp");
-        String upFile = request.getParameter("upFile") == null ? "" : request.getParameter("upFile");
-        if(upFile.equals("first"))
-        {//保存图片，并返回图片路径
 
-            MultiValueMap<String, MultipartFile> multFiles = ((DefaultMultipartHttpServletRequest)request).getMultiFileMap();
-            List<MultipartFile> files =multFiles.get("file");
-            String HOMEPATH = request.getSession().getServletContext().getRealPath("/") + "static/uploadImg/sfrzPhoto/";
-            // 如果目录不存在则创建
-            File uploadDir = new File(HOMEPATH);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-            String sfzImgUrl="";
-            for(MultipartFile file:files){//读取文件并上保存
-                try{
-                    String myFileName = file.getOriginalFilename();
-//                    SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
-//                    + df.format(new Date())
-                    myFileName= getUser().getUid()+myFileName;
-                    //long fileSize = file.getSize();
-                    //保存文件
-                    File localFile = new File(HOMEPATH + myFileName);
-                    file.transferTo(localFile);
-                    sfzImgUrl= "/static/uploadImg/sfrzPhoto/"+myFileName;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            ResultUtils.write(response,"{\"code\":0,\"msg\":\"上传成功!\",\"data\":\""+sfzImgUrl+"\"}");//
-            return  null;
-        }
         String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
         String zxname = request.getParameter("zsname") == null ? "" : request.getParameter("zsname");
         String sfzh = request.getParameter("sfzcode") == null ? "" : request.getParameter("sfzcode");
@@ -175,10 +145,21 @@ public class PersonDataController extends BaseController{
         return null;
     }
 
-    //用户信息绑定persondata/userBaseInfo.do
+    //用户基础信息persondata/userBaseInfo.do
     @RequestMapping(value = "/userBaseInfo.do")
     public String userBaseInfo(HttpServletRequest request, HttpServletResponse response)
     {
+
+//        uid:"${userinfo.getUid()}",
+//                officephone:data.field.txt_phone,
+//            email:data.field.txt_email,
+//            imglogo:imgLogoUrl, //头像logo
+//            address:data.field.txt_address, //地址
+//            usertype:curType,//身份标签
+//            userlabel:curLabel,//标签
+//            nicheng:data.field.txt_nc,
+//            qqid:data.field.txt_qq,
+//            msnid:data.field.txt_msn
         String strVal="";
         logger.info("userBaseInfo");
         String newPassword = request.getParameter("newPassword") == null ? "" : request.getParameter("newPassword");
@@ -196,6 +177,49 @@ public class PersonDataController extends BaseController{
 
             ResultUtils.write(response,"密码重置失败,稍后重试");
         }
+        return null;
+    }
+
+    //文件上传persondata/upFileInfo.do
+    @RequestMapping(value = "/upFileInfo.do")
+    public String upFileInfo(HttpServletRequest request, HttpServletResponse response)
+    {
+        String strVal="";
+        logger.info("upFileInfo");
+
+        String upFile = request.getParameter("upFile") == null ? "" : request.getParameter("upFile");
+        if(!upFile.equals("")) {
+            try {
+                MultiValueMap<String, MultipartFile> multFiles = ((DefaultMultipartHttpServletRequest) request).getMultiFileMap();
+                List<MultipartFile> files = multFiles.get("file");
+                String HOMEPATH = request.getSession().getServletContext().getRealPath("/") + "static/uploadImg/"+upFile+"/";
+                // 如果目录不存在则创建
+                File uploadDir = new File(HOMEPATH);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+                String sfzImgUrl = "";
+                for (MultipartFile file : files) {//读取文件并上保存
+
+                    String myFileName = file.getOriginalFilename();
+                    SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式df.format(new Date())
+
+                    myFileName = getUser().getUid()+upFile + myFileName;
+
+                    //保存文件
+                    File localFile = new File(HOMEPATH + myFileName);
+                    file.transferTo(localFile);
+                    sfzImgUrl = "/static/uploadImg/"+upFile+"/" + myFileName;
+                }
+                ResultUtils.write(response, "{\"code\":0,\"msg\":\"上传成功!\",\"data\":\"" + sfzImgUrl + "\"}");//
+            } catch (IOException e) {
+                e.printStackTrace();
+                ResultUtils.write(response, "{\"code\":1111,\"msg\":\"上传失败!\",\"data\":\"\"}");//
+            }
+
+        }
+        else
+            ResultUtils.write(response,"{\"code\":1111,\"msg\":\"上传失败!\",\"data\":\"\"}");//
         return null;
     }
 }

@@ -11,9 +11,9 @@
 	<link href="<%=basePath%>/static/css/global.css" rel="stylesheet" type="text/css" />
 	<link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
 	<link href="<%=basePath%>/static/css/layui.css" rel="stylesheet" type="text/css" />
-	<script src="<%=basePath%>/static/layui/layui.js"></script>
 	<script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 	<script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
+	<script src="<%=basePath%>/static/layui/layui.js"></script>
 	<style>
 		.layui-input {
 			width: 100%;
@@ -38,8 +38,9 @@
 			margin-right: 150px;
 		}
 		.touxiang img {
-			width: 120px;
-			border: 1px solid #a5a5a5;
+			width: 80px;
+			height:80px;
+			border: 1px solid #a5a5a5;margin-left: 5px;
 		}
 		.touxiang .layui-input-block {
 			float: right;
@@ -171,8 +172,8 @@
 			<div class="wid260px fl">
 				<div class="grzl_box">
 					<a href="#" onclick="toHomepage()" class="kj_lj">个人空间 ></a>
-					<div class="tx_infor">
-						<img src="<%=basePath%>${userinfo.getUsrpicurl()}"/>
+					<div class="tx_infor" >
+						<img  src="<%=basePath%>${userinfo.getUsrpicurl()}"/>
 						<h2>${userinfo.getFristname()}</h2>
 					</div>
 					<div class="mj_tab">
@@ -196,7 +197,6 @@
 				</div>
 			</div><!-- wid260px -->
 			<div class="wid925px fr">
-
 				<div class="tran_con" style="margin-top: 0px;">
 					<div class="jy_nav">
 						<ul class=" clearfix">
@@ -213,10 +213,10 @@
 							<form class="layui-form" action="" >
 								<div class="layui-form-item touxiang">
 									<div class="layui-input-block">
-										<img id="img_logo" src="<%=basePath%>${userinfo.getUsrpicurl()}"/>
+										<img class="layui-upload-img" id="img_logo" src="<%=basePath%>${userinfo.getUsrpicurl()}">
 									</div>
-									<div class="layui-input-block" style="margin-top: 180px;margin-left: 18px;">
-										<button class="layui-btn layui-btn-normal layui-btn-radius bangding layui-upload-button">修改头像</button>
+									<div  class="layui-input-block" style="margin-top: 110px;margin-left: 0px;">
+										<button type="button" id="editLogo" class="layui-btn layui-btn-normal layui-btn-radius bangding">修改头像</button>
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -265,16 +265,16 @@
 										<%--<input type="checkbox" name="like1[game]" lay-skin="primary" title="图片爱好者">--%>
 									<%--</div>--%>
 										<label class="layui-form-label"><span style="color: #C9302C;">*</span>身份</label>
-										<div class="layui-input-block">
-											<input type="checkbox" name="like[write]" title="摄影师" checked="">
-											<input type="checkbox" name="like[read]" title="设计师" >
-											<input type="checkbox" name="like[game]" title="图片爱好者">
+										<div div="div_usertype" class="layui-input-block">
+											<input type="checkbox" name="like" value="摄影师" title="摄影师" checked="">
+											<input type="checkbox" name="like" value="设计师" title="设计师" >
+											<input type="checkbox" name="like" value="图片爱好者" title="图片爱好者">
 										</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>技能标签</label>
-									<div class="layui-input-block">
-										<button class="layui-btn layui-btn-primary layui-btn-radius" disabled="disabled">图片爱好者</button>
+									<div id="div_userlabel" class="layui-input-block">
+										<button class="layui-btn  layui-btn-radius" disabled="disabled">图片爱好者</button>
 										<button class="layui-btn layui-btn-primary layui-btn-radius" disabled="disabled">摄影爱好者</button>
 										<button class="layui-btn layui-btn-primary layui-btn-radius" disabled="disabled">其他</button>
 									</div>
@@ -289,9 +289,9 @@
 												<%--<option value="浙江" selected="">浙江省</option>--%>
 												<%--<option value="你的工号">江西省</option>--%>
 												<%--<option value="你最喜欢的老师">福建省</option>--%>
-											<%--</select>--%>
+											<%--</select>style="width:324px;float: left; position: initial;"--%>
 										<%--</div>--%>
-										<input type="text" name="txt_address" id="txt_address"  autocomplete="off" class="layui-input" placeholder="请输入详细住址" style="width:324px;float: left; position: initial;">
+										<input type="text" name="txt_address" id="txt_address"  autocomplete="off" class="layui-input dianhua" placeholder="请输入详细住址" >
 									</div>
 
 								</div>
@@ -340,7 +340,7 @@
 										<input type="text" name="bd_address" id="bd_address" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请输入开户行地址">
 									</div>
 								</div>
-								<div class="anniu">
+								<div class="anniu" style="text-align: center;">
 									<button  lay-submit="" lay-filter="bindinfo" class="layui-btn layui-btn-warm baocun">保存</button>
 								</div>
 							</form>
@@ -411,7 +411,7 @@
 										<input type="checkbox" id="okXy" title="《婚秀协议》《婚秀协议》" checked="">
 									</div>
 								</div>
-								<div class="anniu">
+								<div class="anniu" style="text-align: center;">
 									<button  lay-submit="" lay-filter="rzinfo" class="layui-btn layui-btn-warm baocun">保存</button>
 								</div>
 							</form>
@@ -437,7 +437,7 @@
 									<input type="password" name="okPw" id="okPw" lay-verify="required" autocomplete="off" class="layui-input dianhua" placeholder="同前一密码保持一致">
 								</div>
 							</div>
-							<div class="anniu">
+							<div class="anniu" style="text-align: center;">
 								<button  lay-submit="" lay-filter="pwinfo" class="layui-btn layui-btn-warm baocun">保存</button>
 							</div>
 							</form>
@@ -479,250 +479,9 @@
 							</form>
 						</ul>
 					</div>
-
-					<script type="text/javascript">
-                        jQuery(".tran_con").slide({
-                            titCell: ".jy_nav li",
-                            mainCell: ".jy_tab_con",
-                            trigger: "click"
-                        })
-					</script>
-					<script>
-                        layui.use(['laydate','laypage','form','table','layer','upload'], function() {
-                            var laydate = layui.laydate,form = layui.form,upload = layui.upload;;
-                            var layer = layui.layer;
-                            var table = layui.table;
-
-                            //执行一个laydate实例
-                            laydate.render({
-                                elem: '#date1' //指定元素
-                            });
-                            laydate.render({
-                                elem: '#date2' //指定元素
-                            });
-                            form.on('submit(baseinfo)', function(data){
-                                //alert(data.elem.attributes['lay-filter'].nodeValue);
-//                                console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
-//                                console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
-//                                console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-								//persondata/userBaseInfo.do
-                                $.ajax({
-                                    url: "<%=basePath%>/persondata/userBaseInfo.do",
-                                    type: "POST",
-                                    async:false,
-                                    data: {
-                                        uid:"${userinfo.getUid()}",
-                                        officephone:"",
-                                        email:"",
-                                        imglogo:"", //头像logo
-                                        address:"", //地址
-										usertype:'',//身份标签
-										userlabel:''//标签
-                                    },
-                                    success: function (data) {
-                                        if(data=='success'){layer.msg('信息绑定成功!', {icon: 6});}
-                                        else layer.msg(data+'!', {icon: 5});}
-                                });
-                                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-                            });
-                            form.on('submit(rzinfo)', function(data){
-                                //alert(data.elem.attributes['lay-filter'].nodeValue);
-                                rzInfo(data);
-                                return false;
-                            });
-                            form.on('submit(pwinfo)', function(data){
-                                //alert(data.elem.attributes['lay-filter'].nodeValue);
-                                restPw(data);
-                                return false;
-                            });
-                            form.on('submit(bindinfo)', function(data){
-                                //alert(data.elem.attributes['lay-filter'].nodeValue);
-                                bindInfo(data);
-                                return false;
-                            });
-                            //手机短信验证
-                            $('#btn_sendsms').click(function () {
-                                layer.msg("短信已发送，注意查收!");
-                                $('#btn_sendsms').addClass("layui-btn-disabled");
-                                var m=120;
-                                var showTimeInterval = window.setInterval(function(){
-                                    if(m==0){
-                                        $('#btn_sendsms').removeClass("layui-btn-disabled");
-                                        window.clearInterval(showTimeInterval);
-                                        $('#btn_sendsms').text("发送短信");
-									}
-									else
-                                    	$('#btn_sendsms').text("已发送("+m+"秒)");
-                                    m--;
-                                },1000);
-
-                                return false;
-                            })
-                            //绑定信息提交
-                            function bindInfo (data) {
-
-                                $.ajax({
-                                    url: "<%=basePath%>/persondata/userInfoBind.do",
-                                    type: "POST",
-                                    async:false,
-                                    data: {
-                                        uid:"${userinfo.getUid()}",
-                                        phone:"",phoneCode:"",
-                                        email:"",
-										weibo:"",
-										bankcode:"",
-										bankaddr:""
-                                    },
-                                    success: function (data) {
-                                        if(data=='success'){layer.msg('信息绑定成功!', {icon: 6});}
-                                        else layer.msg(data+'!', {icon: 5});}
-                                });
-                                return false;
-                            }
-                            var upFileUrl="";
-                            upload.render({
-                                elem: '#upFile'
-                                ,url: "<%=basePath%>/persondata/userSfzUp.do"
-                                //,auto:false,bindAction:'#btn_rzinfo'
-								,data:{upFile:'first'}
-								,before: function(obj){
-                                    //预读本地文件示例，不支持ie8
-                                    obj.preview(function(index, file, result){
-                                        $('#upImgUrl').attr('src', result); //图片链接（base64）
-                                        $('#upImgUrl').attr('style', "width: 320px;height: 220px;"); //图片链接（base64）
-										$('#upImgName').text(file.name);
-                                    });
-                                }
-                                ,done: function(res){
-                                    console.log(res)
-                                    upFileUrl=res.data;
-									alert(res.data);
-                                }
-                                ,error:function (obj) {
-									upFileUrl="";
-                                }
-                            });
-                            //认证信息保存
-							function rzInfo (data) {
-                                if(window.FormData) {
-                                    //验证信息是否填写 真实姓名  身证号  身证有效日期 协议是否阅读
-                                    if($('#zsname').val()==""){
-                                        layer.msg("请输入真实姓名!",{icon: 5})
-                                        return false;
-                                    }
-                                    if($('#sfzcode').val()==""){
-                                        layer.msg("请输入有效身份证号!",{icon: 5})
-                                        return false;
-                                    }
-                                    if($('#sfzdate').val()==""){
-                                        layer.msg("请输入身份证有效日期!",{icon: 5})
-                                        return false;
-                                    }
-									// 验证文件是否上传
-									if(upFileUrl==""){//$('#rzFile .layui-upload-file')[0].files.length<=0
-									    layer.msg("请选择上传的身份证正面照片!",{icon: 5})
-									    return false;
-									}
-                                    var formData = new FormData();
-                                    // 建立一个upload表单项，值为上传的文件
-                                    formData.append('upload', upFileUrl);//$('#rzFile .layui-upload-file')[0].files[0]
-                                    formData.append('zsname', $('#zsname').val());
-                                    formData.append('sfzcode', $('#sfzcode').val());
-                                    formData.append('sex',  $('#sex').val());
-                                    formData.append('sfzdate',$('#sfzdate').val());
-                                    formData.append('uid', "${userinfo.getUid()}");
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "<%=basePath%>/persondata/userSfzUp.do",
-                                        data: formData,
-                                        contentType: false,
-                                        processData: false,
-                                        success: function (data) {
-                                            if(data =="success"){
-                                                layer.msg("认证信息保存成功", {icon: 6});
-                                            }else{
-                                                layer.msg(data+"!", {icon: 5});
-                                            }
-                                        }
-                                    });
-                                }
-                                else
-                                    layer.msg("请更换浏览器，当前浏览器不支持文件上传!!");
-								return false;
-                            }
-                            //密码重置
-							function restPw(data) {
-							    var oldpw = $('#oldPw').val();
-                                var newpw = $('#newPw').val();
-                                var okpw = $('#okPw').val();
-								if(newpw.length<6){
-                                    layer.msg('密码长度最少为6个字符', {icon: 5});
-                                    return;
-								}
-                                if(newpw!=okpw){
-                                    layer.msg('新密码两次输入不一致,请重新输入!', {icon: 5});
-                                    return;
-                                }
-								$.ajax({
-                                    url: "<%=basePath%>/persondata/restPassword.do",
-                                        type: "POST",
-                                        async:false,
-                                        data: {
-                                        	uid:"${userinfo.getUid()}",
-                                            newPassword:newpw,
-											oldPassword:oldpw
-										},
-                                    success: function (data) {
-                                        if(data=='success'){
-                                            layer.msg('密码重置成功!', {icon: 6});
-										}
-										else
-                                            layer.msg(data+'!', {icon: 5});
-                                    }
-								});
-								return false;
-                            }
-                            //日志查询
-                            $('#btn_log').click(function () {
-
-								logTable.reload({
-									url:'<%=basePath%>/persondata/getUserOperatLog.do'
-									,where:{
-									    logType:$('#sel_LogType').val()
-										,logStime:$('#date1').val()
-										,logEtime:$('#date2').val()
-									}
-                                    ,page:{
-                                    curr: 1 //重新从第 1 页开始
-                                }
-								});
-								return false;
-                            })
-                           var logTable = table.render({
-                                elem: '#log-table'
-                                ,url:'<%=basePath%>/persondata/getUserOperatLog.do'
-                                ,page: {
-                                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-                                    ,groups: 3 //只显示 1 个连续页码
-                                    ,first: true //不显示首页
-                                    ,last: true //不显示尾页
-                                }
-                                ,cols: [[
-                                    {field:'id', width:150, title: '登录时间', sort: true}
-                                    ,{field:'username', width:150, title: '登录IP'}
-                                    ,{field:'sex', width:400, title: '消息内容',align:'center'}
-                                ]]
-
-                            });
-                        });
-					</script>
-
 				</div>
-				<!-- wid925px -->
-
-				<div class="clear"></div>
-
-			</div>
+			</div><!-- wid925px -->
+			<div class="clear"></div>
 		</div><!-- memder_con -->
 	</div><!-- wrap -->
 </div><!-- bg_f5 -->
@@ -756,8 +515,283 @@
 		</div>
 	</div>
 </footer>
+<script type="text/javascript">
+    jQuery(".tran_con").slide({
+        titCell: ".jy_nav li",
+        mainCell: ".jy_tab_con",
+        trigger: "click"
+    })
+</script>
+<script>
+    layui.use(['laydate','laypage','form','table','layer','upload'], function() {
+        var laydate = layui.laydate,form = layui.form,upload = layui.upload;
+        var layer = layui.layer;
+        var table = layui.table;
+        layui.jquery('#div_userlabel .layui-btn').click(function () {
+            if($(this).is('.layui-btn-primary'))
+			{$(this).removeClass('layui-btn-primary');$(this).addClass('layui-btn-warm');}
+            else
+			{$(this).addClass('layui-btn-primary');$(this).removeClass('layui-btn-warm');}
+        })
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#date1' //指定元素
+        });
+        laydate.render({
+            elem: '#date2' //指定元素
+        });
+        var imgLogoUrl="<%=basePath%>${userinfo.getUsrpicurl()}";
+        upload.render({
+            elem: '#editLogo'
+            ,url: "<%=basePath%>/persondata/upFileInfo.do"
+            //,auto:false,bindAction:'#btn_rzinfo'
+            ,data:{upFile:'logoimg'}
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#img_logo').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                console.log(res)
+                imgLogoUrl=res.data;
+                //alert(res.data);
+            }
+            ,error:function (obj) {
 
+            }
+        });
+        form.on('submit(baseinfo)', function(data){
+            //alert(data.elem.attributes['lay-filter'].nodeValue);
+//                                console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+//                                console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+//                                console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            //persondata/userBaseInfo.do
+            //获取职业
+			var curType="";
+            layui.jquery('#div_usertype checkbox:checked').each(function() {
+                                    curType +=$(this).val()+",";
+                              });
+            alert(curType);
+            //获取身份标签
+            var curLabel="";
+            layui.jquery('#div_userlabel .layui-btn-warm').each(function() {
+                curLabel +=$(this).text()+",";
+            });
+            alert(curLabel);
+            $.ajax({
+                url: "<%=basePath%>/persondata/userBaseInfo.do",
+                type: "POST",
+                async:false,
+                data: {
+                    uid:"${userinfo.getUid()}",
+                    officephone:data.field.txt_phone,
+                    email:data.field.txt_email,
+                    imglogo:imgLogoUrl, //头像logo
+                    address:data.field.txt_address, //地址
+                    usertype:curType,//身份标签
+                    userlabel:curLabel,//标签
+                    nicheng:data.field.txt_nc,
+                    qqid:data.field.txt_qq,
+                    msnid:data.field.txt_msn
+                },
+                success: function (data) {
+                    if(data=='success'){layer.msg('信息绑定成功!', {icon: 6});}
+                    else layer.msg(data+'!', {icon: 5});}
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        form.on('submit(rzinfo)', function(data){
+            //alert(data.elem.attributes['lay-filter'].nodeValue);
+            rzInfo(data);
+            return false;
+        });
+        form.on('submit(pwinfo)', function(data){
+            //alert(data.elem.attributes['lay-filter'].nodeValue);
+            restPw(data);
+            return false;
+        });
+        form.on('submit(bindinfo)', function(data){
+            //alert(data.elem.attributes['lay-filter'].nodeValue);
+            bindInfo(data);
+            return false;
+        });
+        //手机短信验证
+        $('#btn_sendsms').click(function () {
+            layer.msg("短信已发送，注意查收!");
+            $('#btn_sendsms').addClass("layui-btn-disabled");
+            var m=120;
+            var showTimeInterval = window.setInterval(function(){
+                if(m==0){
+                    $('#btn_sendsms').removeClass("layui-btn-disabled");
+                    window.clearInterval(showTimeInterval);
+                    $('#btn_sendsms').text("发送短信");
+                }
+                else
+                    $('#btn_sendsms').text("已发送("+m+"秒)");
+                m--;
+            },1000);
 
+            return false;
+        })
+        //绑定信息提交
+        function bindInfo (data) {
+
+            $.ajax({
+                url: "<%=basePath%>/persondata/userInfoBind.do",
+                type: "POST",
+                async:false,
+                data: {
+                    uid:"${userinfo.getUid()}",
+                    phone:"",phoneCode:"",
+                    email:"",
+                    weibo:"",
+                    bankcode:"",
+                    bankaddr:""
+                },
+                success: function (data) {
+                    if(data=='success'){layer.msg('信息绑定成功!', {icon: 6});}
+                    else layer.msg(data+'!', {icon: 5});}
+            });
+            return false;
+        }
+        var upFileUrl="";
+        upload.render({
+            elem: '#upFile'
+            ,url: "<%=basePath%>/persondata/upFileInfo.do"
+            //,auto:false,bindAction:'#btn_rzinfo'
+            ,data:{upFile:'sfzPhoto'}
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#upImgUrl').attr('src', result); //图片链接（base64）
+                    $('#upImgUrl').attr('style', "width: 320px;height: 220px;"); //图片链接（base64）
+                    $('#upImgName').text(file.name);
+                });
+            }
+            ,done: function(res){
+                console.log(res)
+                upFileUrl=res.data;
+                alert(res.data);
+            }
+            ,error:function (obj) {
+                upFileUrl="";
+            }
+        });
+        //认证信息保存
+        function rzInfo (data) {
+            if(window.FormData) {
+                //验证信息是否填写 真实姓名  身证号  身证有效日期 协议是否阅读
+                if($('#zsname').val()==""){
+                    layer.msg("请输入真实姓名!",{icon: 5})
+                    return false;
+                }
+                if($('#sfzcode').val()==""){
+                    layer.msg("请输入有效身份证号!",{icon: 5})
+                    return false;
+                }
+                if($('#sfzdate').val()==""){
+                    layer.msg("请输入身份证有效日期!",{icon: 5})
+                    return false;
+                }
+                // 验证文件是否上传
+                if(upFileUrl==""){//$('#rzFile .layui-upload-file')[0].files.length<=0
+                    layer.msg("请选择上传的身份证正面照片!",{icon: 5})
+                    return false;
+                }
+                var formData = new FormData();
+                // 建立一个upload表单项，值为上传的文件
+                formData.append('upload', upFileUrl);//$('#rzFile .layui-upload-file')[0].files[0]
+                formData.append('zsname', $('#zsname').val());
+                formData.append('sfzcode', $('#sfzcode').val());
+                formData.append('sex',  $('#sex').val());
+                formData.append('sfzdate',$('#sfzdate').val());
+                formData.append('uid', "${userinfo.getUid()}");
+                $.ajax({
+                    type: "POST",
+                    url: "<%=basePath%>/persondata/userSfzUp.do",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if(data =="success"){
+                            layer.msg("认证信息保存成功", {icon: 6});
+                        }else{
+                            layer.msg(data+"!", {icon: 5});
+                        }
+                    }
+                });
+            }
+            else
+                layer.msg("请更换浏览器，当前浏览器不支持文件上传!!");
+            return false;
+        }
+        //密码重置
+        function restPw(data) {
+            var oldpw = $('#oldPw').val();
+            var newpw = $('#newPw').val();
+            var okpw = $('#okPw').val();
+            if(newpw.length<6){
+                layer.msg('密码长度最少为6个字符', {icon: 5});
+                return;
+            }
+            if(newpw!=okpw){
+                layer.msg('新密码两次输入不一致,请重新输入!', {icon: 5});
+                return;
+            }
+            $.ajax({
+                url: "<%=basePath%>/persondata/restPassword.do",
+                type: "POST",
+                async:false,
+                data: {
+                    uid:"${userinfo.getUid()}",
+                    newPassword:newpw,
+                    oldPassword:oldpw
+                },
+                success: function (data) {
+                    if(data=='success'){
+                        layer.msg('密码重置成功!', {icon: 6});
+                    }
+                    else
+                        layer.msg(data+'!', {icon: 5});
+                }
+            });
+            return false;
+        }
+        //日志查询
+        $('#btn_log').click(function () {
+
+            logTable.reload({
+                url:'<%=basePath%>/persondata/getUserOperatLog.do'
+                ,where:{
+                    logType:$('#sel_LogType').val()
+                    ,logStime:$('#date1').val()
+                    ,logEtime:$('#date2').val()
+                }
+                ,page:{
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+            return false;
+        })
+        var logTable = table.render({
+            elem: '#log-table'
+            ,url:'<%=basePath%>/persondata/getUserOperatLog.do'
+            ,page: {
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                ,groups: 3 //只显示 1 个连续页码
+                ,first: true //不显示首页
+                ,last: true //不显示尾页
+            }
+            ,cols: [[
+                {field:'id', width:150, title: '登录时间', sort: true}
+                ,{field:'username', width:150, title: '登录IP'}
+                ,{field:'sex', width:400, title: '消息内容',align:'center'}
+            ]]
+
+        });
+    });
+</script>
 
 
 </body>
