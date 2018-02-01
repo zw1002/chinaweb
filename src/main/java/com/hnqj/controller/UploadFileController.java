@@ -100,6 +100,7 @@ public class UploadFileController extends  BaseController {
             f1.mkdirs();
         }
         String uuid=UUID.randomUUID().toString();
+        int i=0;
         for(MultipartFile file:files){
             String myFileName = file.getOriginalFilename();
             String extName = "";
@@ -140,7 +141,7 @@ public class UploadFileController extends  BaseController {
                 pageData.put("merchid",merch.getUid());
                 pageData.put("price",price);
                 PageData workcountpageData = new PageData();
-                int worksnums=merch.getWorksnums()+1;
+                int worksnums=merch.getWorksnums()+i;
                 workcountpageData.put("worksnums",worksnums);
                 workcountpageData.put("uid",merch.getUid());
                 BufferedImage image = null;
@@ -148,6 +149,7 @@ public class UploadFileController extends  BaseController {
                     file.transferTo(localFile);//原图
                     //修改店铺作品数量
                     merchServices.updateWorkNums(workcountpageData);
+                    i++;
                     if(extName.equalsIgnoreCase(".cdr") || extName.equalsIgnoreCase(".psd")) {
                         Works works = worksServices.getWorksforId(uuid);
                         pageData.put("uid", uuid);

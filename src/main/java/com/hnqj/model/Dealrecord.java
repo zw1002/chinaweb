@@ -46,7 +46,7 @@ public class Dealrecord {
      *
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
-    private Long dealprice;
+    private double dealprice;
 
     /**
      *
@@ -188,7 +188,7 @@ public class Dealrecord {
      *
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
-    public Long getDealprice() {
+    public double getDealprice() {
         return dealprice;
     }
 
@@ -200,7 +200,7 @@ public class Dealrecord {
      *
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
-    public void setDealprice(Long dealprice) {
+    public void setDealprice(double dealprice) {
         this.dealprice = dealprice;
     }
 

@@ -55,7 +55,7 @@ public class Merch {
      *
      * @mbg.generated Tue Jan 09 16:28:58 CST 2018
      */
-    private Integer merchscroe;
+    private double merchscroe;
 
     /**
      *
@@ -230,7 +230,7 @@ public class Merch {
      *
      * @mbg.generated Tue Jan 09 16:28:58 CST 2018
      */
-    public Integer getMerchscroe() {
+    public double getMerchscroe() {
         return merchscroe;
     }
 
@@ -242,7 +242,7 @@ public class Merch {
      *
      * @mbg.generated Tue Jan 09 16:28:58 CST 2018
      */
-    public void setMerchscroe(Integer merchscroe) {
+    public void setMerchscroe(double merchscroe) {
         this.merchscroe = merchscroe;
     }
 

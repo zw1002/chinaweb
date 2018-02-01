@@ -6,7 +6,7 @@
     <result column="dealtype" jdbcType="VARCHAR" property="dealtype" />
     <result column="businesstype" jdbcType="VARCHAR" property="businesstype" />
     <result column="dealtime" jdbcType="TIMESTAMP" property="dealtime" />
-    <result column="dealprice" jdbcType="DECIMAL" property="dealprice" />
+    <result column="dealprice" jdbcType="DOUBLE" property="dealprice" />
     <result column="dealstate" jdbcType="VARCHAR" property="dealstate" />
     <result column="businesid" jdbcType="VARCHAR" property="businesid" />
     <result column="businesstbname" jdbcType="VARCHAR" property="businesstbname" />
@@ -32,7 +32,7 @@
       businesid, businesstbname, payuserid
       )
     values (#{dealuid,jdbcType=VARCHAR}, #{dealtype,jdbcType=VARCHAR}, #{businesstype,jdbcType=VARCHAR}, 
-      #{dealtime,jdbcType=TIMESTAMP}, #{dealprice,jdbcType=DECIMAL}, #{dealstate,jdbcType=VARCHAR}, 
+      #{dealtime,jdbcType=TIMESTAMP}, #{dealprice,jdbcType=DOUBLE}, #{dealstate,jdbcType=VARCHAR},
       #{businesid,jdbcType=VARCHAR}, #{businesstbname,jdbcType=VARCHAR}, #{payuserid,jdbcType=VARCHAR}
       )
   </insert>
@@ -41,7 +41,7 @@
     set dealtype = #{dealtype,jdbcType=VARCHAR},
       businesstype = #{businesstype,jdbcType=VARCHAR},
       dealtime = #{dealtime,jdbcType=TIMESTAMP},
-      dealprice = #{dealprice,jdbcType=DECIMAL},
+      dealprice = #{dealprice,jdbcType=DOUBLE},
       dealstate = #{dealstate,jdbcType=VARCHAR},
       businesid = #{businesid,jdbcType=VARCHAR},
       businesstbname = #{businesstbname,jdbcType=VARCHAR},

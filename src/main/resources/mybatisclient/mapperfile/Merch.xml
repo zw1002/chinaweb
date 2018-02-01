@@ -7,7 +7,7 @@
     <result column="userinfouid" jdbcType="VARCHAR" property="userinfouid" />
     <result column="bondvalue" jdbcType="INTEGER" property="bondvalue" />
     <result column="builddatetime" jdbcType="TIMESTAMP" property="builddatetime" />
-    <result column="merchscroe" jdbcType="INTEGER" property="merchscroe" />
+    <result column="merchscroe" jdbcType="DOUBLE" property="merchscroe" />
     <result column="statu" jdbcType="SMALLINT" property="statu" />
     <result column="cycle" jdbcType="VARCHAR" property="cycle" />
     <result column="worksnums" jdbcType="INTEGER" property="worksnums" />
@@ -34,7 +34,7 @@
       statu, cycle, worksnums, 
       dealnums, remark)
     values (#{uid,jdbcType=VARCHAR}, #{merchname,jdbcType=VARCHAR}, #{userinfouid,jdbcType=VARCHAR}, 
-      #{bondvalue,jdbcType=INTEGER}, #{builddatetime,jdbcType=TIMESTAMP}, #{merchscroe,jdbcType=INTEGER}, 
+      #{bondvalue,jdbcType=INTEGER}, #{builddatetime,jdbcType=TIMESTAMP}, #{merchscroe,jdbcType=DOUBLE},
       #{statu,jdbcType=SMALLINT}, #{cycle,jdbcType=VARCHAR}, #{worksnums,jdbcType=INTEGER}, 
       #{dealnums,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
   </insert>
@@ -44,7 +44,7 @@
       userinfouid = #{userinfouid,jdbcType=VARCHAR},
       bondvalue = #{bondvalue,jdbcType=INTEGER},
       builddatetime = #{builddatetime,jdbcType=TIMESTAMP},
-      merchscroe = #{merchscroe,jdbcType=INTEGER},
+      merchscroe = #{merchscroe,jdbcType=DOUBLE},
       statu = #{statu,jdbcType=SMALLINT},
       cycle = #{cycle,jdbcType=VARCHAR},
       worksnums = #{worksnums,jdbcType=INTEGER},

@@ -1,6 +1,5 @@
 package com.hnqj.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.AlipayConstants;
@@ -14,9 +13,6 @@ import com.hnqj.model.*;
 import com.hnqj.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -166,8 +162,8 @@ public class PayController extends BaseController{
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         //alipayRequest.setReturnUrl("http://117.158.202.179:8090/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
         //alipayRequest.setNotifyUrl("http://117.158.202.179:8090/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
-        alipayRequest.setReturnUrl("http://47.104.163.68:3306/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
-        alipayRequest.setNotifyUrl("http://47.104.163.68:3306/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
+        alipayRequest.setReturnUrl("http://117.158.202.179:8090/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
+        alipayRequest.setNotifyUrl("http://117.158.202.179:8090/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\""+uuid+"\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
@@ -232,6 +228,7 @@ public class PayController extends BaseController{
                                 pageData.put("payuserid",dealrecord.getPayuserid());
                                 downpageData.put("uid",UUID.randomUUID().toString());
                                 downpageData.put("paydate",new Date());
+                                downpageData.put("payuserid",dealrecord.getPayuserid());
                                 for(int i=0;i<workids.length;i++){
                                     Works works=worksServices.getWorksforId(workids[i]);
                                     pageData.put("worksid",workids[i]);
@@ -257,7 +254,7 @@ public class PayController extends BaseController{
                                     //修改店铺交易量和积分
                                     PageData workdealpageData=new PageData();
                                     int dealnums=merch.getDealnums()+1;
-                                    int merchscroe= merch.getMerchscroe()+Integer.parseInt(cash);
+                                    double merchscroe= merch.getMerchscroe()+dealrecord.getDealprice();
                                     workdealpageData.put("dealnums",dealnums);
                                     workdealpageData.put("merchscroe",merchscroe);
                                     workdealpageData.put("uid",merch.getUid());
