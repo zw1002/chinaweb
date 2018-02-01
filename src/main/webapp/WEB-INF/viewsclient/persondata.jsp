@@ -10,13 +10,8 @@
 	<link rel="icon" href="<%=basePath%>/static/images/ico.ico" type="image/x-icon"/>
 	<link href="<%=basePath%>/static/css/global.css" rel="stylesheet" type="text/css" />
 	<link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
-	<%--<link href="<%=basePath%>/static/css/laypage.css" rel="stylesheet" type="text/css" />--%>
 	<link href="<%=basePath%>/static/css/layui.css" rel="stylesheet" type="text/css" />
-	<%--<link href="<%=basePath%>/static/js/skins/default/laydate.css" rel="stylesheet" type="text/css" />--%>
-	<script type="text/javascript" src="<%=basePath%>/static/js/laydate.js"></script>
 	<script src="<%=basePath%>/static/layui/layui.js"></script>
-	<script src="<%=basePath%>/static/layui/lay/modules/form.js"></script>
-	<%--<script src="<%=basePath%>/static/js/laypage.js"></script>--%>
 	<script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 	<script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
 	<style>
@@ -215,51 +210,50 @@
 					<div class="jy_tab_con">
 						<!--基本资料-->
 						<ul>
-							<form class="layui-form" action="">
+							<form class="layui-form" action="" >
 								<div class="layui-form-item touxiang">
 									<div class="layui-input-block">
-										<img src="<%=basePath%>${userinfo.getUsrpicurl()}"/>
+										<img id="img_logo" src="<%=basePath%>${userinfo.getUsrpicurl()}"/>
 									</div>
 									<div class="layui-input-block" style="margin-top: 180px;margin-left: 18px;">
-										<button class="layui-btn layui-btn-normal layui-btn-radius bangding">修改头像</button>
+										<button class="layui-btn layui-btn-normal layui-btn-radius bangding layui-upload-button">修改头像</button>
 									</div>
 								</div>
 								<div class="layui-form-item">
-
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>昵称</label>
 									<div class="layui-input-block">
-										<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="双眼皮小怪兽" class="layui-input jinzhi" disabled="disabled">
+										<input type="text" name="txt_nc" id="txt_nc" lay-verify="title" autocomplete="off" placeholder="双眼皮小怪兽" class="layui-input jinzhi" disabled="disabled">
 									</div>
 
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>Email</label>
 									<div class="layui-input-block">
-										<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="123******@qq.com" class="layui-input jinzhi" disabled="disabled">
+										<input type="text" name="txt_email" id="txt_email" lay-verify="title" autocomplete="off" value="123*****@qq.com" placeholder="123@qq.com" class="layui-input jinzhi" disabled="disabled">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>QQ</label>
 									<div class="layui-input-block">
-										<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="123******" class="layui-input jinzhi" disabled="disabled">
+										<input type="text" name="txt_qq" id="txt_qq" lay-verify="title|number" autocomplete=" off"value="123" placeholder="123" class="layui-input jinzhi" disabled="disabled">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>Msn</label>
 									<div class="layui-input-block">
-										<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="123******" class="layui-input jinzhi" disabled="disabled">
+										<input type="text" name="txt_msn" id="txt_msn" lay-verify="title" autocomplete="off" placeholder="123******" class="layui-input jinzhi" disabled="disabled">
 									</div>
 								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">手机</label>
-									<div class="layui-input-block">
-										<button class="layui-btn layui-btn-normal layui-btn-radius bangding">绑定手机</button>
-									</div>
-								</div>
+								<%--<div class="layui-form-item">--%>
+									<%--<label class="layui-form-label">手机</label>--%>
+									<%--<div class="layui-input-block">--%>
+										<%--<button class="layui-btn layui-btn-normal layui-btn-radius bangding">绑定手机</button>--%>
+									<%--</div>--%>
+								<%--</div>--%>
 								<div class="layui-form-item">
 									<label class="layui-form-label">电话</label>
 									<div class="layui-input-block">
-										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请按照*区号*固定电话*格式填写">
+										<input type="text" name="txt_phone" id="txt_phone"  autocomplete="off" class="layui-input dianhua" placeholder="请按照*区号*固定电话*格式填写">
 									</div>
 								</div>
 
@@ -281,6 +275,8 @@
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>技能标签</label>
 									<div class="layui-input-block">
 										<button class="layui-btn layui-btn-primary layui-btn-radius" disabled="disabled">图片爱好者</button>
+										<button class="layui-btn layui-btn-primary layui-btn-radius" disabled="disabled">摄影爱好者</button>
+										<button class="layui-btn layui-btn-primary layui-btn-radius" disabled="disabled">其他</button>
 									</div>
 								</div>
 
@@ -295,14 +291,14 @@
 												<%--<option value="你最喜欢的老师">福建省</option>--%>
 											<%--</select>--%>
 										<%--</div>--%>
-										<input type="text" name="address" lay-verify="title" autocomplete="off" class="layui-input" placeholder="请输入详细住址" style="width:324px;float: left; position: initial;">
+										<input type="text" name="txt_address" id="txt_address"  autocomplete="off" class="layui-input" placeholder="请输入详细住址" style="width:324px;float: left; position: initial;">
 									</div>
 
 								</div>
+								<div class="anniu" style="text-align: center;">
+									<button lay-submit="" lay-filter="baseinfo"  class="layui-btn layui-btn-warm baocun">保存</button>
+								</div>
 							</form>
-							<div class="anniu" style="text-align: center;">
-								<button class="layui-btn layui-btn-warm baocun">保存</button>
-							</div>
 						</ul>
 						<!--账户资料-->
 						<ul>
@@ -310,52 +306,42 @@
 								<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
 									<legend>已绑定信息</legend>
 								</fieldset>
-
-								<div class="layui-form">
-									<table class="layui-table">
-										<colgroup>
-											<col width="150">
-											<col width="150">
-											<col width="200">
-											<col>
-										</colgroup>
-										<thead>
-										<tr>
-											<th>姓名</th>
-											<th>电话</th>
-											<th>开户行</th>
-
-										</tr>
-										</thead>
-										<tbody>
-										<tr>
-											<td>贤心</td>
-											<td>1349047791</td>
-											<td>中国银行</td>
-
-										</tr>
-
-										</tbody>
-									</table>
+								<div id="div_bdinfo" style="display: inline-block;line-height: 36px;margin-left: 160px;">
+									<p>手机号：138****0000</p>
+									<p>电子邮箱：abc****@163.com</p>
+									<p>微博账号：abc****@sina.cn</p>
 								</div>
-
 								<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
 									<legend>未绑定信息</legend>
 								</fieldset>
-								<div class="layui-form-item">
-									<label class="layui-form-label"  style="width: 130px;">银行卡号&nbsp;:&nbsp;</label>
-									<div class="layui-input-block">
-										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请输入银行卡号">
+								<div class="layui-form-item" id="div_phone">
+									<div class="layui-inline">
+										<label class="layui-form-label"  style="width: 130px;">手机号&nbsp;:&nbsp;</label>
+										<div class="layui-input-inline">
+											<input type="text" name="bd_phone" id="bd_phone" lay-verify="title" autocomplete="off" class="layui-input"  placeholder="请输入手机号">
+										</div>
+									</div>
+									<div class="layui-inline" style="margin-left: -20px;">
+											<button id="btn_sendsms" class="layui-btn layui-btn-sm">发送短信</button>
+									</div><div class="layui-inline">
+										<div class="layui-input-inline">
+											<input type="text" name="bd_vercode" id="bd_vercode" lay-verify="title" autocomplete="off" class="layui-input" placeholder="请输入收到验证码">
+										</div>
 									</div>
 								</div>
-								<div class="layui-form-item">
+								<div class="layui-form-item" id="div_bank">
+									<label class="layui-form-label"  style="width: 130px;">银行卡号&nbsp;:&nbsp;</label>
+									<div class="layui-input-block">
+										<input type="text" name="bd_bank" id="bd_bank" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请输入银行卡号">
+									</div>
+									</br>
 									<label class="layui-form-label" style="width: 130px;">开户行地址&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请输入银行卡号">
+										<input type="text" name="bd_address" id="bd_address" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请输入开户行地址">
 									</div>
 								</div>
 								<div class="anniu">
-									<button class="layui-btn layui-btn-warm baocun">保存</button>
+									<button  lay-submit="" lay-filter="bindinfo" class="layui-btn layui-btn-warm baocun">保存</button>
 								</div>
 							</form>
 						</ul>
@@ -370,13 +356,13 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label" style="width: 130px;">真实姓名&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<input type="text" id="zsname" lay-verify="required" autocomplete="off" class="layui-input dianhua" placeholder="请输入您的姓名">
+										<input type="text" name="zsname" id="zsname" lay-verify="required" autocomplete="off" class="layui-input dianhua" placeholder="请输入您的姓名">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label" style="width: 130px;">身份证号&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<input type="text" id="sfzcode" lay-verify="required|identity" autocomplete="off" class="layui-input dianhua" placeholder="请输入您的身份证号">
+										<input type="text" name="sfzcode" id="sfzcode" lay-verify="required|identity" autocomplete="off" class="layui-input dianhua" placeholder="请输入您的身份证号">
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -389,26 +375,33 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label" style="width: 130px;">手持身份证正面照&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<div class="layui-upload-drag" id="upFile" style="float: left;">
-											<i class="layui-icon" style="color: #5FB878;"></i>
-											<p>点击上传，或将文件拖拽到此处</p>
-										</div>
-										<div class="layui-input-block shili">
+										<%--<div class="layui-upload-drag" id="upFile" style="float: left;">--%>
+											<%--<i class="layui-icon" style="color: #5FB878;"></i>--%>
+											<%--<p>点击上传，或将文件拖拽到此处</p>--%>
+										<%--</div>--%>
+											<div class="layui-upload" style="float: left;" id="rzFile">
+												<button type="button" class="layui-btn" id="upFile">上传图片</button>
+												<div class="layui-upload-list">
+													<img class="layui-upload-img" src="" id="upImgUrl" >
+													<p id="upImgName"></p>
+												</div>
+											</div>
+											<div class="layui-input-block shili">
 											<img src="<%=basePath%>/static/images/sfzdemo.png">
 											<p style="text-align: center;">示例</p>
 										</div>
 										<div class="layui-input-block shili1">
 											<p>1.请上传本人手持身份证正面上半身免冠照片;</p>
 											<p>2.证件信息清晰可见,且不能被遮挡;</p>
-											<p>3.仅支持JPG格式,图片大小不能超过5M;</p>
-											<p style="color: #EEA236;">详细>></p>
+											<%--<p>3.仅支持JPG格式,图片大小不能超过5M;</p>--%>
+											<%--<p style="color: #EEA236;">详细>></p>--%>
 										</div>
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label" style="width: 130px;">身份证到期时间&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<input type="text" id="sfzdate" lay-verify="required|date" autocomplete="off" class="layui-input dianhua" placeholder="请输入身份证有效日期 如：2018-01-22">
+										<input type="text" name="sfzdate" id="sfzdate" lay-verify="required|date" autocomplete="off" class="layui-input dianhua" placeholder="请输入身份证有效日期 如：2018-01-22">
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -419,33 +412,35 @@
 									</div>
 								</div>
 								<div class="anniu">
-									<button id="btn_rzinfo" type="submit" class="layui-btn layui-btn-warm baocun">保存</button>
+									<button  lay-submit="" lay-filter="rzinfo" class="layui-btn layui-btn-warm baocun">保存</button>
 								</div>
 							</form>
 						</ul>
 						<!--密码修改-->
 						<ul>
+							<form class="layui-form" action="">
 							<div class="layui-form-item">
 								<label class="layui-form-label" style="width: 130px;">当前密码&nbsp;:&nbsp;</label>
 								<div class="layui-input-block">
-									<input type="password" id="oldPw" lay-verify="required" autocomplete="off" class="layui-input dianhua" placeholder="请输入当前使用的密码">
+									<input type="password" name="oldPw" id="oldPw" lay-verify="required" autocomplete="off" class="layui-input dianhua" placeholder="请输入当前使用的密码">
 								</div>
 							</div>
 							<div class="layui-form-item">
 								<label class="layui-form-label" style="width: 130px;">新密码&nbsp;:&nbsp;</label>
 								<div class="layui-input-block">
-									<input type="password" id="newPw" lay-verify="required" autocomplete="off" class="layui-input dianhua" placeholder="6-20个字符，注意区分大小写">
+									<input type="password" name="newPw" id="newPw" lay-verify="required" autocomplete="off" class="layui-input dianhua" placeholder="6-20个字符，注意区分大小写">
 								</div>
 							</div>
 							<div class="layui-form-item">
 								<label class="layui-form-label" style="width: 130px;">确认新密码&nbsp;:&nbsp;</label>
 								<div class="layui-input-block">
-									<input type="password" id="okPw" lay-verify="required" autocomplete="off" class="layui-input dianhua" placeholder="同前一密码保持一致">
+									<input type="password" name="okPw" id="okPw" lay-verify="required" autocomplete="off" class="layui-input dianhua" placeholder="同前一密码保持一致">
 								</div>
 							</div>
 							<div class="anniu">
-								<button id="btn_restPw" class="layui-btn layui-btn-warm baocun">保存</button>
+								<button  lay-submit="" lay-filter="pwinfo" class="layui-btn layui-btn-warm baocun">保存</button>
 							</div>
+							</form>
 						</ul>
 						<!--登录日志-->
 						<ul>
@@ -492,13 +487,12 @@
                             trigger: "click"
                         })
 					</script>
-
 					<script>
                         layui.use(['laydate','laypage','form','table','layer','upload'], function() {
                             var laydate = layui.laydate,form = layui.form,upload = layui.upload;;
                             var layer = layui.layer;
                             var table = layui.table;
-                            form.render();
+
                             //执行一个laydate实例
                             laydate.render({
                                 elem: '#date1' //指定元素
@@ -506,29 +500,132 @@
                             laydate.render({
                                 elem: '#date2' //指定元素
                             });
+                            form.on('submit(baseinfo)', function(data){
+                                //alert(data.elem.attributes['lay-filter'].nodeValue);
+//                                console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+//                                console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+//                                console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+								//persondata/userBaseInfo.do
+                                $.ajax({
+                                    url: "<%=basePath%>/persondata/userBaseInfo.do",
+                                    type: "POST",
+                                    async:false,
+                                    data: {
+                                        uid:"${userinfo.getUid()}",
+                                        officephone:"",
+                                        email:"",
+                                        imglogo:"", //头像logo
+                                        address:"", //地址
+										usertype:'',//身份标签
+										userlabel:''//标签
+                                    },
+                                    success: function (data) {
+                                        if(data=='success'){layer.msg('信息绑定成功!', {icon: 6});}
+                                        else layer.msg(data+'!', {icon: 5});}
+                                });
+                                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+                            });
+                            form.on('submit(rzinfo)', function(data){
+                                //alert(data.elem.attributes['lay-filter'].nodeValue);
+                                rzInfo(data);
+                                return false;
+                            });
+                            form.on('submit(pwinfo)', function(data){
+                                //alert(data.elem.attributes['lay-filter'].nodeValue);
+                                restPw(data);
+                                return false;
+                            });
+                            form.on('submit(bindinfo)', function(data){
+                                //alert(data.elem.attributes['lay-filter'].nodeValue);
+                                bindInfo(data);
+                                return false;
+                            });
+                            //手机短信验证
+                            $('#btn_sendsms').click(function () {
+                                layer.msg("短信已发送，注意查收!");
+                                $('#btn_sendsms').addClass("layui-btn-disabled");
+                                var m=120;
+                                var showTimeInterval = window.setInterval(function(){
+                                    if(m==0){
+                                        $('#btn_sendsms').removeClass("layui-btn-disabled");
+                                        window.clearInterval(showTimeInterval);
+                                        $('#btn_sendsms').text("发送短信");
+									}
+									else
+                                    	$('#btn_sendsms').text("已发送("+m+"秒)");
+                                    m--;
+                                },1000);
+
+                                return false;
+                            })
+                            //绑定信息提交
+                            function bindInfo (data) {
+
+                                $.ajax({
+                                    url: "<%=basePath%>/persondata/userInfoBind.do",
+                                    type: "POST",
+                                    async:false,
+                                    data: {
+                                        uid:"${userinfo.getUid()}",
+                                        phone:"",phoneCode:"",
+                                        email:"",
+										weibo:"",
+										bankcode:"",
+										bankaddr:""
+                                    },
+                                    success: function (data) {
+                                        if(data=='success'){layer.msg('信息绑定成功!', {icon: 6});}
+                                        else layer.msg(data+'!', {icon: 5});}
+                                });
+                                return false;
+                            }
+                            var upFileUrl="";
                             upload.render({
                                 elem: '#upFile'
                                 ,url: "<%=basePath%>/persondata/userSfzUp.do"
-								,auto:false,bindAction:'#btn_rzinfo'
-								,data:{}
-								,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
-									return;
-                                    layer.load(); //上传loading
+                                //,auto:false,bindAction:'#btn_rzinfo'
+								,data:{upFile:'first'}
+								,before: function(obj){
+                                    //预读本地文件示例，不支持ie8
+                                    obj.preview(function(index, file, result){
+                                        $('#upImgUrl').attr('src', result); //图片链接（base64）
+                                        $('#upImgUrl').attr('style', "width: 320px;height: 220px;"); //图片链接（base64）
+										$('#upImgName').text(file.name);
+                                    });
                                 }
                                 ,done: function(res){
                                     console.log(res)
+                                    upFileUrl=res.data;
+									alert(res.data);
+                                }
+                                ,error:function (obj) {
+									upFileUrl="";
                                 }
                             });
                             //认证信息保存
-							$('#btn_rzinfo').click(function () {
-							    return false;
+							function rzInfo (data) {
                                 if(window.FormData) {
                                     //验证信息是否填写 真实姓名  身证号  身证有效日期 协议是否阅读
+                                    if($('#zsname').val()==""){
+                                        layer.msg("请输入真实姓名!",{icon: 5})
+                                        return false;
+                                    }
+                                    if($('#sfzcode').val()==""){
+                                        layer.msg("请输入有效身份证号!",{icon: 5})
+                                        return false;
+                                    }
+                                    if($('#sfzdate').val()==""){
+                                        layer.msg("请输入身份证有效日期!",{icon: 5})
+                                        return false;
+                                    }
 									// 验证文件是否上传
-
+									if(upFileUrl==""){//$('#rzFile .layui-upload-file')[0].files.length<=0
+									    layer.msg("请选择上传的身份证正面照片!",{icon: 5})
+									    return false;
+									}
                                     var formData = new FormData();
                                     // 建立一个upload表单项，值为上传的文件
-                                    formData.append('upload', "");//document.getElementById('up_imgfile').files[0]
+                                    formData.append('upload', upFileUrl);//$('#rzFile .layui-upload-file')[0].files[0]
                                     formData.append('zsname', $('#zsname').val());
                                     formData.append('sfzcode', $('#sfzcode').val());
                                     formData.append('sex',  $('#sex').val());
@@ -541,7 +638,6 @@
                                         contentType: false,
                                         processData: false,
                                         success: function (data) {
-
                                             if(data =="success"){
                                                 layer.msg("认证信息保存成功", {icon: 6});
                                             }else{
@@ -552,11 +648,10 @@
                                 }
                                 else
                                     layer.msg("请更换浏览器，当前浏览器不支持文件上传!!");
-
 								return false;
-                            })
+                            }
                             //密码重置
-							$('#btn_restPw').click(function () {
+							function restPw(data) {
 							    var oldpw = $('#oldPw').val();
                                 var newpw = $('#newPw').val();
                                 var okpw = $('#okPw').val();
@@ -586,7 +681,7 @@
                                     }
 								});
 								return false;
-                            })
+                            }
                             //日志查询
                             $('#btn_log').click(function () {
 
