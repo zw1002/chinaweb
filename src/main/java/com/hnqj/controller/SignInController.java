@@ -74,6 +74,7 @@ public class SignInController extends BaseController{
         PageData userpageData=new PageData();
         userpageData.put("uid",userid);
         userpageData.put("fristname",fristname);
+        userpageData.put("usrpicurl","/static/images/head_img2.png");//用户注册默认头像
         try{
             accountServices.addAccount(accountPageData);
             userinfoServices.addUserinfo(userpageData);

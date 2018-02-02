@@ -349,4 +349,43 @@ public class PersonalCenterController extends  BaseController{
         }
         return null;
     }
+    /**
+     * 删除待付款作品
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/delWaitPayDealrecod.do")
+    public String delWaitPayDealrecod(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("delWaitPayDealrecod");
+        String dealuid = request.getParameter("dealuid") == null ? "" : request.getParameter("dealuid");
+        try{
+            dealrecordServices.delDealrecordByFid(dealuid);
+            ResultUtils.writeSuccess(response);
+        }catch(Exception e){
+            logger.error("delWaitPayDealrecod e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 根据交易ID获取交易数据
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getDealrecodByDealuid.do")
+    public String getDealrecodByDealuid(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getDealrecodByDealuid");
+        String dealuid = request.getParameter("dealuid") == null ? "" : request.getParameter("dealuid");
+        try{
+            Dealrecord dealrecord=dealrecordServices.getDealrecordforId(dealuid);
+            ResultUtils.write(response,dealrecord);
+        }catch(Exception e){
+            logger.error("getDealrecodByDealuid e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
 }

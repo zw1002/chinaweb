@@ -15,6 +15,17 @@
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
     <link href="<%=basePath%>/static/css/laypage.css" rel="stylesheet" type="text/css" />
     <script src="<%=basePath%>/static/js/laypage.js"></script>
+    <style>
+        video::-internal-media-controls-download-button {
+            display:none;
+        }
+        video::-webkit-media-controls-enclosure {
+            overflow:hidden;
+        }
+        video::-webkit-media-controls-panel {
+            width: calc(100% + 30px);
+        }
+    </style>
     <script type="text/javascript">
  $(function(){
 	  $(".nav_new ul li").hover(function(){
@@ -68,8 +79,13 @@
              uid: uid
          },
          success: function (data) {
-             var msg = eval("(" + data + ")");
-             $("#turnover").text(msg[0].turnover);
+             if(data == "[null]"){
+                 $("#turnover").text("0");
+             }else{
+                 var msg = eval("(" + data + ")");
+                 $("#turnover").text(msg[0].turnover);
+
+             }
          }
      });
  }
@@ -84,11 +100,17 @@
              uid: uid
          },
          success: function (data) {
-             var msg = eval("(" + data + ")");
-             $("#worksnums").text(msg.worksnums);
-             $("#dealnums").text(msg.dealnums);
-             $("#merchremark").text(msg.remark);
-             $("#merchid").val(msg.uid);
+             if(data == "null"){
+                 $("#worksnums").text("0");
+                 $("#dealnums").text("0");
+                 $("#merchremark").text("暂时没有店铺信息");
+             }else{
+                 var msg = eval("(" + data + ")");
+                 $("#worksnums").text(msg.worksnums);
+                 $("#dealnums").text(msg.dealnums);
+                 $("#merchremark").text(msg.remark);
+                 $("#merchid").val(msg.uid);
+             }
          }
      });
  }
@@ -146,9 +168,17 @@ function getMerchData(){
             var msg = eval("(" + data + ")");
             var str="";
             for(var i=0;i<msg.length;i++){
-                str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
-                +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
-                +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                if(msg[i].workstype.substring(0,1) == 3) {//婚秀
+                    str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
+                            +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
+                            +'<div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].worksurl+'" poster="" controls></video></div>'
+                            +'<h2>'+msg[i].worksname+'</h2></a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                }else{
+                    str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
+                            +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
+                            +'<img src="<%=basePath%>'+msg[i].samllurl+'" />'
+                            +'<h2>'+msg[i].worksname+'</h2></a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                }
             }
             $("#userWorks").append(str);
         }
@@ -169,9 +199,17 @@ function getMerchData(){
              var msg = eval("(" + data + ")");
              var str="";
              for(var i=0;i<msg.length;i++){
-                 str += '<li> <div class="btn_pos"><a href="#">收藏</a></div>'
-                         +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
-                         +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                 if(msg[i].workstype.substring(0,1) == 3) {//婚秀
+                     str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
+                             +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
+                             +'<div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].worksurl+'" poster="" controls></video></div>'
+                             +'<h2>'+msg[i].worksname+'</h2></a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                 }else{
+                     str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
+                             +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
+                             +'<img src="<%=basePath%>'+msg[i].samllurl+'" />'
+                             +'<h2>'+msg[i].worksname+'</h2></a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                 }
              }
              $("#userBestSellers").append(str);
          }
@@ -193,9 +231,17 @@ function getMerchData(){
              var msg = eval("(" + data + ")");
              var str="";
              for(var i=0;i<msg.length;i++){
-                 str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
-                         +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
-                         +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                 if(msg[i].workstype.substring(0,1) == 3) {//婚秀
+                     str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
+                             +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
+                             +'<div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].worksurl+'" poster="" controls></video></div>'
+                             +'<h2>'+msg[i].worksname+'</h2></a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                 }else{
+                     str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
+                             +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
+                             +'<img src="<%=basePath%>'+msg[i].samllurl+'" />'
+                             +'<h2>'+msg[i].worksname+'</h2></a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                 }
              }
              $("#latestRecommendation").append(str);
          }
@@ -246,9 +292,17 @@ function getMerchData(){
                 var msg = eval("(" + data + ")");
                 var str="";
                 for(var i=0;i<msg.length;i++){
-                    str += '<li> <div class="btn_pos"><a href="#">收藏</a></div>'
-                            +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'"><img src="<%=basePath%>'+msg[i].samllurl+'" /> <h2>'+msg[i].worksname+'</h2>'
-                            +'</a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                    if(msg[i].workstype.substring(0,1) == 3) {//婚秀
+                        str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
+                                +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
+                                +'<div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].worksurl+'" poster="" controls></video></div>'
+                                +'<h2>'+msg[i].worksname+'</h2></a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                    }else{
+                        str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
+                                +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
+                                +'<img src="<%=basePath%>'+msg[i].samllurl+'" />'
+                                +'<h2>'+msg[i].worksname+'</h2></a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                    }
                 }
                 $("#userAllWorks").append(str);
             }
@@ -281,9 +335,17 @@ function getMerchData(){
              var msg = eval("(" + data + ")");
              var str="";
              for(var i=0;i<msg.length;i++){
-                 str +='<li><div class="btn_pos"><a href="#">收藏</a></div>'
-                         +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].worksid+'"><img src="<%=basePath%>'+msg[i].worksurl+'" /> <h2>'+msg[i].worksname+'</h2> </a>'
-                         +'<p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                 if(msg[i].workstype.substring(0,1) == 3) {//婚秀
+                     str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
+                             +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
+                             +'<div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].worksurl+'" poster="" controls></video></div>'
+                             +'<h2>'+msg[i].worksname+'</h2></a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                 }else{
+                     str += '<li><div class="btn_pos"><a href="#">收藏</a></div>'
+                             +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
+                             +'<img src="<%=basePath%>'+msg[i].samllurl+'" />'
+                             +'<h2>'+msg[i].worksname+'</h2></a> <p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                 }
              }
              $("#userAllCollection").append(str);
          }
@@ -409,14 +471,14 @@ function getMerchData(){
         </div>
        <div class="home_con">
         <div id="userpage" class="wid920px fl">
-           <div class="gxq_tit font16px"><h2>会员作品</h2> <a href="javascript:">更多>> </a></div>
+           <div class="gxq_tit font16px"><h2>会员作品</h2></div>
            <div class="page_list">
               <ul id="userWorks" class="clearfix">
 
               </ul>
            </div>
            
-           <div class="gxq_tit font16px"><h2>近三个月的热卖作品</h2> <a href="javascript:">更多>> </a></div>
+           <div class="gxq_tit font16px"><h2>近三个月的热卖作品</h2></div>
            <div class="page_list">
               <ul id="userBestSellers" class="clearfix">
 

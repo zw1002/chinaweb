@@ -21,6 +21,17 @@
     <script src="<%=basePath%>/static/js/masonry.pkgd.min.js"></script>
     <script src="<%=basePath%>/static/js/anime.min.js"></script>
     <script src="<%=basePath%>/static/js/main.js"></script>
+    <style>
+        video::-internal-media-controls-download-button {
+            display:none;
+        }
+        video::-webkit-media-controls-enclosure {
+            overflow:hidden;
+        }
+        video::-webkit-media-controls-panel {
+            width: calc(100% + 30px);
+        }
+    </style>
     <script type="text/javascript">
         $(function(){
 
@@ -111,8 +122,7 @@
                 }
                 for(var i=0;i<resultData.length;i++){
                     gridItems+="\t<div class=\"grid__item\">\n" +
-                        //"\t\t\t\t\t\t<a class=\"grid__link\" href=\"<%=basePath%>/design/toDesignDel.do?uid="+resultData[i].uid+"\"><div class=\"video_box\"><video name=\"video\" width=\"100%\" height=\"220\"  src=\"<%=basePath%>"+resultData[i].relworksurl+"\" poster=\"images/gzc_pic.png\" controls></video></div></a>\n" +
-                            "\t\t\t\t\t\t<a class=\"grid__link\" href=\"<%=basePath%>/design/toDesignDel.do?uid="+resultData[i].uid+"\"><div class=\"video_box\"><video name=\"video\" width=\"100%\" height=\"220\"  src=\"https://landrover.ssl.cdn.sdlmedia.com/636401799910558940PA_pr13.mp4\" poster=\"\"></video></div></a>\n" +
+                        "\t\t\t\t\t\t<a class=\"grid__link\" href=\"<%=basePath%>/design/toDesignDel.do?uid="+resultData[i].uid+"\"><div class=\"video_box\"><video name=\"video\" width=\"100%\" height=\"220\"  src=\"<%=basePath%>"+resultData[i].relworksurl+"\" poster=\"\" controls></video></div></a>\n" +
                         "                        <div class=\"list_txt_box\">\n" +
                         "                          <h2>"+resultData[i].worksname+"</h2>\n" +
                         "                          <p><a href=\"javascript:\" class=\"zan\">"+resultData[i].ticknums+"</a> | <a href=\"javascript:\" class=\"down\">"+resultData[i].downcount+"</a></p>\n" +

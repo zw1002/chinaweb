@@ -14,6 +14,17 @@
 <link rel="stylesheet"  href="<%=basePath%>/static/css/fsgallery.css" media="all" />
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
+    <style>
+        video::-internal-media-controls-download-button {
+            display:none;
+        }
+        video::-webkit-media-controls-enclosure {
+            overflow:hidden;
+        }
+        video::-webkit-media-controls-panel {
+            width: calc(100% + 30px);
+        }
+    </style>
 </head>
 <body>
 <!--获取作品ID-->
@@ -66,7 +77,7 @@
                     var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.watermakeurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
                 }else if(msg.workstype.substring(0,1) == 3) {//婚秀
                     $("#wedding").attr("class","active");
-                    var str="<div class='video_box'><video width='100%' height='720'  src='<%=basePath%>"+msg.worksurl+"' poster='images/gzc_pic.png' controls autoplay></video></div>";
+                    var str="<div class='video_box'><video width='100%' height='720'  src='<%=basePath%>"+msg.worksurl+"' poster='' controls></video></div>";
                 }else{//免费
                     $("#free").attr("class","active");
                     var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.watermakeurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";

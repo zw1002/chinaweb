@@ -194,7 +194,7 @@
              <div class="mem_nav">
              <h2>个人中心</h2>
                 <ul>
-                    <li><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
+                    <li id="uploadwork"><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
                     <li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
                     <li><a class="mem_icon2" href="#" onclick="toCollection()">收藏</a></li>
                     <li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>

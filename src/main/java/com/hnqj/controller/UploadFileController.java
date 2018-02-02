@@ -141,15 +141,10 @@ public class UploadFileController extends  BaseController {
                 pageData.put("merchid",merch.getUid());
                 pageData.put("price",price);
                 PageData workcountpageData = new PageData();
-                int worksnums=merch.getWorksnums()+i;
-                workcountpageData.put("worksnums",worksnums);
                 workcountpageData.put("uid",merch.getUid());
                 BufferedImage image = null;
                 try {
                     file.transferTo(localFile);//原图
-                    //修改店铺作品数量
-                    merchServices.updateWorkNums(workcountpageData);
-                    i++;
                     if(extName.equalsIgnoreCase(".cdr") || extName.equalsIgnoreCase(".psd")) {
                         Works works = worksServices.getWorksforId(uuid);
                         pageData.put("uid", uuid);
@@ -161,12 +156,16 @@ public class UploadFileController extends  BaseController {
                         } else {
                             worksServices.updateworksurl(pageData);
                         }
+                        int worksnums=merch.getWorksnums()+i;
+                        workcountpageData.put("worksnums",worksnums);
                     }else if(extName.equalsIgnoreCase(".mp4")){
                         pageData.put("uid", uuid);
                         pageData.put("worksurl", relativePath + myFileName);
                         pageData.put("imgsize", fileSizes + measuring);
                         pageData.put("imgformart", extName);
                         worksServices.addWorks(pageData);
+                        int worksnums=merch.getWorksnums()+1;
+                        workcountpageData.put("worksnums",worksnums);
                     }else{
                         Works works=worksServices.getWorksforId(uuid);
                         pageData.put("uid",uuid);
@@ -181,7 +180,12 @@ public class UploadFileController extends  BaseController {
                         }else{
                             worksServices.updateWorkSamllurlandWatermakeurl(pageData);
                         }
+                        int worksnums=merch.getWorksnums()+i;
+                        workcountpageData.put("worksnums",worksnums);
                     }
+                    //修改店铺作品数量
+                    merchServices.updateWorkNums(workcountpageData);
+                    i++;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

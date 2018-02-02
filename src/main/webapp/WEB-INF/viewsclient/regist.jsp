@@ -147,8 +147,8 @@
                     equalTo:"*密码不一致"
                 }
             }
-
         });
+        $("#fristname").focus();//添加焦点
     });
     //普通注册提交
     function ordinarySubmit(){

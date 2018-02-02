@@ -22,7 +22,7 @@
     from tb_dealrecord
     where dealuid = #{dealuid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteDealrecordByFid" parameterType="java.lang.String">
     delete from tb_dealrecord
     where dealuid = #{dealuid,jdbcType=VARCHAR}
   </delete>

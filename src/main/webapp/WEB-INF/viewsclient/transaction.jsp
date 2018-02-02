@@ -101,10 +101,46 @@
              var str="";
              for(var i=0;i<msg.length;i++){
                  str += '<tr id="'+msg[i].dealuid+'"><td>'+msg[i].worksname+'</td>'
-                         +'<td><p>￥'+msg[i].price+'</p></td> <td><p class="col_f00">待付款</p></td><td><a href="#">去付款</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#">删除</a></td></tr>';
+                         +'<td><p>￥'+msg[i].price+'</p></td> <td><p class="col_f00">待付款</p></td><td><a href="#" onclick=toPay("' + msg[i].dealuid + '")>去付款</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick=deal("' + msg[i].dealuid + '")>删除</a></td></tr>';
              }
              $("#waitPay table").append(sss);
              $("#waitPay table").append(str);
+         }
+     });
+ }
+ //付款
+ function toPay(dealuid){
+     $.ajax({
+         url: "<%=basePath%>/personalcenter/getDealrecodByDealuid.do",
+         type: "POST",
+         data: {
+             dealuid: dealuid
+         },
+         success: function (data) {
+             if(data!=="failed"){
+                 var msg = eval("(" + data + ")");
+                 document.location.href = '<%=basePath%>/pay/toPay.do?uid='+msg.businesid+"&total="+msg.dealprice;
+             }else{
+                 alert("去付款失败");
+             }
+         }
+     });
+ }
+ //删除交易
+ function deal(dealuid){
+     $.ajax({
+         url: "<%=basePath%>/personalcenter/delWaitPayDealrecod.do",
+         type: "POST",
+         data: {
+             dealuid: dealuid
+         },
+         success: function (data) {
+             if(data!=="failed"){
+                 alert("删除成功");
+                $("#"+dealuid).css("display","none");
+             }else{
+                 alert("删除记录失败");
+             }
          }
      });
  }

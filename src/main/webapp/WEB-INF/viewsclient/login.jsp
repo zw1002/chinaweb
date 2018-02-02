@@ -37,7 +37,7 @@
                       <ul>
                           <li><div class="inp_bg"><input id="account" name="account" type="text" placeholder="账号"></div></li>
                           <li><div class="inp_bg"><input id="password" name="password"  type="password" placeholder="密码"></div></li>
-                          <p class="fl"><input name="bb" type="checkbox" class="fx_wid" value="" checked>记住密码</p>
+                          <p class="fl"><input id="checkboxId" name="bb" type="checkbox" class="fx_wid" value="" checked>记住账户</p>
                           <a href="#" class=" col_blue fr">忘记密码? </a>
                           <div class="clear"></div>
                           <input type="submit" value="立即登录" class="login_btn" />
@@ -87,9 +87,30 @@
             }
 
         });
+        $("#account").focus();
+        //记住账户
+        if (!localStorage.enable) {
+            document.getElementById("checkboxId").checked = false;
+        }else {
+            document.getElementById("checkboxId").checked = true;
+        }
+
+        var account = document.getElementById("account");
+        if (localStorage.account) {
+            account.value = localStorage.account;
+        }
     });
     //普通注册提交
     function loginSubmit(){
+        //           记住账户
+        var account = document.getElementById("account");
+        if (document.getElementById("checkboxId").checked) {
+            localStorage.enable = true;
+            localStorage.account = account.value;
+        } else {
+            localStorage.enable = "";
+            localStorage.account = "";
+        }
         var account=$("#account").val();
         var password=$("#password").val();
         $.ajax({
