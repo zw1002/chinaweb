@@ -5,6 +5,7 @@ import com.hnqj.services.UserinfoServices;
 import com.hnqj.services.WorksServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +31,12 @@ public class PersonDataController extends BaseController{
     UserinfoServices userinfoServices;
     //跳转到个人资料页面
     @RequestMapping(value = "/toPersonData.do")
-    public String toPersonData(){
+    public String toPersonData(HttpServletRequest request, Model model){
+       //根据SESSION获取所有个人信息，并输出到前端
+        //基础信息
+        //绑定信息
+        //认证信息
+        // model.addAttribute("");
         return  "persondata";
     }
     //查询用户日志信息persondata/getUserOperatLog.do
