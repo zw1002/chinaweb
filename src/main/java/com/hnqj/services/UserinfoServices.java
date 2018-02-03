@@ -92,4 +92,26 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return userinfo;
 	}
+	public Userinfo getUserInfoForUid(PageData pageData) {
+		logger.info("登录校验");
+		Userinfo userinfo=null;
+		try {
+			userinfo = (Userinfo) daoSupport.findForObject("UserinfoMapper.getUserInfoForUid",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			userinfo=null;
+		}
+		return userinfo;
+	}
+	public int restPassword(PageData pageData) {
+		logger.info("重置密码restPassword");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("UserinfoMapper.restPassword",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
 }

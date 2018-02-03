@@ -440,7 +440,7 @@
            </div><!-- wid925px -->
            <div class="clear"></div>
         </div><!-- memder_con -->
-   </div><!-- wrap -->
+     </div><!-- wrap -->
     </div><!-- bg_f5 -->
    <!-- 公共底部 -->
    <footer>

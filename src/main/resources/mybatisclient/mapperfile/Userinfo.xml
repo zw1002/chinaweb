@@ -9,9 +9,23 @@
     <result column="usrpicurl" jdbcType="VARCHAR" property="usrpicurl" />
     <result column="idpic" jdbcType="VARCHAR" property="idpic" />
     <result column="idpicback" jdbcType="VARCHAR" property="idpicback" />
+    <result property="smname" jdbcType="VARCHAR" column="smname" />
+    <result property="email" jdbcType="VARCHAR" column="email" />
+    <result property="qqid" jdbcType="VARCHAR" column="qqid" />
+    <result property="msnid" jdbcType="VARCHAR" column="msnid" />
+    <result property="ofphone" jdbcType="VARCHAR" column="ofphone" />
+    <result property="zhiye" jdbcType="VARCHAR" column="zhiye" />
+    <result property="label" jdbcType="VARCHAR" column="label" />
+    <result property="address" jdbcType="VARCHAR" column="address" />
+    <result property="weibo" jdbcType="VARCHAR" column="weibo" />
+    <result property="bankcode" jdbcType="VARCHAR" column="bankcode" />
+    <result property="bankaddr" jdbcType="VARCHAR" column="bankaddr" />
+    <result property="sex" jdbcType="VARCHAR" column="sex" />
+    <result property="sfzdate" jdbcType="VARCHAR" column="sfzdate" />
   </resultMap>
   <sql id="Base_Column_List">
-    uid, fristname, telephone, iccode, usrpicurl,idpic, idpicback
+    uid, fristname, telephone, iccode, usrpicurl,idpic, idpicback,smname,email,qqid,msnid,
+    ofphone,zhiye,label,address,weibo,bankcode,bankaddr,sfzdate,sex
   </sql>
   <select id="getUserinfoForId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -29,14 +43,67 @@
     values (#{uid,jdbcType=VARCHAR}, #{fristname,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
       #{iccode,jdbcType=VARCHAR}, #{usrpicurl,jdbcType=VARCHAR}, #{idpic,jdbcType=VARCHAR},#{idpicback,jdbcType=VARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="pd">
+  <update id="updateUserinfo" parameterType="pd">
     update tb_userinfo
-    set fristname = #{fristname,jdbcType=VARCHAR},
-      telephone = #{telephone,jdbcType=VARCHAR},
-      iccode = #{iccode,jdbcType=VARCHAR},
-      usrpicurl = #{usrpicurl,jdbcType=VARCHAR},
-      idpic = #{idpic,jdbcType=VARCHAR},
-      idpicback = #{idpicback,jdbcType=VARCHAR}
+    <set>
+      <if test="fristname != null">
+        fristname = #{fristname,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="iccode != null">
+        iccode = #{iccode,jdbcType=VARCHAR},
+      </if>
+      <if test="usrpicurl != null">
+        usrpicurl = #{usrpicurl,jdbcType=VARCHAR},
+      </if>
+      <if test="idpic != null">
+        idpic = #{idpic,jdbcType=VARCHAR},
+      </if>
+      <if test="idpicback != null">
+        idpicback = #{idpicback,jdbcType=VARCHAR},
+      </if>
+      <if test="smname != null">
+        smname = #{smname,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null and email!=''" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="qqid != null">
+        qqid = #{qqid,jdbcType=VARCHAR},
+      </if>
+      <if test="msnid != null">
+        msnid = #{msnid,jdbcType=VARCHAR},
+      </if>
+      <if test="ofphone != null">
+        ofphone = #{ofphone,jdbcType=VARCHAR},
+      </if>
+      <if test="zhiye != null">
+        zhiye = #{zhiye,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null">
+        label = #{label,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="weibo != null">
+        weibo = #{weibo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcode != null">
+        bankcode = #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankaddr != null">
+        bankaddr = #{bankaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="sfzdate != null">
+        sfzdate = #{sfzdate,jdbcType=VARCHAR},
+      </if>
+    </set>
     where uid = #{uid,jdbcType=VARCHAR}
   </update>
   <!--登录时通过帐号密码查找用户-->
@@ -45,4 +112,14 @@
     select userid from tb_account  where account = #{account,jdbcType=VARCHAR} and passwd = #{passwd,jdbcType=VARCHAR}
     )
   </select>
+  <select id="getUserInfoForUid" parameterType="pd" resultMap="BaseResultMap">
+    select * from tb_userinfo where uid in (
+    select userid from tb_account  where userid = #{userid,jdbcType=VARCHAR} and passwd = #{passwd,jdbcType=VARCHAR}
+    )
+  </select>
+  <update id="restPassword" parameterType="pd">
+    update tb_account
+    set passwd = #{passwd,jdbcType=VARCHAR}
+    where userid = #{userid,jdbcType=VARCHAR}
+  </update>
 </mapper>

@@ -46,7 +46,7 @@ public class Syslog {
      *
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
-    private Date logtime;
+    private String logtime;
 
     /**
      *
@@ -161,7 +161,7 @@ public class Syslog {
      *
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
-    public Date getLogtime() {
+    public String getLogtime() {
         return logtime;
     }
 
@@ -173,7 +173,7 @@ public class Syslog {
      *
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
-    public void setLogtime(Date logtime) {
+    public void setLogtime(String logtime) {
         this.logtime = logtime;
     }
 

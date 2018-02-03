@@ -1,6 +1,10 @@
 package com.hnqj.controller;
+import com.hnqj.core.EncodeUtil;
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
+import com.hnqj.model.Syslog;
+import com.hnqj.model.Userinfo;
+import com.hnqj.services.SyslogServices;
 import com.hnqj.services.UserinfoServices;
 import com.hnqj.services.WorksServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,8 @@ import java.util.UUID;
 public class PersonDataController extends BaseController{
     @Autowired
     UserinfoServices userinfoServices;
+    @Autowired
+    SyslogServices syslogservices;
     //跳转到个人资料页面
     @RequestMapping(value = "/toPersonData.do")
     public String toPersonData(HttpServletRequest request, Model model){
@@ -37,6 +43,10 @@ public class PersonDataController extends BaseController{
         //绑定信息
         //认证信息
         // model.addAttribute("");
+
+        Userinfo userinfo = (Userinfo)request.getSession().getAttribute("userinfo");
+        userinfo = userinfoServices.getUserinfoforId(userinfo.getUid());
+        request.getSession().setAttribute("userinfo",userinfo);
         return  "persondata";
     }
     //查询用户日志信息persondata/getUserOperatLog.do
@@ -45,26 +55,29 @@ public class PersonDataController extends BaseController{
     {
         String strVal="";
         logger.info("getUserOperatLog");
-        String logType = request.getParameter("logType") == null ? "1" : request.getParameter("logType");
+        String uuids = request.getParameter("uid") == null ? "" : request.getParameter("uid");
+
+        String logType = request.getParameter("logType") == null ? "" : request.getParameter("logType");
         String logStime = request.getParameter("logStime") == null ? "" : request.getParameter("logStime");
         String logEtime = request.getParameter("logEtime") == null ? "" : request.getParameter("logEtime");
-        String page = request.getParameter("page") == null ? "1" : request.getParameter("page");
-        String limit = request.getParameter("limit") == null ? "10" : request.getParameter("limit");
+        int page = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
+        int limit = request.getParameter("limit") == null ? 10 : Integer.parseInt(request.getParameter("limit"));
+
         PageData pageData=new PageData();
-//        pageData.put("uid", UUID.randomUUID().toString());
-//        pageData.put("merchname",merchname);
-//        pageData.put("userinfouid",getUser().getUid());
-//        pageData.put("builddatetime",new Date());
-//        pageData.put("bondvalue",0);
-//        pageData.put("merchscroe",0);
-//        pageData.put("statu",0);
-//        pageData.put("worksnums",0);
-//        pageData.put("dealnums",0);
-//        pageData.put("remark",merchremark);
+        pageData.put("username",uuids);
+        pageData.put("logtype",logType);
+        pageData.put("minTime",logStime);
+        pageData.put("maxTime",logEtime);
+        pageData.put("offset",((page-1)*limit));
+        pageData.put("limit",limit);
 
         try{
-//            merchServices.addMerch(pageData);
-            strVal="{\"code\":0,\"msg\":\"\",\"count\":100,\"data\":[]}";
+            List<Syslog> logs = syslogservices.getAllSyslog(pageData);
+            pageData.put("limit",0);
+            List<Syslog> logCount = syslogservices.getAllSyslog(pageData);
+
+            strVal="{\"code\":0,\"msg\":\"\",\"count\":"+logCount.size()+",\"data\":"+ResultUtils.toJson(logs)+"}";
+
             ResultUtils.write(response,strVal);
         }catch (Exception e){
             logger.error("getUserOperatLog e="+e.getMessage());
@@ -81,15 +94,27 @@ public class PersonDataController extends BaseController{
         String strVal="";
         logger.info("restPassword");
         String newPassword = request.getParameter("newPassword") == null ? "" : request.getParameter("newPassword");
+        String oldPassword = request.getParameter("oldPassword") == null ? "" : request.getParameter("oldPassword");
         String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
+
         PageData pageData=new PageData();
-        pageData.put("uid", uid);
-        pageData.put("password",newPassword);
+        pageData.put("userid", uid);
+        pageData.put("passwd", EncodeUtil.encodeMD5(newPassword));
+        oldPassword = EncodeUtil.encodeMD5(oldPassword);
 
-        try{
-//            merchServices.addMerch(pageData);
+        try {
+            PageData pd1 = new PageData();
+            pd1.put("userid", uid);
+            pd1.put("passwd", oldPassword);
+            Userinfo uinfo = userinfoServices.getUserInfoForUid(pd1);
+            if (uinfo == null) {
+                ResultUtils.write(response, "密码重置失败,旧密码输入错误!");
+            } else if (userinfoServices.restPassword(pageData) > 0)
 
-            ResultUtils.writeSuccess(response);
+                ResultUtils.writeSuccess(response);
+            else
+                ResultUtils.write(response, "密码重置失败,稍后重试");
+
         }catch (Exception e){
             logger.error("restPassword e="+e.getMessage());
 
@@ -112,14 +137,19 @@ public class PersonDataController extends BaseController{
         String sex = request.getParameter("sex") == null ? "" : request.getParameter("sex");
         String sfzImgUrl=request.getParameter("upload") == null ? "" : request.getParameter("upload");
 
-//        PageData pageData=new PageData();
-//        pageData.put("uid", uid);
-//        pageData.put("password",newPassword);
-
+        PageData pageData=new PageData();
+        pageData.put("uid", uid);
+        pageData.put("firstname",zxname);
+        pageData.put("iccode",sfzh);
+        pageData.put("sfzdate",sfzdate);
+        pageData.put("sex",sex);
+        pageData.put("idpic",sfzImgUrl);
         try{
-//            merchServices.addMerch(pageData);
 
-            ResultUtils.writeSuccess(response);
+            if(userinfoServices.updateUserinfo(pageData)>0)
+                ResultUtils.writeSuccess(response);
+            else ResultUtils.write(response,"认证信息保存失败,稍后重试");
+
         }catch (Exception e){
             logger.error("userSfzUp e="+e.getMessage());
 
@@ -133,20 +163,33 @@ public class PersonDataController extends BaseController{
     {
         String strVal="";
         logger.info("userInfoBind");
-        String newPassword = request.getParameter("newPassword") == null ? "" : request.getParameter("newPassword");
         String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
+        String phone = request.getParameter("phone") == null ? "" : request.getParameter("phone");
+        String email = request.getParameter("email") == null ? "" : request.getParameter("email");
+        String weibo = request.getParameter("weibo") == null ? "" : request.getParameter("weibo");
+        String bankcode = request.getParameter("bankcode") == null ? "" : request.getParameter("bankcode");
+        String bankaddr = request.getParameter("bankaddr") == null ? "" : request.getParameter("bankaddr");
+
+
         PageData pageData=new PageData();
         pageData.put("uid", uid);
-        pageData.put("password",newPassword);
+        pageData.put("telephone",phone);
+        pageData.put("email",email);
+        pageData.put("weibo",weibo);
+        pageData.put("bankcode",bankcode);
+        pageData.put("bankaddr",bankaddr);
 
         try{
-//            merchServices.addMerch(pageData);
+
+            if(userinfoServices.updateUserinfo(pageData)>0)
+                ResultUtils.writeSuccess(response);
+            else ResultUtils.write(response,"绑定信息失败,稍后重试");
 
             ResultUtils.writeSuccess(response);
         }catch (Exception e){
             logger.error("userInfoBind e="+e.getMessage());
 
-            ResultUtils.write(response,"密码重置失败,稍后重试");
+            ResultUtils.write(response,"绑定信息失败,稍后重试");
         }
         return null;
     }
@@ -156,32 +199,42 @@ public class PersonDataController extends BaseController{
     public String userBaseInfo(HttpServletRequest request, HttpServletResponse response)
     {
 
-//        uid:"${userinfo.getUid()}",
-//                officephone:data.field.txt_phone,
-//            email:data.field.txt_email,
-//            imglogo:imgLogoUrl, //头像logo
-//            address:data.field.txt_address, //地址
-//            usertype:curType,//身份标签
-//            userlabel:curLabel,//标签
-//            nicheng:data.field.txt_nc,
-//            qqid:data.field.txt_qq,
-//            msnid:data.field.txt_msn
-        String strVal="";
         logger.info("userBaseInfo");
-        String newPassword = request.getParameter("newPassword") == null ? "" : request.getParameter("newPassword");
         String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
+        String ofphone = request.getParameter("officephone") == null ? "" : request.getParameter("officephone");
+        String email = request.getParameter("email") == null ? "" : request.getParameter("email");
+        String address = request.getParameter("address") == null ? "" : request.getParameter("address");
+        String usertype = request.getParameter("usertype") == null ? "" : request.getParameter("usertype");
+        String userlabel = request.getParameter("userlabel") == null ? "" : request.getParameter("userlabel");
+        String nicheng = request.getParameter("nicheng") == null ? "" : request.getParameter("nicheng");
+        String qqid = request.getParameter("qqid") == null ? "" : request.getParameter("qqid");
+        String msnid = request.getParameter("msnid") == null ? "" : request.getParameter("msnid");
+        String imglogo = request.getParameter("imglogo") == null ? "" : request.getParameter("imglogo");
+
+
+
         PageData pageData=new PageData();
         pageData.put("uid", uid);
-        pageData.put("password",newPassword);
+        pageData.put("ofphone",ofphone);
+        pageData.put("email",email);
+        pageData.put("address",address);
+        pageData.put("zhiye",usertype);
+        pageData.put("label",userlabel);
+        pageData.put("smname",nicheng);
+        pageData.put("qqid",qqid);
+        pageData.put("msnid",msnid);
+        pageData.put("usrpicurl",imglogo);
 
         try{
-//            merchServices.addMerch(pageData);
 
-            ResultUtils.writeSuccess(response);
+            if(userinfoServices.updateUserinfo(pageData)>0)
+                ResultUtils.writeSuccess(response);
+            else ResultUtils.write(response,"信息更新失败,稍后重试");
+
         }catch (Exception e){
             logger.error("userBaseInfo e="+e.getMessage());
 
-            ResultUtils.write(response,"密码重置失败,稍后重试");
+            ResultUtils.write(response,"信息更新失败,稍后重试");
         }
         return null;
     }

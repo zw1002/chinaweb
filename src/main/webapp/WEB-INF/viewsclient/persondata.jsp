@@ -82,6 +82,38 @@
 			$('.ss_btn').click(function () {
 				document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
 			});
+			var uzhiye="${userinfo.getZhiye()}";
+            $('.div_usertype input[type=checkbox]').each(function() {
+                if(uzhiye.indexOf($(this).val())!=-1){
+                    $(this).attr('checked','');
+				}
+				else  $(this).removeAttr('checked');
+            });
+
+            //获取身份标签
+            var ulable="${userinfo.getLabel()}";
+            $('.div_userlabel .layui-btn').each(function() {
+                if(ulable.indexOf($(this).text())!=-1){
+                    $(this).removeClass('layui-btn-primary');
+                    $(this).addClass('layui-btn-warm');
+                }
+            });
+			$('#div_bdinfo').html('');
+			var bdinfoHtml="";
+			var telphone="${userinfo.getTelephone()}";
+			if(telphone!=undefined && telphone!="")
+			    bdinfoHtml=bdinfoHtml+"<p>手机号："+telphone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')+"</p>";
+            var strEmail="${userinfo.getEmail()}";
+            if(strEmail!=undefined && strEmail!="")
+                bdinfoHtml=bdinfoHtml+"<p>电子邮箱："+strEmail.replace(strEmail.substring(3,strEmail.lastIndexOf("@")),'***')+"</p>";
+            var strbank="${userinfo.getBankcode()}";
+            if(strbank!=undefined && strbank!="") {
+                bdinfoHtml = bdinfoHtml+"<p>银行卡号：" + strbank.replace(strbank.substring(4),'**** **** ****') + "</p>";
+                bdinfoHtml = bdinfoHtml+"<p>开户行地址：${userinfo.getBankaddr()}</p>";
+            }
+            $('#div_bdinfo').html(bdinfoHtml);
+
+//
 		});
 		//跳转到首页
 		function toIndex(){
@@ -174,7 +206,7 @@
 					<a href="#" onclick="toHomepage()" class="kj_lj">个人空间 ></a>
 					<div class="tx_infor" >
 						<img  src="<%=basePath%>${userinfo.getUsrpicurl()}"/>
-						<h2>${userinfo.getFristname()}</h2>
+						<h2>${userinfo.getSmname()}</h2>
 					</div>
 					<div class="mj_tab">
 						<table width="100%">
@@ -222,26 +254,26 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>昵称</label>
 									<div class="layui-input-block">
-										<input type="text" name="txt_nc" id="txt_nc" lay-verify="title" autocomplete="off" placeholder="双眼皮小怪兽" class="layui-input jinzhi" disabled="disabled">
+										<input type="text" name="txt_nc" id="txt_nc" lay-verify="required" autocomplete="off" placeholder="双眼皮小怪兽" class="layui-input jinzhi" value="${userinfo.getSmname()}">
 									</div>
 
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>Email</label>
 									<div class="layui-input-block">
-										<input type="text" name="txt_email" id="txt_email" lay-verify="title" autocomplete="off" value="123*****@qq.com" placeholder="123@qq.com" class="layui-input jinzhi" disabled="disabled">
+										<input type="text" name="txt_email" id="txt_email" lay-verify="required|email" autocomplete="off" value="${userinfo.getEmail()}" placeholder="123@qq.com" class="layui-input jinzhi" >
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>QQ</label>
 									<div class="layui-input-block">
-										<input type="text" name="txt_qq" id="txt_qq" lay-verify="title|number" autocomplete=" off"value="123" placeholder="123" class="layui-input jinzhi" disabled="disabled">
+										<input type="text" name="txt_qq" id="txt_qq" lay-verify="title|number" autocomplete=" off"value="${userinfo.getQqid()}" placeholder="123" class="layui-input jinzhi" >
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>Msn</label>
 									<div class="layui-input-block">
-										<input type="text" name="txt_msn" id="txt_msn" lay-verify="title" autocomplete="off" placeholder="123******" class="layui-input jinzhi" disabled="disabled">
+										<input type="text" name="txt_msn" id="txt_msn" lay-verify="title" autocomplete="off" value="${userinfo.getMsnid()}" placeholder="123******" class="layui-input jinzhi" >
 									</div>
 								</div>
 								<%--<div class="layui-form-item">--%>
@@ -253,7 +285,7 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">电话</label>
 									<div class="layui-input-block">
-										<input type="text" name="txt_phone" id="txt_phone"  autocomplete="off" class="layui-input dianhua" placeholder="请按照*区号*固定电话*格式填写">
+										<input type="text" name="txt_phone" id="txt_phone" value="${userinfo.getOfphone()}"  autocomplete="off" class="layui-input dianhua" placeholder="请按照*区号*固定电话*格式填写">
 									</div>
 								</div>
 
@@ -274,7 +306,7 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>技能标签</label>
 									<div  class="layui-input-block div_userlabel">
-										<button type="button" class="layui-btn layui-btn-warm layui-btn-radius" >图片爱好者</button>
+										<button type="button" class="layui-btn layui-btn-primary layui-btn-radius" >图片爱好者</button>
 										<button type="button" class="layui-btn layui-btn-primary layui-btn-radius" >摄影爱好者</button>
 										<button type="button" class="layui-btn layui-btn-primary layui-btn-radius" >其他</button>
 									</div>
@@ -291,7 +323,7 @@
 												<%--<option value="你最喜欢的老师">福建省</option>--%>
 											<%--</select>style="width:324px;float: left; position: initial;"--%>
 										<%--</div>--%>
-										<input type="text" name="txt_address" id="txt_address"  autocomplete="off" class="layui-input dianhua" placeholder="请输入详细住址" >
+										<input type="text" name="txt_address" id="txt_address" value="${userinfo.getAddress()}" autocomplete="off" class="layui-input dianhua" placeholder="请输入详细住址" >
 									</div>
 
 								</div>
@@ -307,9 +339,6 @@
 									<legend>已绑定信息</legend>
 								</fieldset>
 								<div id="div_bdinfo" style="display: inline-block;line-height: 36px;margin-left: 160px;">
-									<p>手机号：138****0000</p>
-									<p>电子邮箱：abc****@163.com</p>
-									<p>微博账号：abc****@sina.cn</p>
 								</div>
 								<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
 									<legend>重置绑定信息</legend>
@@ -318,11 +347,11 @@
 									<div class="layui-inline">
 										<label class="layui-form-label"  style="width: 130px;">手机号&nbsp;:&nbsp;</label>
 										<div class="layui-input-inline">
-											<input type="text" name="bd_phone" id="bd_phone" lay-verify="title" autocomplete="off" class="layui-input"  placeholder="请输入手机号">
+											<input type="text" name="bd_phone" hiddenphone="${userinfo.getTelephone()}" value="" id="bd_phone" lay-verify="title" autocomplete="off" class="layui-input"  placeholder="请输入手机号">
 										</div>
 									</div>
 									<div class="layui-inline" style="margin-left: -20px;">
-											<button id="btn_sendsms" class="layui-btn layui-btn-sm">发送短信</button>
+											<button id="btn_sendsms" type="button" class="layui-btn layui-btn-sm">发送短信</button>
 									</div><div class="layui-inline">
 										<div class="layui-input-inline">
 											<input type="text" name="bd_vercode" id="bd_vercode" lay-verify="title" autocomplete="off" class="layui-input" placeholder="请输入收到验证码">
@@ -332,12 +361,12 @@
 								<div class="layui-form-item" id="div_bank">
 									<label class="layui-form-label"  style="width: 130px;">银行卡号&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<input type="text" name="bd_bank" id="bd_bank" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请输入银行卡号">
+										<input type="text" name="bd_bank" hiddenbank="${userinfo.getBankcode()}" id="bd_bank" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请输入银行卡号">
 									</div>
 									</br>
 									<label class="layui-form-label" style="width: 130px;">开户行地址&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<input type="text" name="bd_address" id="bd_address" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请输入开户行地址">
+										<input type="text" name="bd_address" hiddenbankAddr="${userinfo.getBankaddr()}" id="bd_address" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请输入开户行地址">
 									</div>
 								</div>
 								<div class="anniu" style="text-align: center;">
@@ -356,13 +385,13 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label" style="width: 130px;">真实姓名&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<input type="text" name="zsname" id="zsname" lay-verify="required" autocomplete="off" class="layui-input dianhua" placeholder="请输入您的姓名">
+										<input type="text" name="zsname" id="zsname" value="${userinfo.getFristname()}" lay-verify="required" autocomplete="off" class="layui-input dianhua" placeholder="请输入您的姓名">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label" style="width: 130px;">身份证号&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<input type="text" name="sfzcode" id="sfzcode" lay-verify="required|identity" autocomplete="off" class="layui-input dianhua" placeholder="请输入您的身份证号">
+										<input type="text" name="sfzcode" value="${userinfo.getIccode()}" id="sfzcode" lay-verify="required|identity" autocomplete="off" class="layui-input dianhua" placeholder="请输入您的身份证号">
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -382,7 +411,7 @@
 											<div class="layui-upload" style="float: left;" id="rzFile">
 												<button type="button" class="layui-btn" id="upFile">上传图片</button>
 												<div class="layui-upload-list">
-													<img class="layui-upload-img" src="" id="upImgUrl" >
+													<img class="layui-upload-img" style="width: 320px;height: 220px;" src="<%=basePath%>${userinfo.getIdpic()}" id="upImgUrl" >
 													<p id="upImgName"></p>
 												</div>
 											</div>
@@ -401,7 +430,7 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label" style="width: 130px;">身份证到期时间&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<input type="text" name="sfzdate" id="sfzdate" lay-verify="required|date" autocomplete="off" class="layui-input dianhua" placeholder="请输入身份证有效日期 如：2018-01-22">
+										<input type="text" name="sfzdate" id="sfzdate" value="${userinfo.getSfzdate()}" lay-verify="required|date" autocomplete="off" class="layui-input dianhua" placeholder="请输入身份证有效日期 如：2018-01-22">
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -513,7 +542,7 @@
                             $(this).removeClass('layui-btn-warm');
                         }
                     });
-                    var imgLogoUrl="<%=basePath%>${userinfo.getUsrpicurl()}";
+                    var imgLogoUrl="${userinfo.getUsrpicurl()}";
                     upload.render({
                         elem: '#editLogo'
                         ,url: "<%=basePath%>/persondata/upFileInfo.do"
@@ -535,23 +564,19 @@
                         }
                     });
                     form.on('submit(baseinfo)', function(data){
-                        //alert(data.elem.attributes['lay-filter'].nodeValue);
-//                                console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
-//                                console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
-//                                console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-                        //persondata/userBaseInfo.do
+
                         //获取职业
                         var curType="";
                         layui.jquery('.div_usertype input[type=checkbox]:checked').each(function() {
                             curType +=$(this).val()+",";
                         });
-                        alert(curType);
+                        //alert(curType);
                         //获取身份标签
                         var curLabel="";
                         layui.jquery('.div_userlabel .layui-btn-warm').each(function() {
                             curLabel +=$(this).text()+",";
                         });
-                        alert(curLabel);
+                        //alert(curLabel);
                         $.ajax({
                             url: "<%=basePath%>/persondata/userBaseInfo.do",
                             type: "POST",
@@ -586,28 +611,43 @@
                     });
                     form.on('submit(bindinfo)', function(data){
                         //alert(data.elem.attributes['lay-filter'].nodeValue);
-						var curPhone="";//绑定手机
+						var curPhone=$('#bd_phone').attr('hiddenphone')==undefined?"":$('#bd_phone').attr('hiddenphone');//绑定手机
+						var curbank=$('#bd_bank').attr('hiddenbank')==undefined?"":$('#bd_bank').attr('hiddenbank');
 						//手机号与绑定手机不一样时，需要填写验证码，否则不需要
+                        if(data.field.bd_phone!=curPhone){
+                            if(data.field.bd_phone=="" || data.field.bd_vercode==""){
+                                layer.msg('请填写绑定手机与短信验证码!', {icon: 5});
+                                return false;
+                            }
+						}
 						if(data.field.bd_phone!=curPhone && data.field.bd_vercode==""){
                             layer.msg('请填写短信验证码!', {icon: 5});
 						    return false;
 						}
-                        if(data.field.bd_phone=="" && data.field.bd_vercode=="" && data.field.bd_bank=="" && data.field.bd_address==""){
-                            layer.msg('请填写绑定信息!', {icon: 5});
-                            return false;
-                        }
-                        if( data.field.bd_bank=="" || data.field.bd_address==""){
-                            layer.msg('请完善银行卡信息!', {icon: 5});
-                            return false;
-                        }
+//                        if(data.field.bd_phone=="" && data.field.bd_vercode=="" && data.field.bd_bank=="" && data.field.bd_address==""){
+//                            layer.msg('请填写绑定信息!', {icon: 5});
+//                            return false;
+//                        }
+						if(curbank!=data.field.bd_bank){
+                            if( data.field.bd_bank=="" || data.field.bd_address==""){
+                                layer.msg('请完善银行卡信息!', {icon: 5});
+                                return false;
+                            }
+						}
+
                         bindInfo(data);
                         return false;
                     });
                     //手机短信验证
                     $('#btn_sendsms').click(function () {
-                        layer.msg("短信已发送，注意查收!");
+
+                        if($('#bd_phone').val()==""){
+                            layer.msg("请填写接收短信手机号!");
+                            return;
+						}
                         $('#btn_sendsms').addClass("layui-btn-disabled");
                         var m=120;
+                        $('#bd_vercode').val("1234");
                         var showTimeInterval = window.setInterval(function(){
                             if(m==0){
                                 $('#btn_sendsms').removeClass("layui-btn-disabled");
@@ -618,7 +658,7 @@
                                 $('#btn_sendsms').text("已发送("+m+"秒)");
                             m--;
                         },1000);
-
+                        layer.msg("短信已发送，注意查收!");
                         return false;
                     })
                     //绑定信息提交
@@ -631,8 +671,8 @@
                             data: {
                                 uid:"${userinfo.getUid()}",
                                 phone:fdata.field.bd_phone,phoneCode:fdata.field.bd_vercode,
-                                email:"",
-                                weibo:"",
+                                //email:"",
+                                //weibo:"",
                                 bankcode:fdata.field.bd_bank,
                                 bankaddr:fdata.field.bd_address
                             },
@@ -642,7 +682,7 @@
                         });
                         return false;
                     }
-                    var upFileUrl="";
+                    var upFileUrl="${userinfo.getIdpic()}";
                     upload.render({
                         elem: '#upFile'
                         ,url: "<%=basePath%>/persondata/upFileInfo.do"
@@ -751,6 +791,7 @@
                         logTable.reload({
                             url:'<%=basePath%>/persondata/getUserOperatLog.do'
                             ,where:{
+                                uid:"${userinfo.getUid()}",
                                 logType:$('#sel_LogType').val()
                                 ,logStime:$('#date1').val()
                                 ,logEtime:$('#date2').val()
@@ -763,7 +804,7 @@
                     })
                     var logTable = table.render({
                         elem: '#log-table'
-                        ,url:'<%=basePath%>/persondata/getUserOperatLog.do'
+                        ,url:'<%=basePath%>/persondata/getUserOperatLog.do?uid=${userinfo.getUid()}'
                         ,page: {
                             layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                             ,groups: 3 //只显示 1 个连续页码
@@ -771,9 +812,9 @@
                             ,last: true //不显示尾页
                         }
                         ,cols: [[
-                            {field:'id', width:150, title: '登录时间', sort: true}
-                            ,{field:'username', width:150, title: '登录IP'}
-                            ,{field:'sex', width:400, title: '消息内容',align:'center'}
+                            {field:'logtime', width:180, title: '登录时间', sort: true}
+                            ,{field:'ipaddress', width:150, title: '登录IP'}
+                            ,{field:'loginfo', width:400, title: '消息内容',align:'center'}
                         ]]
 
                     })

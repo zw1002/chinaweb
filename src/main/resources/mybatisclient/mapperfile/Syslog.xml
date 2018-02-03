@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mybatis/mapperfile.Syslog">
+<mapper namespace="SyslogMapper">
   <resultMap id="BaseResultMap" type="com.hnqj.model.Syslog">
     <!--
       WARNING - @mbg.generated
@@ -32,6 +32,29 @@
     <include refid="Base_Column_List" />
     from tb_syslog
     where sysloguid = #{sysloguid,jdbcType=VARCHAR}
+  </select>
+  <select id="getAllSyslog" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_syslog
+    where 1=1
+    <if test="username != null and username != ''">
+      AND  username = #{username,jdbcType=VARCHAR}
+    </if>
+    <if test="logtype != null and logtype != ''">
+      AND logtype=#{logtype,jdbcType=VARCHAR}
+    </if>
+    <if test="minTime != null and  minTime != ''">
+      <![CDATA[ and unix_timestamp(logtime) >= unix_timestamp(#{minTime})]]>
+    </if>
+    <if test="maxTime != null and  maxTime != ''">
+      <![CDATA[ and unix_timestamp(logtime) <= unix_timestamp(#{maxTime})]]>
+    </if>
+    ORDER BY logtime DESC
+    <if test="limit != null and  limit > 0">
+      LIMIT #{offset},#{limit}
+    </if>
+
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
