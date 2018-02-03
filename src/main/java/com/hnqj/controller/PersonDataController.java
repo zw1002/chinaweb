@@ -2,8 +2,10 @@ package com.hnqj.controller;
 import com.hnqj.core.EncodeUtil;
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
+import com.hnqj.model.Dict;
 import com.hnqj.model.Syslog;
 import com.hnqj.model.Userinfo;
+import com.hnqj.services.DictServices;
 import com.hnqj.services.SyslogServices;
 import com.hnqj.services.UserinfoServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ public class PersonDataController extends BaseController{
     UserinfoServices userinfoServices;
     @Autowired
     SyslogServices syslogservices;
+    @Autowired
+    DictServices dictservices;
     //跳转到个人资料页面
     @RequestMapping(value = "/toPersonData.do")
     public String toPersonData(HttpServletRequest request, Model model){
@@ -41,6 +45,9 @@ try{
         Userinfo userinfo = (Userinfo)request.getSession().getAttribute("userinfo");
         userinfo = userinfoServices.getUserinfoforId(userinfo.getUid());
         request.getSession().setAttribute("userinfo",userinfo);
+        //获取银行信息
+        List<Dict> dicts= dictservices.selectFilterDictList("银行组");
+        model.addAttribute("dicts",dicts);
 }catch (Exception ee){
     return  "index";
 }

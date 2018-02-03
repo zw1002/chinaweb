@@ -1,3 +1,4 @@
+
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
 <%
 	String path = request.getContextPath();
@@ -107,13 +108,36 @@
             if(strEmail!=undefined && strEmail!="")
                 bdinfoHtml=bdinfoHtml+"<p>电子邮箱："+strEmail.replace(strEmail.substring(3,strEmail.lastIndexOf("@")),'***')+"</p>";
             var strbank="${userinfo.getBankcode()}";
+            var selBank="";
             if(strbank!=undefined && strbank!="") {
+                var bankinfo ="${userinfo.getBankaddr()}";
+                var bankss = bankinfo.split(',');
+
+                bdinfoHtml = bdinfoHtml+"<p>开户银行："+bankss[1]+"</p>";
                 bdinfoHtml = bdinfoHtml+"<p>银行卡号：" + strbank.replace(strbank.substring(4),'**** **** ****') + "</p>";
-                bdinfoHtml = bdinfoHtml+"<p>开户行地址：${userinfo.getBankaddr()}</p>";
+                bdinfoHtml = bdinfoHtml+"<p>开户行地址："+bankss[0]+"</p>";
+                selBank=bankss[1];
             }
             $('#div_bdinfo').html(bdinfoHtml);
 
-//
+
+            $.ajax({
+                url: "<%=basePath%>/general/getGroupClass.do",
+                type: "POST",
+                async:false,
+                data: {type:"银行组"},
+                success: function (data) {
+                    data=eval('(' + data + ')');
+                    if(data.code=="0000"){
+                        for(var i=0;i<data.content.length;i++){
+//                            if(selBank==data.content[i].typename)
+//                        		$('#sel_bank').append("<option value='"+data.content[i].typename+"' selected>"+data.content[i].typename+"</option>");
+//                            else
+                                $('#sel_bank').append("<option value='"+data.content[i].typename+"'>"+data.content[i].typename+"</option>");
+                        }
+                    }
+                }
+            });
 		});
 		//跳转到首页
 		function toIndex(){
@@ -289,13 +313,8 @@
 									</div>
 								</div>
 
-								<div class="layui-form-item">
-									<%--<label class="layui-form-label"><span style="color: #C9302C;">*</span>身份</label>--%>
-									<%--<div class="layui-input-block">--%>
-										<%--<input type="checkbox" name="like1[write]" lay-skin="primary" title="摄影师" checked="">--%>
-										<%--<input type="checkbox" name="like1[read]" lay-skin="primary" title="设计师">--%>
-										<%--<input type="checkbox" name="like1[game]" lay-skin="primary" title="图片爱好者">--%>
-									<%--</div>--%>
+								<div class="layui-form-item" style="display: none;">
+
 										<label class="layui-form-label"><span style="color: #C9302C;">*</span>身份</label>
 										<div  class="layui-input-block div_usertype">
 											<input type="checkbox" name="like" value="摄影师" title="摄影师" checked="">
@@ -303,7 +322,7 @@
 											<input type="checkbox" name="like" value="图片爱好者" title="图片爱好者">
 										</div>
 								</div>
-								<div class="layui-form-item">
+								<div class="layui-form-item" style="display: none;">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>技能标签</label>
 									<div  class="layui-input-block div_userlabel">
 										<button type="button" class="layui-btn layui-btn-primary layui-btn-radius" >图片爱好者</button>
@@ -315,14 +334,7 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">所在地</label>
 									<div class="layui-input-block">
-										<%--<div class="layui-input-inline">--%>
-											<%--<select name="quiz1">--%>
-												<%--<option value="">请选择省</option>--%>
-												<%--<option value="浙江" selected="">浙江省</option>--%>
-												<%--<option value="你的工号">江西省</option>--%>
-												<%--<option value="你最喜欢的老师">福建省</option>--%>
-											<%--</select>style="width:324px;float: left; position: initial;"--%>
-										<%--</div>--%>
+
 										<input type="text" name="txt_address" id="txt_address" value="${userinfo.getAddress()}" autocomplete="off" class="layui-input dianhua" placeholder="请输入详细住址" >
 									</div>
 
@@ -364,9 +376,23 @@
 										<input type="text" name="bd_bank" hiddenbank="${userinfo.getBankcode()}" id="bd_bank" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请输入银行卡号">
 									</div>
 									</br>
-									<label class="layui-form-label" style="width: 130px;">开户行地址&nbsp;:&nbsp;</label>
+									<label class="layui-form-label" style="width: 130px;">开户银行&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<input type="text" name="bd_address" hiddenbankAddr="${userinfo.getBankaddr()}" id="bd_address" lay-verify="title" autocomplete="off" class="layui-input dianhua" placeholder="请输入开户行地址">
+										<div class="layui-input-inline">
+											<select id="sel_bank" name="sel_bank" style="width: 150px;">
+											<option value="">请选择银行</option>
+
+											    <%--<option value="中国工商银行" selected="">中国工商银行</option>--%>
+												<%--<option value="中国建设银行">中国建设银行</option>--%>
+												<%--<option value="中国农业银行">中国农业银行</option>--%>
+												<%--<option value="中国人民银行">中国人民银行</option>--%>
+												<%--<option value="广东发展银行">广东发展银行</option>--%>
+												<%--<option value="兴业银行">兴业银行</option>--%>
+												<%--<option value="浦东发展银行">浦东发展银行</option>--%>
+											</select>
+										</div>
+										<input type="text" name="bd_address" hiddenbankAddr="${userinfo.getBankaddr()}" id="bd_address" lay-verify="title" autocomplete="off"
+											   class="layui-input dianhua" style="width: 300px;" placeholder="请输入开户行地址">
 									</div>
 								</div>
 								<div class="anniu" style="text-align: center;">
@@ -437,7 +463,7 @@
 									<label class="layui-form-label" style="width: 130px;"></label>
 
 									<div class="layui-input-block">
-										<input type="checkbox" id="okXy" title="《婚秀协议》《婚秀协议》" checked="">
+										<input type="checkbox" id="okXy" title="《婚秀协议》" checked="">
 									</div>
 								</div>
 								<div class="anniu" style="text-align: center;">
@@ -610,7 +636,8 @@
                         return false;
                     });
                     form.on('submit(bindinfo)', function(data){
-                        if(data.field.bd_vercode==""&& data.field.bd_phone == "" && data.field.bd_bank == "" && data.field.bd_address == "" ){
+                        if(data.field.bd_vercode==""&& data.field.bd_phone == "" &&
+							data.field.bd_bank == "" && data.field.bd_address == "" ){
                             return false;
 						}
                         //alert(data.elem.attributes['lay-filter'].nodeValue);
@@ -634,12 +661,12 @@
                         }
 						if(data.field.bd_bank!="") {
                             if (curbank != data.field.bd_bank) {
-                                if (data.field.bd_bank == "" || data.field.bd_address == "") {
+                                if (data.field.bd_bank == "" || data.field.bd_address == "" ||data.field.sel_bank=="") {
                                     layer.msg('请完善银行卡信息!', {icon: 5});
                                     return false;
                                 }
                                 else {
-                                    curbankaddr=data.field.bd_address;
+                                    curbankaddr=data.field.bd_address+","+data.field.sel_bank;
                                     curbank=data.field.bd_bank;
 								}
                             }
