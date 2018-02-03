@@ -10,10 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.*;
 
 import static com.hnqj.core.ResultUtils.toDateJson;
+import static sun.java2d.cmm.ColorTransform.In;
 
 /**
  * 通用接口控制层
@@ -401,6 +408,80 @@ public class GeneralController extends BaseController{
         }
         return null;
     }
+    /**
+     * 作品搜索接口 /general/seachWorks.do
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/sendSMS.do")
+    public String sendSMS(HttpServletRequest request, HttpServletResponse response)
+    {
+        logger.info("sendSMS");
+        String mobileStr = request.getParameter("mobile") == null ? "" : request.getParameter("mobile");
+        if(mobileStr.equals("")) {
 
+            ResultUtils.write(response, "000000");
+            return  null;
+        }
+        PrintWriter out = null;
+        BufferedReader in = null;
+        try {
+            //(int)((Math.random()*9+1)*100000));
+            //六位随机数100000--999999
+            int flag = new Random().nextInt(999999);
+            if (flag < 100000) {
+                flag += 100000;
+            }
+            String content = "婚秀网短信验证码：" + flag;
+            URL url = new URL("http://www.sms-cly.cn/smsSend.do?");
+            StringBuffer sb = new StringBuffer();
+            sb.append("username=clyhxkj");
+            sb.append("&password=f6f5696da081db645bb4ddec96663f70");
+            sb.append("&mobile=" + mobileStr);
+            sb.append("&content=" + URLEncoder.encode(content, "utf-8"));
+            //sb.append("&dstime=");
+            URLConnection conn = url.openConnection();
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("Charset", "UTF-8");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            out = new PrintWriter(conn.getOutputStream());
+            out.print(sb.toString());
+            out.flush();
 
+//            URLConnection conn = url.openConnection();
+//            conn.setRequestProperty("accept", "*/*");
+//            conn.setRequestProperty("connection", "Keep-Alive");
+//            conn.connect();
+            // 定义BufferedReader输入流来读取URL的响应
+            in = new BufferedReader(new InputStreamReader(url.openStream()));
+            //读取返回参数
+            String result = in.readLine();
+            long lnid = Long.valueOf(result);
+            out.close();
+            in.close();
+            if (lnid > 0)
+                ResultUtils.write(response, flag);
+            else
+                ResultUtils.write(response, "000000");
+        }catch (Exception e){
+            logger.error("sendSMS e="+e.getMessage());
+            ResultUtils.write(response,"000000");
+        }
+        finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
+    }
 }

@@ -119,8 +119,6 @@
                 selBank=bankss[1];
             }
             $('#div_bdinfo').html(bdinfoHtml);
-
-
             $.ajax({
                 url: "<%=basePath%>/general/getGroupClass.do",
                 type: "POST",
@@ -682,21 +680,34 @@
                             layer.msg("请填写接收短信手机号!");
                             return;
 						}
-                        $('#btn_sendsms').addClass("layui-btn-disabled");
-                        var m=120;
-                        $('#bd_vercode').val("1234");
-                        var showTimeInterval = window.setInterval(function(){
-                            if(m==0){
-                                $('#btn_sendsms').removeClass("layui-btn-disabled");
-                                window.clearInterval(showTimeInterval);
-                                $('#btn_sendsms').text("发送短信");
+                        $.ajax({
+                            url: "<%=basePath%>/general/sendSMS.do",
+                            type: "POST",
+                            async:false,
+                            data: {mobile:$('#bd_phone').val()},
+                            success: function (data) {
+                                if(data!='000000'){
+                                    layer.msg("短信已发送，注意查收!", {icon: 6});
+                                    acceptSms=data;
+                                    var m=120;
+                                    $('#btn_sendsms').addClass("layui-btn-disabled");
+                                    var showTimeInterval = window.setInterval(function(){
+                                        if(m==0){
+                                            $('#btn_sendsms').removeClass("layui-btn-disabled");
+                                            window.clearInterval(showTimeInterval);
+                                            $('#btn_sendsms').text("发送短信");
+                                        }
+                                        else
+                                            $('#btn_sendsms').text("已发送("+m+"秒)");
+                                        m--;
+                                    },1000);
+                                }
+                                else {
+                                    layer.msg('短信发送失败，稍后重试!', {icon: 5});
+                                    acceptSms="";
+                                }
                             }
-                            else
-                                $('#btn_sendsms').text("已发送("+m+"秒)");
-                            m--;
-                        },1000);
-                        layer.msg("短信已发送，注意查收!");
-                        acceptSms="1234";
+                        });
                         return false;
                     });
                     //绑定信息提交
