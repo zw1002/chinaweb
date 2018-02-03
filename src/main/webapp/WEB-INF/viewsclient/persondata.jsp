@@ -610,34 +610,44 @@
                         return false;
                     });
                     form.on('submit(bindinfo)', function(data){
+                        if(data.field.bd_vercode==""&& data.field.bd_phone == "" && data.field.bd_bank == "" && data.field.bd_address == "" ){
+                            return false;
+						}
                         //alert(data.elem.attributes['lay-filter'].nodeValue);
 						var curPhone=$('#bd_phone').attr('hiddenphone')==undefined?"":$('#bd_phone').attr('hiddenphone');//绑定手机
-						var curbank=$('#bd_bank').attr('hiddenbank')==undefined?"":$('#bd_bank').attr('hiddenbank');
+                        var curbank=$('#bd_bank').attr('hiddenbank')==undefined?"":$('#bd_bank').attr('hiddenbank');
+                        var curbankaddr="${userinfo.getBankaddr()}";
 						//手机号与绑定手机不一样时，需要填写验证码，否则不需要
-                        if(data.field.bd_phone!=curPhone){
-                            if(data.field.bd_phone=="" || data.field.bd_vercode==""){
-                                layer.msg('请填写绑定手机与短信验证码!', {icon: 5});
-                                return false;
+						if(data.field.bd_phone!="") {
+                            if (data.field.bd_phone != curPhone) {
+                                if (data.field.bd_phone == "" || data.field.bd_vercode == "") {
+                                    layer.msg('请填写绑定手机与短信验证码!', {icon: 5});
+                                    return false;
+                                }
+                                else if(data.field.bd_vercode ==acceptSms){
+                                    curPhone = data.field.bd_phone;
+								}
+								else
+								{ layer.msg('短信验证码输入错误，请重新填写!', {icon: 5});
+                                    return false;}
                             }
-						}
-						if(data.field.bd_phone!=curPhone && data.field.bd_vercode==""){
-                            layer.msg('请填写短信验证码!', {icon: 5});
-						    return false;
-						}
-//                        if(data.field.bd_phone=="" && data.field.bd_vercode=="" && data.field.bd_bank=="" && data.field.bd_address==""){
-//                            layer.msg('请填写绑定信息!', {icon: 5});
-//                            return false;
-//                        }
-						if(curbank!=data.field.bd_bank){
-                            if( data.field.bd_bank=="" || data.field.bd_address==""){
-                                layer.msg('请完善银行卡信息!', {icon: 5});
-                                return false;
+                        }
+						if(data.field.bd_bank!="") {
+                            if (curbank != data.field.bd_bank) {
+                                if (data.field.bd_bank == "" || data.field.bd_address == "") {
+                                    layer.msg('请完善银行卡信息!', {icon: 5});
+                                    return false;
+                                }
+                                else {
+                                    curbankaddr=data.field.bd_address;
+                                    curbank=data.field.bd_bank;
+								}
                             }
-						}
-
-                        bindInfo(data);
+                        }
+                        bindInfo(curPhone,curbank,curbankaddr);
                         return false;
                     });
+                    var acceptSms="";
                     //手机短信验证
                     $('#btn_sendsms').click(function () {
 
@@ -659,10 +669,11 @@
                             m--;
                         },1000);
                         layer.msg("短信已发送，注意查收!");
+                        acceptSms="1234";
                         return false;
-                    })
+                    });
                     //绑定信息提交
-                    function bindInfo (fdata) {
+                    function bindInfo (phonev,bankv,bankaddr) {
 
                         $.ajax({
                             url: "<%=basePath%>/persondata/userInfoBind.do",
@@ -670,11 +681,11 @@
                             async:false,
                             data: {
                                 uid:"${userinfo.getUid()}",
-                                phone:fdata.field.bd_phone,phoneCode:fdata.field.bd_vercode,
+                                phone: phonev,//fdata.field.bd_phone,//phoneCode:fdata.field.bd_vercode,
                                 //email:"",
                                 //weibo:"",
-                                bankcode:fdata.field.bd_bank,
-                                bankaddr:fdata.field.bd_address
+                                bankcode:bankv,//fdata.field.bd_bank,
+                                bankaddr:bankaddr//fdata.field.bd_address
                             },
                             success: function (data) {
                                 if(data=='success'){layer.msg('信息绑定成功!', {icon: 6});}
@@ -699,7 +710,7 @@
                         ,done: function(res){
                             console.log(res)
                             upFileUrl=res.data;
-                            alert(res.data);
+                            //alert(res.data);
                         }
                         ,error:function (obj) {
                             upFileUrl="";

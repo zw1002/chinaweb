@@ -6,7 +6,6 @@ import com.hnqj.model.Syslog;
 import com.hnqj.model.Userinfo;
 import com.hnqj.services.SyslogServices;
 import com.hnqj.services.UserinfoServices;
-import com.hnqj.services.WorksServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 个人资料控制层
@@ -39,14 +36,14 @@ public class PersonDataController extends BaseController{
     @RequestMapping(value = "/toPersonData.do")
     public String toPersonData(HttpServletRequest request, Model model){
        //根据SESSION获取所有个人信息，并输出到前端
-        //基础信息
-        //绑定信息
-        //认证信息
-        // model.addAttribute("");
 
+try{
         Userinfo userinfo = (Userinfo)request.getSession().getAttribute("userinfo");
         userinfo = userinfoServices.getUserinfoforId(userinfo.getUid());
         request.getSession().setAttribute("userinfo",userinfo);
+}catch (Exception ee){
+    return  "index";
+}
         return  "persondata";
     }
     //查询用户日志信息persondata/getUserOperatLog.do
