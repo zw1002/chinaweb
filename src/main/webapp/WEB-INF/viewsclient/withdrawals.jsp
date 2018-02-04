@@ -13,6 +13,7 @@
 <link href="<%=basePath%>/static/css/laypage.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=basePath%>/static/js/laydate.js"></script>
 <script src="<%=basePath%>/static/js/laypage.js"></script>
+<link href="<%=basePath%>/static/css/layui.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
 <script type="text/javascript">
@@ -129,9 +130,8 @@
  }
  //根据状态分页获取会员提现数据
  function getUserAllCashRecordByType(offset,count,state){
-     var uid=$("#uid").val();
+     var uid="${userinfo.getUid()}";
      var str="";//申请中
-     var strs="";//已提现
      $.ajax({
          url: "<%=basePath%>/withdrawals/getCashRecordByState.do",
          type: "POST",
@@ -148,7 +148,7 @@
                  for(var i=0;i<msg.length;i++){
                      if(state == 0){
                          str += '<tr id="'+msg[i].cashuid+'"><td>'+msg[i].applynum+'</td>'
-                                 +'<td>'+msg[i].applytime+'</td><td>'+msg[i].cashaccount+'</td></tr>';
+                                 +'<td>'+msg[i].applytime+'</td><td>'+msg[i].cashtype+'</td><td>'+msg[i].cashaccount+'</td></tr>';
                      }else{
                          str += '<tr id="'+msg[i].cashuid+'"><td>'+msg[i].applynum+'</td>'
                                  +'<td>'+msg[i].applytime+'</td><td>'+msg[i].cashaccount+'</td>'
@@ -158,7 +158,7 @@
              }
          }
      });
-     var sss='<tr> <th>提现金额</th> <th>申请时间</th> <th>收款账户</th> </tr>'
+     var sss='<tr> <th>提现金额</th> <th>申请时间</th> <th>收款银行</th><th>收款账户</th> </tr>'
      var ssss='<tr> <th>提现金额</th> <th>申请时间</th> <th>收款账户</th><th>审核人员</th> <th>审核时间</th></tr>'
      if(state == 0){//申请中
          $("#applying table").find("tr").remove();
@@ -170,6 +170,34 @@
          $("#alreadlyapply table").append(str);
      }
  }
+    //提现申请
+    function subCash(){
+        var balance=$("#balance").val();
+        var bank=$("#bank").val();
+        var bankaccount=$("#bankaccount").val();
+        var bankaddress=$("#bankaddress").val();
+        var bankuser=$("#bankuser").val();
+        var uid="${userinfo.getUid()}";
+        $.ajax({
+            url: "<%=basePath%>/withdrawals/addCashRecord.do",
+            type: "POST",
+            data: {
+                uid: uid,
+                balance: balance,
+                bank: bank,
+                bankaccount: bankaccount,
+                bankaddress:bankaddress,
+                bankuser:bankuser
+            },
+            success: function (data) {
+                if(data!=="failed"){
+                    document.location.href = '<%=basePath%>/withdrawals/toWithdrawals.do?uid='+uid;
+                }else{
+                    alert("申请提现失败");
+                }
+            }
+        });
+    }
 </script>
 </head>
 <body>
@@ -235,11 +263,55 @@
                <div class="tran_con">
                   <div class="jy_nav">
                     <ul class=" clearfix">
-                       <li>申请中</li>
+                        <li>申请提现</li>
+                        <li>申请中</li>
                        <li>已申请</li>
                     </ul>
                   </div>
                   <div class="jy_tab_con">
+                      <div style="margin-top: -20px">
+                          <form style="margin-top: 8px" class="layui-form batchinput-form">
+                              <div class="layui-form-item layui-form-text">
+                                  <label class="layui-form-label">提现金额：</label>
+                                  <div class="layui-input-block">
+                                      <input id="balance" name="balance" class="layui-input">
+                                  </div>
+                              </div>
+                              <div class="layui-form-item layui-form-text">
+                                  <label class="layui-form-label">身份证号：</label>
+                                  <div class="layui-input-block">
+                                      <input id="iccode" name="iccode" class="layui-input">
+                                  </div>
+                              </div>
+                              <div class="layui-form-item layui-form-text">
+                                  <label class="layui-form-label">银行：</label>
+                                  <div class="layui-input-block">
+                                      <input id="bank" name="bank" class="layui-input">
+                                  </div>
+                              </div>
+                              <div class="layui-form-item layui-form-text">
+                                  <label class="layui-form-label">开户人：</label>
+                                  <div class="layui-input-block">
+                                      <input id="bankuser" name="bankuser" class="layui-input">
+                                  </div>
+                              </div>
+                              <div class="layui-form-item layui-form-text">
+                                  <label class="layui-form-label">开户地址：</label>
+                                  <div class="layui-input-block">
+                                      <input id="bankaddress" name="bankaddress" class="layui-input">
+                                  </div>
+                              </div>
+                              <div class="layui-form-item layui-form-text">
+                                  <label class="layui-form-label">银行卡号：</label>
+                                  <div class="layui-input-block">
+                                      <input id="bankaccount" name="bankaccount" class="layui-input">
+                                  </div>
+                              </div>
+                              <div class="anniu">
+                                  <button id="submerch" onclick="subCash()" style="margin-left: 450px" class="layui-btn layui-btn-normal">提交</button>
+                              </div>
+                          </form>
+                      </div>
                      <!-- 申请中 -->
                       <ul id="applying">
                           <table width="100%">
@@ -262,7 +334,7 @@
 <script>
     var applyingpage=0;
     var alreadlyapplypage=0;
-    var uid=$("#uid").val();
+    var uid="${userinfo.getUid()}";
     var groups=6;
     //申请中
     $.ajax({

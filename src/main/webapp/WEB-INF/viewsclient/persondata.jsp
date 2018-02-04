@@ -276,7 +276,7 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>昵称</label>
 									<div class="layui-input-block">
-										<input type="text" name="txt_nc" id="txt_nc" lay-verify="required" autocomplete="off" placeholder="双眼皮小怪兽" class="layui-input jinzhi" value="${userinfo.getSmname()}">
+										<input type="text" name="txt_nc" id="txt_nc" lay-verify="required" autocomplete="off" class="layui-input jinzhi" value="${userinfo.getSmname()}">
 									</div>
 
 								</div>
@@ -298,12 +298,6 @@
 										<input type="text" name="txt_msn" id="txt_msn" lay-verify="title" autocomplete="off" value="${userinfo.getMsnid()}" placeholder="123******" class="layui-input jinzhi" >
 									</div>
 								</div>
-								<%--<div class="layui-form-item">--%>
-									<%--<label class="layui-form-label">手机</label>--%>
-									<%--<div class="layui-input-block">--%>
-										<%--<button class="layui-btn layui-btn-normal layui-btn-radius bangding">绑定手机</button>--%>
-									<%--</div>--%>
-								<%--</div>--%>
 								<div class="layui-form-item">
 									<label class="layui-form-label">电话</label>
 									<div class="layui-input-block">

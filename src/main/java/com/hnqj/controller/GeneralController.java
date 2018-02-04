@@ -308,31 +308,69 @@ public class GeneralController extends BaseController{
     }
 
     /**
-     * 交易、婚秀排行榜
+     * 交易排行榜排行榜
      * @param request
      * @param response
      * @return
      */
-    @RequestMapping("/tradeRankings.do")
-    public String tradeRankings(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("tradeRankings");
-        String type = request.getParameter("type") == null ? "" : request.getParameter("type");
+    @RequestMapping("/transactionRanking.do")
+    public String transactionRanking(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("transactionRanking");
         int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
         int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
-        List<Map<String, String>> hashMaps=new ArrayList<>();
+        List<Map<String, Object>> hashMaps=new ArrayList<>();
         try{
             PageData pageData = new PageData();
-            pageData.put("type",type);
             pageData.put("offset",offset);
             pageData.put("count",count);
             List<Dealuidchild> dealuidchildList=dealuidchildServices.getDealuidchildForRankings(pageData);
-            for(Dealuidchild dealuidchild:dealuidchildList){
-                Map<String, String> map = new HashMap<>();
-                hashMaps.add(map);
-            }
-            ResultUtils.write(response,hashMaps);
+                for(Dealuidchild dealuidchild:dealuidchildList){
+                    Map<String, Object> map = new HashMap<>();
+                    Works works=worksServices.getWorksforId(dealuidchild.getWorksid());
+                    map.put("workname",works.getWorksname());
+                    map.put("samllerurl",works.getSamllurl());
+                    map.put("workurl",works.getWorksurl());
+                    map.put("uptime",works.getUptime());
+                    map.put("downcount",works.getDowncount());
+                    hashMaps.add(map);
+                }
+                ResultUtils.write(response,toDateJson(hashMaps));
         }catch (Exception e){
-            logger.error("getRecommendWorks e="+e.getMessage());
+            logger.error("transactionRanking e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+    /**
+     * 婚秀排行榜排行榜
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/transactionRankings.do")
+    public String transactionRankings(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("transactionRankings");
+        int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
+        int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
+        List<Map<String, Object>> hashMaps=new ArrayList<>();
+        try{
+            PageData pageData = new PageData();
+            pageData.put("offset",offset);
+            pageData.put("count",count);
+            List<Dealuidchild> dealuidchildList=dealuidchildServices.transactionRankings(pageData);
+                for(Dealuidchild dealuidchild:dealuidchildList){
+                    Map<String, Object> map = new HashMap<>();
+                    Works works=worksServices.getWorksforId(dealuidchild.getWorksid());
+                    map.put("workname",works.getWorksname());
+                    map.put("samllerurl",works.getSamllurl());
+                    map.put("workurl",works.getWorksurl());
+                    map.put("uptime",works.getUptime());
+                    map.put("downcount",works.getDowncount());
+                    hashMaps.add(map);
+                }
+                ResultUtils.write(response,toDateJson(hashMaps));
+        }catch (Exception e){
+            logger.error("transactionRankings e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;

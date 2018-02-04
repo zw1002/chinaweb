@@ -14,6 +14,8 @@
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
 <script type="text/javascript">
+    //会员ID
+    var userInfoId="${userinfo.getUid()}";
  $(function(){
 	  $(".nav_new ul li").hover(function(){
 		     $(this).find(".nav_list").show();
@@ -46,11 +48,17 @@
              var msg = eval("(" + data + ")");
              var res="";
              if(data == "null"){
+                 $("#balance").text("0.00");
+                 $("#withcash").text("0.00");
+                 $("#scroe").text("0.00");
                  $("#role").html("");
                  res = '<td width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td>';
                  $("#role").append(res);
                  $("#uploadwork").css("display","none");
              }else{
+                 $("#balance").text(msg.merchscroe);
+                 $("#withcash").text(msg.merchscroe);
+                 $("#scroe").text(msg.merchscroe);
                  if(msg.statu == 0){
                  $("#role").html("");
                  res = '<td width="50%">店铺信息审核中...</td>';
@@ -216,14 +224,14 @@
                  <div class="cs_tabd">
                    <table width="100%">
                       <tr>
-                         <td><h2>￥68.00</h2>余额</td>
+                         <td><h2 id="balance"></h2>余额</td>
                          <td><h2>￥0.00</h2>已冻结</td>
-                         <td><h2>￥68.00</h2>可提现</td>
-                         <td><h2>6487</h2>积分</td>
+                         <td><h2 id="withcash"></h2>可提现</td>
+                         <td><h2 id="scroe"></h2>积分</td>
                          <td width="120">
                            <div class="tx_btn fr">
                                <!--<a href="recharge.html">充值</a>-->
-                               <a href="withdraw.html" class="tx_bbt">提现</a>
+                               <a href="#" onclick="toWithdrawals()" class="tx_bbt">提现</a>
                            </div>
                          </td>
                       </tr>

@@ -27,28 +27,22 @@
     order by addtime desc
     LIMIT 1,10
   </select>
-  <!--交易、婚秀排行榜-->
+  <!--交易排行榜-->
   <select id="getDealuidchildForRankings" parameterType="pd" resultMap="BaseResultMap">
-    <!--婚秀-获取作品类型以3开头，并且在交易子表的作品-->
-    <if test="type != null and type != ''">
-      SELECT worksid,sum(worksprice) as price
-      FROM tb_dealuidchild where uid in (
-      select dealuid from tb_dealuidchild where worksid in(
-      select uid from tb_works where uid in(
-      select worksid from tb_dealuidchild) and workstype like '3%')
-      )
-      group by worksid order by price desc
+      select * from tb_dealuidchild where worksid in(
+      select uid from tb_works where workstype like '0%' or workstype like '1%' or workstype like '2%'
+      ) group by worksid order by COUNT(worksid) desc
       <if test="count != null and count != 0">
         LIMIT #{offset},#{count}
       </if>
-    </if>
-    <if test="type = null and type = ''">
-      SELECT worksid,sum(worksprice) as price
-      FROM tb_dealuidchild
-      group by worksid order by price desc
-      <if test="count != null and count != 0">
-        LIMIT #{offset},#{count}
-      </if>
+  </select>
+  <!--婚秀排行榜-->
+  <select id="transactionRankings" parameterType="pd" resultMap="BaseResultMap">
+    select * from tb_dealuidchild where worksid in(
+    select uid from tb_works where workstype like '3%'
+    ) group by worksid order by COUNT(worksid) desc
+    <if test="count != null and count != 0">
+      LIMIT #{offset},#{count}
     </if>
   </select>
   <!--获取个人已出售作品-->

@@ -68,6 +68,12 @@ public class IndexController extends BaseController{
             for(Dealuidchild dealuidchild:dealuidchildList){
                 Map<String, Object> map = new HashMap<>();
                 map.put("worksid",dealuidchild.getWorksid());
+                Works works=worksServices.getWorksforId(dealuidchild.getWorksid());
+                if(works != null){
+                    map.put("worksamllurl",works.getSamllurl());
+                }else{
+                    map.put("worksamllurl","");
+                }
                 map.put("worksname",dealuidchild.getWorksname());
                 map.put("worksprice",dealuidchild.getWorksprice());
                 Date date=dealuidchild.getAddtime();

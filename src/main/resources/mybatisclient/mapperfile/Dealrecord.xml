@@ -59,7 +59,7 @@
     select
     *
     from tb_dealrecord
-    where payuserid = #{userid}
+    where payuserid = #{userid} and dealstate = '0'
     order by dealtime desc
     <if test="count != 0">
       LIMIT #{offset},#{count}

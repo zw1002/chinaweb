@@ -27,6 +27,7 @@
         }
     </style>
     <script type="text/javascript">
+        var flag=1;
  $(function(){
 	  $(".nav_new ul li").hover(function(){
 		     $(this).find(".nav_list").show();
@@ -51,6 +52,8 @@
      getTurnover();
      $("#allWorks").css("display","none");
      $("#allCollection").css("display","none");
+     getTransaction();
+     //setInterval("getTransaction()", 10000); //每隔10秒刷新交易动态
  });
  //获取会员信息
  function getUserInfoData(){
@@ -401,6 +404,27 @@ function getMerchData(){
          alert("已关注");
      }
  }
+ //交易动态
+ function getTransaction(){
+     $("#transaction").html("");
+     $.ajax({
+         url:"<%=basePath%>/index/getTransaction.do",
+         type:"POST",
+         success:function(data){
+             var msg=eval("("+data+")");
+             var str="";
+             for(var i=0;i<msg.length;i++){
+                 str +='<li> <a id="'+msg[i].worksid+'" href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].worksid+'"><img src="<%=basePath%>'+msg[i].worksamllurl+'" /></a> <div class="txt_fldd">'
+                         +'<h2><a href="#">'+msg[i].worksname+'</a></h2> <b class="col_f00">￥'+msg[i].worksprice+'</b> <p class="timed">'+msg[i].time+'</p> </div> </li>';
+             }
+             $("#transaction").append(str);
+             if(flag == 1){
+                 jQuery("#jyphb").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"top",autoPlay:true,vis:4,trigger:"click"});
+             }
+             flag=flag+1;
+         }
+     });
+ }
 </script>
 </head>
 <body>
@@ -502,7 +526,7 @@ function getMerchData(){
               <input type="hidden" id="merchid"/>
              <p id="merchremark"></p>
           </div>
-          
+          <!--
           <div class="ty_box">
              <div class="tit_zptj"><h2>TA的最新动态</h2> <a href="javascript:">更多>> </a></div>
              <div class="dt_list">
@@ -524,51 +548,15 @@ function getMerchData(){
                </ul>
              </div>
           </div>
+          -->
           <div class="ty_box">
              <div class="tit_zptj"><h2>网站最新交易状态</h2> <a href="javascript:">更多>> </a></div>
-             <div class="zt_listdd">
-               <ul class="clearfix">
-                  <li>
-                    <a href="#"><img src="<%=basePath%>/static/images/sjtka_pic6.png" /></a>
-                    <div class="txt_fldd">
-                      <h2><a href="#">大自然的馈赠</a></h2>
-                      <b class="col_f00">￥10.0</b>
-                      <p class="timed">刚刚</p>
-                    </div> 
-                  
-                  </li>
-                  <li>
-                    <a href="#"><img src="<%=basePath%>/static/images/sjtka_pic8.png" /></a>
-                    <div class="txt_fldd">
-                      <h2><a href="#">大自然的馈赠</a></h2>
-                      <b class="col_f00">￥10.0</b>
-                      <p class="timed">刚刚</p>
-                    </div> 
-                  
-                  </li>
-                   <li>
-                    <a href="#"><img src="<%=basePath%>/static/images/sjtka_pic7.png" /></a>
-                    <div class="txt_fldd">
-                      <h2><a href="#">大自然的馈赠</a></h2>
-                      <b class="col_f00">￥10.0</b>
-                      <p class="timed">刚刚</p>
-                    </div> 
-                  
-                  </li>
-                   <li>
-                    <a href="#"><img src="<%=basePath%>/static/images/sjtka_pic4.png" /></a>
-                    <div class="txt_fldd">
-                      <h2><a href="#">大自然的馈赠</a></h2>
-                      <b class="col_f00">￥10.0</b>
-                      <p class="timed">刚刚</p>
-                    </div> 
-                  
-                  </li>
+             <div class="zt_listdd" id="jyphb">
+               <ul id="transaction" class="clearfix">
+
                </ul>
              </div>
           </div>
-          
-        
         </div><!-- wid260px -->
            <div id="allWorks" class="wid920px fl">
                <div class="gxq_tit font16px"><h2>全部作品</h2> </div>
