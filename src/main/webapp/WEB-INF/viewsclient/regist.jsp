@@ -23,7 +23,7 @@
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
-         <a href="index.jsp" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
+         <a href="index.do" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <h2 class="titddd fl">新用户注册</h2>
       </div><!-- top_wid -->
       </div><!-- top -->

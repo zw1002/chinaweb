@@ -207,4 +207,18 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return iFlag;
 	}
+	/*
+	* 添加作品浏览足迹记录
+	* */
+	public int UpdateWoksTrcknum(String worksid){
+		logger.info("添加作品浏览足迹记录addWorksViewlog");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("WorksMapper.UpdateWoksTrcknum",worksid);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
 }

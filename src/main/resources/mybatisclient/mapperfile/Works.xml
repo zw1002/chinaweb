@@ -240,4 +240,10 @@
     set downcount = #{downcount}
     where uid = #{uid}
   </update>
+  <!--添加作品浏览足迹记录-->
+  <update id="UpdateWoksTrcknum" parameterType="java.lang.String">
+update tb_works
+    set ticknums = ticknums+1
+    where uid = #{uid};
+  </update>
 </mapper>
