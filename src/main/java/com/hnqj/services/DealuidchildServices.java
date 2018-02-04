@@ -89,7 +89,7 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 
 	public List<Dealuidchild> getDealuidchildForRankings(PageData pageData) {
-		logger.info("交易、婚秀排行榜");
+		logger.info("交易排行榜排行榜");
 		List<Dealuidchild>	dealuidchildList=null;
 		try {
 			dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.getDealuidchildForRankings",pageData);
@@ -129,6 +129,18 @@ protected final Log logger = LogFactory.getLog(getClass());
 		List<Map<String,Object>> dealuidchildList=null;
 		try {
 			dealuidchildList = (List<Map<String,Object>>) daoSupport.findForList("DealuidchildMapper.getUserTurnover",uid);
+		}catch (Exception e){
+			e.printStackTrace();
+			dealuidchildList=null;
+		}
+		return dealuidchildList;
+	}
+
+	public List<Dealuidchild> transactionRankings(PageData pageData) {
+		logger.info("婚秀排行榜排行榜");
+		List<Dealuidchild>	dealuidchildList=null;
+		try {
+			dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.transactionRankings",pageData);
 		}catch (Exception e){
 			e.printStackTrace();
 			dealuidchildList=null;

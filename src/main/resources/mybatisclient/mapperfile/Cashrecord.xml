@@ -27,7 +27,7 @@
     delete from tb_cashrecord
     where cashuid = #{cashuid,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="pd">
+  <insert id="addCashrecord" parameterType="pd">
     insert into tb_cashrecord (cashuid, applypeople, applytime,
       applynum, checkpeople, checktime, 
       cashstate, cashtype, cashaccount, 

@@ -89,12 +89,10 @@
 </div>
 <script type="text/javascript">
     $(function(){
-
         $('.ss_btn').click(function () {
             document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
         });
     });
-    var flag=1;
     $(document).ready(function () {
         //隐藏注册/按钮登录    显示个人中心/个人空间
         var firstname="${userinfo.getFristname()}";
@@ -112,21 +110,63 @@
                 for(var i=0;i<msg.length;i++){
                     str += "<li style='background:url(<%=basePath%>"+msg[i].imgurl+") center top no-repeat; width: 1349px; height: 520px;'><a href='javascript:'></a></li>";
                 }
-                $(".bd ul").append(str);
+                $(".turn_pic div ul").append(str);
                 jQuery(".turn_pic").slide({ titCell:".hd ul", mainCell:".bd ul", effect:"fold", autoPlay:true, autoPage:true, delayTime:500, trigger:"click",interTime:4000,mouseOverStop:false});
             }
         });
         //交易动态
         getTransaction();
-        //重启效果
-        jQuery(".txtMarquee-left").slide({mainCell:".bd ul",autoPlay:true,effect:"leftMarquee",vis:4,interTime:50});
-        setInterval("getTransaction()", 10000); //每隔10秒刷新交易动态
         //获取设计推荐作品
         recommendWorks("00");
         recommendWorks("10");
         recommendWorks("20");
         recommendWorks("30");
+        transactionRanking();
+        transactionRankings();
+        $(".tempWrap").removeClass();
     });
+    //交易排行榜
+    function transactionRanking(){
+        var count=10;
+        $.ajax({
+            url: "<%=basePath%>/general/transactionRanking.do",
+            type: "POST",
+            data: {
+                count:count
+            },
+            success: function (data) {
+                var msg = eval("(" + data + ")");
+                var str="";
+                for(var i=0;i<msg.length;i++){
+                    str += '<li> <a href="#"><img style="width:70px" src="<%=basePath%>'+msg[i].samllerurl+'" /></a>'
+                            +'<div class="txt_fr"> <h2><a href="#">'+msg[i].workname+'</a></h2> <p>'+msg[i].uptime+'</p> <p>下载量：'+msg[i].downcount+'</p> </div> </li>';
+                }
+                $("#jiaoyi ul").append(str);
+                jQuery("#jyphb").slide({titCell:".hd ul",mainCell:"#jiaoyi ul",autoPage:true,effect:"top",autoPlay:true,vis:4,trigger:"click"});
+            }
+        });
+    }
+    //婚秀排行榜
+    function transactionRankings(){
+        var count=10;
+        $.ajax({
+            url: "<%=basePath%>/general/transactionRankings.do",
+            type: "POST",
+            data: {
+                count:count
+            },
+            success: function (data) {
+                var msg = eval("(" + data + ")");
+                var str="";
+                for(var i=0;i<msg.length;i++){
+                    str += '<li> <a href="#"><img src="<%=basePath%>'+msg[i].workurl+'" /></a>'
+                            +'<div class="txt_fr"> <h2><a href="#">'+msg[i].workname+'</a></h2> <p>'+msg[i].uptime+'</p> <p>下载量：'+msg[i].downcount+'</p> </div> </li>';
+                }
+                $("#hunxiu ul").append(str);
+                jQuery("#hxphb").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"top",autoPlay:true,vis:4,trigger:"click"});
+            }
+        });
+    }
     //交易动态
     function getTransaction(){
         $(".infoList").html("");
@@ -137,13 +177,10 @@
                 var msg=eval("("+data+")");
                 var str="";
                 for(var i=0;i<msg.length;i++){
-                    str += "<li><a onclick='toDesignDel()' id='"+msg[i].worksid+"' href='javascript:' target='_blank'>"+msg[i].worksname+"<span class='col_f00'>￥"+msg[i].worksprice+"</span>"+msg[i].time+"</a></li>";
+                    str += "<li><a id='"+msg[i].worksid+"' href='<%=basePath%>/design/toDesignDel.do?uid="+msg[i].worksid+"' target='_blank'>"+msg[i].worksname+"<span class='col_f00'>￥"+msg[i].worksprice+"</span>"+msg[i].time+"</a></li>";
                 }
                 $(".infoList").append(str);
-                if(flag == 1){
-                    jQuery(".txtMarquee-left").slide({mainCell:".bd ul",autoPlay:true,effect:"leftMarquee",vis:4,interTime:50});
-                }
-                flag=flag+1;
+                jQuery(".txtMarquee-left").slide({mainCell:".bd ul",autoPlay:true,effect:"leftMarquee",vis:4,interTime:50});
             }
         });
     }
@@ -270,64 +307,13 @@
                 <div class="hd">
                     <ul></ul>
                 </div>
-                <div class="hxphb bd">
+                <div id="jiaoyi" class="hxphb bd">
                     <ul>
-                        <li>
-                            <a href="design_del.html"><img src="<%=basePath%>/static/images/sjtka_pic1.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾尔儿</p>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="design_del.html"><img src="<%=basePath%>/static/images/sjtka_pic2.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾尔儿</p>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="design_del.html"><img src="<%=basePath%>/static/images/sjtka_pic3.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明天津爱明婚礼会馆婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾艾尔艾尔儿尔儿</p>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="design_del.html"><img src="<%=basePath%>/static/images/sjtka_pic4.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾尔儿</p>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="design_del.html"><img src="<%=basePath%>/static/images/sjtka_pic1.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾尔儿</p>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="design_del.html"><img src="<%=basePath%>/static/images/sjtka_pic2.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾尔儿</p>
-                            </div>
-                        </li>
+
                     </ul>
                 </div>
 
             </div>
-            <script type="text/javascript">
-                jQuery("#jyphb").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"top",autoPlay:true,vis:4,trigger:"click"});
-            </script>
-
         </div><!-- sj_fr -->
 
     </div><!-- hei380px -->
@@ -463,62 +449,12 @@
                     <ul></ul>
                 </div>
 
-                <div class="hxphb bd">
+                <div id="hunxiu" class="hxphb bd">
                     <ul>
-                        <li>
-                            <a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic1.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾尔儿</p>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic2.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾尔儿</p>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic4.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明天津爱明婚礼会馆婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾艾尔艾尔儿尔儿</p>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic5.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾尔儿</p>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic1.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾尔儿</p>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="wedding_del.html"><img src="<%=basePath%>/static/images/hlxa_pic2.png" /></a>
-                            <div class="txt_fr">
-                                <h2><a href="design_del.html">天津爱明婚礼会馆</a></h2>
-                                <p>2016-07-08</p>
-                                <p>地址：艾尔艾尔儿</p>
-                            </div>
-                        </li>
+
                     </ul>
                 </div>
             </div>
-            <script type="text/javascript">
-                jQuery("#hxphb").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"top",autoPlay:true,vis:4,trigger:"click"});
-            </script>
         </div><!-- sj_fr -->
 
     </div><!-- hei380px -->
@@ -536,7 +472,7 @@
             </div><!-- design_list -->
             <div class="sj_fr">
                 <div class="hong_tit xp_titd col_djxp"><h2>新品发布</h2> <a href="#" onclick="toMultimedia()">更多 ></a></div>
-                <div class="xpfb_img"> <a href="javascript:"><img src="<%=basePath%>/static/images/xpfb_pic.png" /></a></div>
+                <div class="xpfb_img"> <a href="<%=basePath%>/uploadFile/toUpload.do"><img src="<%=basePath%>/static/images/xpfb_pic.png" /></a></div>
             </div><!-- sj_fr -->
 
         </div><!-- hei380px -->

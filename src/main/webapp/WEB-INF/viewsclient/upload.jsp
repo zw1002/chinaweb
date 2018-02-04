@@ -54,7 +54,7 @@
          ,url: '/upload/'
          ,auto: false
          ,accept:'file'
-         ,exts:'jpg|png'
+         ,exts:'jpg|png|bmp|jpeg|jif|tiff'
          ,number:'2'
          ,multiple: true
          ,bindAction: '#test9'
@@ -256,7 +256,7 @@
                        <!-- 设计 -->
                        <div style="margin-top: -20px">
                            <div class="hei40px">
-                               提示：作品原件仅支持cdr、psd格式，作品预览图仅支持png、jsp格式。
+                               提示：作品原件仅支持cdr、psd格式，作品预览图仅支持png、jpg、tiff、gif、jpeg格式。
                                <div class="jyzt_txt"><a href="<%=basePath%>/helpd/toHelpd.do">上传帮助中心？</a></div>
                            </div>
                        <form action="filesUpload.do" method="POST" name="xiangmu" id="xiangmu" enctype="multipart/form-data" style="margin-top: 8px" class="layui-form batchinput-form">

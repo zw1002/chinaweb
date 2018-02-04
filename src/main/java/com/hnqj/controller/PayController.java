@@ -162,8 +162,8 @@ public class PayController extends BaseController{
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         //alipayRequest.setReturnUrl("http://117.158.202.179:8090/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
         //alipayRequest.setNotifyUrl("http://117.158.202.179:8090/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
-        alipayRequest.setReturnUrl("http://117.158.202.179:8090/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
-        alipayRequest.setNotifyUrl("http://117.158.202.179:8090/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
+        alipayRequest.setReturnUrl("http://47.104.163.68:3306/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
+        alipayRequest.setNotifyUrl("http://47.104.163.68:3306/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\""+uuid+"\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
