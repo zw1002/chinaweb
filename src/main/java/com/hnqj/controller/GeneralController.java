@@ -447,7 +447,7 @@ public class GeneralController extends BaseController{
         return null;
     }
     /**
-     * 作品搜索接口 /general/seachWorks.do
+     * 短信发送接口 /general/sendSMS.do?mobile=
      * @param request
      * @param response
      * @return
@@ -462,6 +462,10 @@ public class GeneralController extends BaseController{
             ResultUtils.write(response, "000000");
             return  null;
         }
+        //http://sms-cly.cn/smsSend.do?username=clyhxkj&password=f6f5696da081db645bb4ddec96663f70&mobile=17719846143
+    // &content=%E6%82%A8%E7%9A%84%E9%AA%8C%E8%AF%81%E7%A0%81%E6%98%AF321064%E3%80%82%E5%A6%82%E9%9D%9E%E6%9C%AC%E4%BA
+    // %BA%E6%93%8D%E4%BD%9C%EF%BC%8C%E8%AF%B7%E5%BF%BD%E7%95%A5%E6%9C%AC%E7%9F%AD%E4%BF%A1,5%E5%88%86%E9%92%9F%E5
+    // %86%85%E6%9C%89%E6%95%88%E3%80%82%E3%80%90%E7%AD%BE%E5%90%8D%E3%80%91
         PrintWriter out = null;
         BufferedReader in = null;
         try {
@@ -475,14 +479,14 @@ public class GeneralController extends BaseController{
             URL url = new URL("http://www.sms-cly.cn/smsSend.do?");
             StringBuffer sb = new StringBuffer();
             sb.append("username=clyhxkj");
-            sb.append("&password=f6f5696da081db645bb4ddec96663f70");
+            sb.append("&password="+"f6f5696da081db645bb4ddec96663f70");
             sb.append("&mobile=" + mobileStr);
             sb.append("&content=" + URLEncoder.encode(content, "utf-8"));
             //sb.append("&dstime=");
             URLConnection conn = url.openConnection();
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("Charset", "UTF-8");
+            //conn.setRequestProperty("Charset", "UTF-8");
             conn.setDoOutput(true);
             conn.setDoInput(true);
             out = new PrintWriter(conn.getOutputStream());
@@ -492,7 +496,7 @@ public class GeneralController extends BaseController{
 //            URLConnection conn = url.openConnection();
 //            conn.setRequestProperty("accept", "*/*");
 //            conn.setRequestProperty("connection", "Keep-Alive");
-//            conn.connect();
+            conn.connect();
             // 定义BufferedReader输入流来读取URL的响应
             in = new BufferedReader(new InputStreamReader(url.openStream()));
             //读取返回参数

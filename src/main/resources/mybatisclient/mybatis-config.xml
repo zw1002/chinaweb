@@ -13,8 +13,8 @@
         <!-- 设置关联对象加载的形态，此处为按需加载字段(加载字段由SQL指 定)，不会加载关联表的所有字段，以提高性能 -->
         <setting name="aggressiveLazyLoading" value="true"/>
     </settings>
-    
-    <typeAliases>
+
+        <typeAliases>
         <typeAlias type="com.hnqj.core.PageData" alias="pd"/>
         <typeAlias type="com.hnqj.model.Account" alias="Account"/>
         <typeAlias type="com.hnqj.model.Advert" alias="Advert"/>
@@ -52,5 +52,6 @@
         <typeAlias type="com.hnqj.model.PropsImage" alias="PropsImage"/>
         <typeAlias type="com.hnqj.model.Shoppingcart" alias="Shoppingcart"/>
         <typeAlias type="com.hnqj.model.Download" alias="Download"/>
+            <typeAlias type="com.hnqj.model.WorksViews" alias="WorksViews"/>
     </typeAliases>
 </configuration>

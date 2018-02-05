@@ -4,6 +4,7 @@ package com.hnqj.model;
  * 作品浏览足迹
  */
 public class WorksViews {
+
     private String user_id;
     private String user_name;
     private String worksid;
