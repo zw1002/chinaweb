@@ -64,7 +64,7 @@ public class Account {
      */
     private Short usemobile;
 
-    private String extend_1;
+    private int extend_1;
     private String extend_2;
     private String extend_3;
     private String extend_4;
@@ -75,14 +75,14 @@ public class Account {
     /**
      * 获取推荐码
      */
-    public String getExtend_1()
+    public int getExtend_1()
     {
         return extend_1;
     }
     /**
      * 设置推荐码
      */
-    public void setExtend_1(String value)
+    public void setExtend_1(int value)
     {
         this.extend_1 = value;
     }

@@ -9,7 +9,7 @@
     <result column="state" jdbcType="SMALLINT" property="state" />
     <result column="usertype" jdbcType="SMALLINT" property="usertype" />
     <result column="usemobile" jdbcType="SMALLINT" property="usemobile" />
-    <result property="extend_1" jdbcType="VARCHAR" column="extend_1" />
+    <result property="INTEGER" jdbcType="INTEGER" column="extend_1" />
     <result property="extend_2" jdbcType="VARCHAR" column="extend_2" />
     <result property="extend_3" jdbcType="VARCHAR" column="extend_3" />
     <result property="extend_4" jdbcType="VARCHAR" column="extend_4" />
@@ -56,7 +56,7 @@
       #{userid,jdbcType=VARCHAR}, #{state,jdbcType=SMALLINT}, #{usertype,jdbcType=SMALLINT}, 
       #{usemobile,jdbcType=SMALLINT}
     <if test="extend_1 != null and extend_1 != ''">
-      , #{extend_1,jdbcType=VARCHAR}</if>
+      , #{extend_1,jdbcType=INTEGER}</if>
     <if test="extend_2 != null and extend_2 != ''">
       , #{extend_2,jdbcType=VARCHAR}</if>
     <if test="extend_3 != null and extend_3 != ''">
@@ -82,7 +82,7 @@
       usertype = #{usertype,jdbcType=SMALLINT},
       usemobile = #{usemobile,jdbcType=SMALLINT}
     <if test="extend_1 != null and extend_1 != ''">
-      , extend_1= #{extend_1,jdbcType=VARCHAR}</if>
+      , extend_1= #{extend_1,jdbcType=INTEGER}</if>
     <if test="extend_2 != null and extend_2 != ''">
       , extend_2= #{extend_2,jdbcType=VARCHAR}</if>
     <if test="extend_3 != null and extend_3 != ''">
