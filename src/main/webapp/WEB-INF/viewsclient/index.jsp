@@ -121,9 +121,9 @@
         recommendWorks("10");
         recommendWorks("20");
         recommendWorks("30");
+        //排行榜
         transactionRanking();
         transactionRankings();
-        $(".tempWrap").removeClass();
     });
     //交易排行榜
     function transactionRanking(){
@@ -156,14 +156,14 @@
                 count:count
             },
             success: function (data) {
-                var msg = eval("(" + data + ")");
-                var str="";
-                for(var i=0;i<msg.length;i++){
-                    str += '<li> <a href="#"><img src="<%=basePath%>'+msg[i].workurl+'" /></a>'
-                            +'<div class="txt_fr"> <h2><a href="#">'+msg[i].workname+'</a></h2> <p>'+msg[i].uptime+'</p> <p>下载量：'+msg[i].downcount+'</p> </div> </li>';
-                }
-                $("#hunxiu ul").append(str);
-                jQuery("#hxphb").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"top",autoPlay:true,vis:4,trigger:"click"});
+                    var msg = eval("(" + data + ")");
+                    var str="";
+                    for(var i=0;i<msg.length;i++){
+                        str += '<li> <a href="#"><img src="<%=basePath%>'+msg[i].workurl+'" /></a>'
+                                +'<div class="txt_fr"> <h2><a href="#">'+msg[i].workname+'</a></h2> <p>'+msg[i].uptime+'</p> <p>下载量：'+msg[i].downcount+'</p> </div> </li>';
+                    }
+                    $("#hunxiu ul").append(str);
+                    jQuery("#hxphb").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"top",autoPlay:true,vis:4,trigger:"click"});
             }
         });
     }
