@@ -21,11 +21,11 @@
   <sql id="Base_Column_List">
     uid, account, passwd, userid, state, usertype, usemobile,  extend_1,  extend_2,  extend_3,  extend_4,  extend_5,  extend_6,  extend_7,  extend_8
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="getAccountForId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_account
-    where uid = #{uid,jdbcType=VARCHAR}
+    where userid = #{fid,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tb_account

@@ -38,6 +38,11 @@
 			float: right;
 			margin-right: 150px;
 		}
+		.touxiang2 {
+			float: right;
+			margin-right: 150px;
+			margin-top: 200px;
+		}
 		.touxiang img {
 			width: 80px;
 			height:80px;
@@ -255,7 +260,7 @@
 					<div class="jy_nav">
 						<ul class=" clearfix">
 							<li>基本资料</li>
-							<li>账户资料</li>
+							<li>账户信息</li>
 							<li>认证信息</li>
 							<li>密码修改</li>
 							<li>登陆日志</li>
@@ -266,11 +271,22 @@
 						<ul>
 							<form class="layui-form" action="" >
 								<div class="layui-form-item touxiang">
-									<div class="layui-input-block">
-										<img class="layui-upload-img" id="img_logo" src="<%=basePath%>${userinfo.getUsrpicurl()}">
+									<div class="layui-input-block" style="width: 140px;">
+
+										<div class="tx_infor" style="border-bottom: none;">
+											<img  id="img_logo" src="<%=basePath%>${userinfo.getUsrpicurl()}">
+										</div>
+
 									</div>
-									<div  class="layui-input-block" style="margin-top: 110px;margin-left: 0px;">
+									<div  class="layui-input-block" style="margin-top: 110px;margin-left: 28px;">
 										<button type="button" id="editLogo" class="layui-btn layui-btn-normal layui-btn-radius bangding">修改头像</button>
+									</div>
+									<div class="layui-input-block" style="margin-top: 150px;width: 150px;text-align: center;">
+										<img title="二维码可右键选择另存为保存下载" alt="二维码可右键选择另存为保存下载" style="width: 80px;height:80px;" id="img_ercode" src="<%=basePath%>${accinfo.getExtend_2()}">
+										<div  class="layui-input-block" style="margin-top: 5px;">
+											<p>推荐注册码：${accinfo.getExtend_1()}</p>
+											<p>此二维码为推广码，可下载分享推荐他人扫描注册，享受交易提成。</p>
+										</div>
 									</div>
 								</div>
 								<div class="layui-form-item">

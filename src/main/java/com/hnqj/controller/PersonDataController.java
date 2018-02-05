@@ -2,9 +2,11 @@ package com.hnqj.controller;
 import com.hnqj.core.EncodeUtil;
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
+import com.hnqj.model.Account;
 import com.hnqj.model.Dict;
 import com.hnqj.model.Syslog;
 import com.hnqj.model.Userinfo;
+import com.hnqj.services.AccountServices;
 import com.hnqj.services.DictServices;
 import com.hnqj.services.SyslogServices;
 import com.hnqj.services.UserinfoServices;
@@ -36,6 +38,8 @@ public class PersonDataController extends BaseController{
     SyslogServices syslogservices;
     @Autowired
     DictServices dictservices;
+    @Autowired
+    AccountServices accountServices;
     //跳转到个人资料页面
     @RequestMapping(value = "/toPersonData.do")
     public String toPersonData(HttpServletRequest request, Model model){
@@ -46,8 +50,8 @@ try{
         userinfo = userinfoServices.getUserinfoforId(userinfo.getUid());
         request.getSession().setAttribute("userinfo",userinfo);
         //获取银行信息
-        List<Dict> dicts= dictservices.selectFilterDictList("银行组");
-        model.addAttribute("dicts",dicts);
+        Account accinfo = accountServices.getAccountforId(userinfo.getUid());
+        model.addAttribute("accinfo",accinfo);
 }catch (Exception ee){
     return  "index";
 }
