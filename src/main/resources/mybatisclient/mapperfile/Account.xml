@@ -9,7 +9,7 @@
     <result column="state" jdbcType="SMALLINT" property="state" />
     <result column="usertype" jdbcType="SMALLINT" property="usertype" />
     <result column="usemobile" jdbcType="SMALLINT" property="usemobile" />
-    <result property="INTEGER" jdbcType="INTEGER" column="extend_1" />
+    <result property="extend_1" jdbcType="INTEGER" column="extend_1" />
     <result property="extend_2" jdbcType="VARCHAR" column="extend_2" />
     <result property="extend_3" jdbcType="VARCHAR" column="extend_3" />
     <result property="extend_4" jdbcType="VARCHAR" column="extend_4" />
