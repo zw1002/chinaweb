@@ -21,11 +21,12 @@
   </insert>
   <!--首页交易动态查询-->
   <select id="selectDealuidchildList" resultMap="BaseResultMap">
-    select
-    *
+    select *
     from tb_dealuidchild
     order by addtime desc
-    LIMIT 1,10
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
   </select>
   <!--交易排行榜-->
   <select id="getDealuidchildForRankings" parameterType="pd" resultMap="BaseResultMap">

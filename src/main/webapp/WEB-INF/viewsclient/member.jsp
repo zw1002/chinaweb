@@ -33,6 +33,8 @@
      //修改通知的宽度
     $(".tempWrap").css("width","694");
      getUserMerch();
+     getPersonWorksViews();
+     getTransaction();
  });
  //获取会员店铺信息
  function getUserMerch(){
@@ -136,6 +138,57 @@
     //开店
     function applyShop(){
         document.location.href = '<%=basePath%>/applyshop/toApplyShop.do';
+    }
+    //获取个人浏览记录
+    function getPersonWorksViews(){
+        var count=4;
+        $.ajax({
+            url: "<%=basePath%>/personalcenter/getPersonWorksViews.do",
+            type: "POST",
+            data:{
+              count:count
+            },
+            success: function (data) {
+                var msg = eval("(" + data + ")");
+                var str="";
+                for(var i=0;i<msg.length;i++){
+                    if(msg[i].workstype.substring(0,1) == 3) {//婚秀
+                        str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].workid+'"><div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].workurl+'" poster="" controls></video></div>'
+                                +'<div class="botm_txtd"> <p>'+msg[i].workname+'</p> </div> </a></li>';
+                    }else{
+                        str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].workid+'"><img src="<%=basePath%>'+msg[i].worksamllurl+'" />'
+                        +'<div class="botm_txtd"> <p>'+msg[i].workname+'</p> </div> </a></li>';
+                    }
+                }
+                $("#workview").append(str);
+            }
+        });
+    }
+    //交易动态
+    function getTransaction(){
+        $("#transaction").html("");
+        var count=4;
+        $.ajax({
+            url:"<%=basePath%>/index/getTransaction.do",
+            type:"POST",
+            data:{
+              count:count
+            },
+            success:function(data){
+                var msg=eval("("+data+")");
+                var str="";
+                for(var i=0;i<msg.length;i++){
+                    if(msg[i].worktype.substring(0,1) == 3) {//婚秀
+                        str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].worksid+'"><div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].workurl+'" poster="" controls></video></div>'
+                                +'<div class="botm_txtd"> <p>'+msg[i].worksname+'</p> </div> </a></li>';
+                    }else{
+                        str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].worksid+'"><img src="<%=basePath%>'+msg[i].worksamllurl+'" />'
+                                +'<div class="botm_txtd"> <p>'+msg[i].worksname+'</p> </div> </a></li>';
+                    }
+                }
+                $("#transaction").append(str);
+            }
+        });
     }
 </script>
 </head>
@@ -255,27 +308,7 @@
                  <div class="gxq_tit"><h2>我的足迹</h2> <a href="javascript:">更多>> </a></div>
                  
               <div class="design_list da_img mem_imgd">
-              <ul class="clearfix">
-                  <li><a href="design.jsp"><img src="<%=basePath%>/static/images/sjtka_pic3.png" />
-               <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div>  
-               </a></li>
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/sjtka_pic4.png" />
-               <div class="botm_txtd">
-                   <p>我是标题我是标题我是标题我是标题我是标题</p>
-                </div>  
-               </a></li>
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/sjtka_pic5.png" />
-               <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div> 
-               </a></li>
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/sjtka_pic6.png" />
-               <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div> 
-               </a></li>
+              <ul id="workview" class="clearfix">
                
            </ul>
          </div><!-- design_list -->
@@ -286,28 +319,7 @@
                  <div class="gxq_tit"><h2>最新交易动态</h2> <a href="javascript:">更多>> </a></div>
                  
               <div class="design_list da_img mem_imgd">
-              <ul class="clearfix">
-                  <li><a href="design.jsp"><img src="<%=basePath%>/static/images/hlxa_pic1.png" />
-               <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div>  
-               </a></li>
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/hlxa_pic2.png" />
-               <div class="botm_txtd">
-                   <p>我是标题我是标题我是标题我是标题我是标题</p>
-                </div>  
-               </a></li>
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/hlxa_pic3.png" />
-               <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div> 
-               </a></li>
-               <li><a href="design.jsp"><img src="<%=basePath%>/static/images/hlxa_pic4.png" />
-               <div class="botm_txtd">
-                   <p>我是标题</p>
-                </div> 
-               </a></li>
-               
+              <ul id="transaction" class="clearfix">
            </ul>
          </div><!-- design_list -->
              </div>

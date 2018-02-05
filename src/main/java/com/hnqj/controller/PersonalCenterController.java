@@ -3,16 +3,14 @@ package com.hnqj.controller;
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
 import com.hnqj.model.*;
+import com.hnqj.model.Collections;
 import com.hnqj.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.hnqj.core.ResultUtils.toDateJson;
 
@@ -41,6 +39,8 @@ public class PersonalCenterController extends  BaseController{
     WorklabelServices worklabelServices;
     @Autowired
     DownloadServices downloadServices;
+    @Autowired
+    WorksViewsServices worksViewsServices;
     //跳转到开店页面
     @RequestMapping(value = "/toShop.do")
     public String toShop(){
@@ -384,6 +384,43 @@ public class PersonalCenterController extends  BaseController{
             ResultUtils.write(response,dealrecord);
         }catch(Exception e){
             logger.error("getDealrecodByDealuid e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
+    /**
+     * 查询个人浏览记录
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/getPersonWorksViews.do")
+    public String getPersonWorksViews(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getPersonWorksViews");
+        int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
+        int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
+        String userid=getUser().getUid();
+        PageData pageData=new PageData();
+        pageData.put("offset",offset);
+        pageData.put("count",count);
+        pageData.put("userid",userid);
+        try{
+            List<Map<String, Object>> hashMaps=new ArrayList<>();
+            List<WorksViews> worksViewsList=worksViewsServices.getAllWorksViews(pageData);
+            for(WorksViews worksViews:worksViewsList){
+                Works works=worksServices.getWorksforId(worksViews.getWorksid());
+                Map<String, Object> map = new HashMap<>();
+                map.put("workname",works.getWorksname());
+                map.put("workid",works.getUid());
+                map.put("workstype",works.getWorkstype());
+                map.put("worksamllurl",works.getSamllurl());
+                map.put("workurl",works.getWorksurl());
+                hashMaps.add(map);
+            }
+            ResultUtils.write(response,hashMaps);
+        }catch(Exception e){
+            logger.error("getPersonWorksViews e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;

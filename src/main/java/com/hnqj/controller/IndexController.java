@@ -62,8 +62,13 @@ public class IndexController extends BaseController{
     @RequestMapping("/getTransaction.do")
     public String getTransaction(HttpServletRequest request, HttpServletResponse response) {
         logger.info("getTransaction");
+        int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
+        int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
+        PageData pageData=new PageData();
+        pageData.put("offset",offset);
+        pageData.put("count",count);
         try{
-            List<Dealuidchild> dealuidchildList=dealuidchildServices.selectDealuidchildList();
+            List<Dealuidchild> dealuidchildList=dealuidchildServices.selectDealuidchildList(pageData);
             List<Map<String, Object>> hashMaps=new ArrayList<>();
             for(Dealuidchild dealuidchild:dealuidchildList){
                 Map<String, Object> map = new HashMap<>();
@@ -75,6 +80,7 @@ public class IndexController extends BaseController{
                     map.put("worksamllurl","");
                 }
                 map.put("worksname",dealuidchild.getWorksname());
+                map.put("worktype",works.getWorkstype());
                 map.put("worksprice",dealuidchild.getWorksprice());
                 Date date=dealuidchild.getAddtime();
                 long time=(new Date().getTime()-date.getTime())/(1000*60);

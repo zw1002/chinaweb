@@ -11,15 +11,11 @@
     <select id="selectWorksViews" parameterType="pd" resultMap="BaseResultMap">
         select *
         from tb_worksviews
-        where 1=1
-        <if test="user_id != null and user_id != ''">
-            and user_id= #{user_id}
+        where user_id= #{userid}
+        order by viewtime desc
+        <if test="count != 0">
+            LIMIT #{offset},#{count}
         </if>
-
-        <if test="worksid != null and worksid != ''">
-            and worksid= #{worksid}
-        </if>
-        LIMIT #{offset},#{limit}
     </select>
     <delete id="deleteWorksViewsByFid" parameterType="pd">
         delete from tb_worksviews

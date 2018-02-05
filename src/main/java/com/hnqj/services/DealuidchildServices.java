@@ -76,11 +76,11 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return dealuidchildList; 
 	}
-	public List<Dealuidchild> selectDealuidchildList() {
+	public List<Dealuidchild> selectDealuidchildList(PageData pageData) {
 	 logger.info("查询所有Dealuidchild");
 	List<Dealuidchild>	dealuidchildList=null;
 	 try { 
-		dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.selectDealuidchildList",null);
+		dealuidchildList = (List<Dealuidchild>) daoSupport.findForList("DealuidchildMapper.selectDealuidchildList",pageData);
 	 }catch (Exception e){ 
 	 e.printStackTrace(); 
 	 dealuidchildList=null; 

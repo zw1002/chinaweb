@@ -46,11 +46,11 @@ public class DesignController extends BaseController{
         if(getUser()!=null){
             PageData pageData=new PageData();
             pageData.put("user_id",getUser().getUid());
-            pageData.put("user_name",getUser().getFristname());
+            //pageData.put("user_name",getUser().getFristname());
             pageData.put("worksid",uid);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             pageData.put("viewtime",df.format(new Date()));
-            pageData.put("viewip",request.getHeader("x-forwarded-for") == null?request.getRemoteAddr():request.getHeader("x-forwarded-for"));
+            //pageData.put("viewip",request.getHeader("x-forwarded-for") == null?request.getRemoteAddr():request.getHeader("x-forwarded-for"));
             //记录点击次数
             worksServices.UpdateWoksTrcknum(uid);
             //添加浏览记录

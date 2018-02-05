@@ -407,9 +407,13 @@ function getMerchData(){
  //交易动态
  function getTransaction(){
      $("#transaction").html("");
+     var count=10;
      $.ajax({
          url:"<%=basePath%>/index/getTransaction.do",
          type:"POST",
+         data:{
+             count:count
+         },
          success:function(data){
              var msg=eval("("+data+")");
              var str="";
