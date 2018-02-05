@@ -51,7 +51,9 @@ public class DesignController extends BaseController{
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             pageData.put("viewtime",df.format(new Date()));
             pageData.put("viewip",request.getHeader("x-forwarded-for") == null?request.getRemoteAddr():request.getHeader("x-forwarded-for"));
+            //记录点击次数
             worksServices.UpdateWoksTrcknum(uid);
+            //添加浏览记录
             worksviewsServices.addWorksView(pageData);
         }
         return  "design_del";
