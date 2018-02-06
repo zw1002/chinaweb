@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.hnqj.core.CreateCode.createcode;
 import static com.hnqj.core.EncodeUtil.encodeMD5;
 
 /**
@@ -27,6 +30,7 @@ import static com.hnqj.core.EncodeUtil.encodeMD5;
 @Controller
 @RequestMapping("/signin")
 public class SignInController extends BaseController{
+    private String UPLOADDIR = "upload" + File.separator;
     @Autowired
     AccountServices accountServices;
     @Autowired
@@ -61,12 +65,18 @@ public class SignInController extends BaseController{
         String account = request.getParameter("account") == null ? "" : request.getParameter("account");
         String password = request.getParameter("password") == null ? "" : request.getParameter("password");
         String userid=UUID.randomUUID().toString();
+        //生成推荐二维码
+        String content="http://117.158.202.179:8090/chinaweb/general/toRegister.do?uid="+userid;
+        String imgname= String.valueOf(new Date().getTime());
+        String path = request.getSession().getServletContext().getRealPath("/") +"static/uploadImg/"+imgname+".png";
+        createcode(content,path);
         //账户表插入信息
         PageData accountPageData = new PageData();
         accountPageData.put("account",account);
         accountPageData.put("passwd",encodeMD5(password));
         accountPageData.put("uid",UUID.randomUUID().toString());
         accountPageData.put("userid",userid);
+        accountPageData.put("extend_2","/static/uploadImg/"+imgname+".png");
         accountPageData.put("state",1);
         accountPageData.put("usemobile",1);
         accountPageData.put("usertype",0);//关联用户类型 0会员 1后台用户

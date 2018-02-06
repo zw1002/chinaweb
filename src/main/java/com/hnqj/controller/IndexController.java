@@ -62,11 +62,13 @@ public class IndexController extends BaseController{
     @RequestMapping("/getTransaction.do")
     public String getTransaction(HttpServletRequest request, HttpServletResponse response) {
         logger.info("getTransaction");
+        String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
         int offset = request.getParameter("offset") == null ? 0 : Integer.parseInt(request.getParameter("offset"));
         int count = request.getParameter("count") == null ? 0 : Integer.parseInt(request.getParameter("count"));
         PageData pageData=new PageData();
         pageData.put("offset",offset);
         pageData.put("count",count);
+        pageData.put("uid",uid);
         try{
             List<Dealuidchild> dealuidchildList=dealuidchildServices.selectDealuidchildList(pageData);
             List<Map<String, Object>> hashMaps=new ArrayList<>();

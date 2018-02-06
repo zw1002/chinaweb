@@ -6,6 +6,7 @@ import com.hnqj.model.*;
 import com.hnqj.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,8 @@ import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.*;
 
+import static com.hnqj.core.CreateCode.createcode;
+import static com.hnqj.core.EncodeUtil.encodeMD5;
 import static com.hnqj.core.ResultUtils.toDateJson;
 import static sun.java2d.cmm.ColorTransform.In;
 
@@ -45,6 +48,79 @@ public class GeneralController extends BaseController{
     DealuidchildServices dealuidchildServices;
     @Autowired
     UserinfoServices userinfoServices;
+    @Autowired
+    AccountServices accountServices;
+    @Autowired
+    DistributionServices distributionServices;
+    @Autowired
+    ProportionsServices proportionsServices;
+
+    /**
+     * 手机扫码跳转到注册页面
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/toRegister.do")
+    public String toDesignDel(HttpServletRequest request, Model model){
+        String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
+        Account account=accountServices.getAccountForUsreId(uid);
+        model.addAttribute("usercode", account.getExtend_1());//用户推荐码传到页面
+        return  "recommendregister";
+    }
+    /**
+     * 推荐注册提交
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/recommenRegisterSubmit.do")
+    public String recommenRegisterSubmit(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("recommenRegisterSubmit");
+        String fristname = request.getParameter("fristname") == null ? "" : request.getParameter("fristname");
+        String account = request.getParameter("account") == null ? "" : request.getParameter("account");
+        String password = request.getParameter("password") == null ? "" : request.getParameter("password");
+        String usercode = request.getParameter("usercode") == null ? "" : request.getParameter("usercode");
+        String userid=UUID.randomUUID().toString();
+        //生成个人推荐二维码
+        String content="http://117.158.202.179:8090/chinaweb/general/toRegister.do?uid="+userid;
+        String imgname= String.valueOf(new Date().getTime());
+        String path = request.getSession().getServletContext().getRealPath("/") +"static/uploadImg/"+imgname+".png";
+        createcode(content,path);
+        //账户表插入信息
+        PageData accountPageData = new PageData();
+        accountPageData.put("account",account);
+        accountPageData.put("passwd",encodeMD5(password));
+        accountPageData.put("uid",UUID.randomUUID().toString());
+        accountPageData.put("userid",userid);
+        accountPageData.put("extend_2","/static/uploadImg/"+imgname+".png");
+        accountPageData.put("state",1);
+        accountPageData.put("usemobile",1);
+        accountPageData.put("usertype",0);//关联用户类型 0会员 1后台用户
+        //插入会员信息
+        PageData userpageData=new PageData();
+        userpageData.put("uid",userid);
+        userpageData.put("fristname",fristname);
+        userpageData.put("usrpicurl","/static/images/head_img2.png");//用户注册默认头像
+        try{
+            //获取分销级别为二级的分销比例
+            Proportions proportions=proportionsServices.getProportionsForLevel();
+            PageData dispageData=new PageData();
+            dispageData.put("uid",UUID.randomUUID().toString());
+            dispageData.put("parentid",usercode);
+            dispageData.put("userseltid",userid);
+            dispageData.put("distprod",proportions.getDistprod());
+            distributionServices.addDistribution(dispageData);
+            accountServices.addAccount(accountPageData);
+            userinfoServices.addUserinfo(userpageData);
+            ResultUtils.writeSuccess(response);
+        }catch(Exception e){
+            logger.error("recommenRegisterSubmit e="+e.getMessage());
+            ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+
     /**
      * 获取分类接口
      * @param request

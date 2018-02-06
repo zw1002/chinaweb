@@ -49,7 +49,16 @@ public class MerchController extends BaseController{
         pageData.put("dealnums",0);
         pageData.put("remark",merchremark);
         try{
-            merchServices.addMerch(pageData);
+            Merch merch=merchServices.getMerchForUserId(getUser().getUid());
+            if(merch == null){
+                merchServices.addMerch(pageData);
+            }else{
+                PageData pageData1=new PageData();
+                pageData1.put("uid",merch.getUid());
+                pageData1.put("merchname",merchname);
+                pageData1.put("remark",merchremark);
+                merchServices.updateMerchMsg(pageData1);
+            }
             ResultUtils.writeSuccess(response);
         }catch (Exception e){
             logger.error("addMerchData e="+e.getMessage());

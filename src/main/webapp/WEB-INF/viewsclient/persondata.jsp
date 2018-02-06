@@ -77,6 +77,7 @@
 	</style>
 	<script type="text/javascript">
 		$(function(){
+			getUserMerch();
 			$(".nav_new ul li").hover(function(){
 						$(this).find(".nav_list").show();
 						$(this).find("a.ztit").addClass("active");
@@ -196,6 +197,43 @@
 		function applyShop(){
 			document.location.href = '<%=basePath%>/applyshop/toApplyShop.do';
 		}
+		//获取会员店铺信息
+		function getUserMerch(){
+			//会员ID
+			var uid="${userinfo.getUid()}";
+			$.ajax({
+				url: "<%=basePath%>/merch/getMerchData.do",
+				type: "POST",
+				data: {
+					uid: uid
+				},
+				success: function (data) {
+					var msg = eval("(" + data + ")");
+					if(data == "null"){
+						$("#role").html("");
+						res = '<td width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td>';
+						$("#role").append(res);
+						$("#uploadwork").css("display","none");
+					}else{
+						if(msg.statu == 0){
+							$("#role").html("");
+							res = '<td width="50%">店铺信息审核中...</td>';
+							$("#role").append(res);
+							$("#uploadwork").css("display","none");
+						}else if(msg.statu == 1){
+							$("#role").html("");
+							res = '<td width="50%">我是卖家</td>';
+							$("#role").append(res);
+						}else{
+							$("#role").html("");
+							res = '<td width="50%"><a href="#" onclick="applyShop()">申请驳回，完善资料后重新提交!</a></td>';
+							$("#role").append(res);
+							$("#uploadwork").css("display","none");
+						}
+					}
+				}
+			});
+		}
 	</script>
 </head>
 <body>
@@ -237,8 +275,8 @@
 					</div>
 					<div class="mj_tab">
 						<table width="100%">
-							<tr>
-								<td width="50%"> <a href="#" onclick="applyShop()">成为卖家</a></td>
+							<tr id="role">
+
 							</tr>
 						</table>
 					</div>

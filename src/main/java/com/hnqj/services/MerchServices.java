@@ -121,4 +121,17 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return iFlag;
 	}
+
+
+	public int updateMerchMsg(PageData pageData) {
+		logger.info("重新完善开店资料，修改店铺状态");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("MerchMapper.updateMerchMsg",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
 }

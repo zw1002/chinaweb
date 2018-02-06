@@ -130,6 +130,6 @@ public class Distribution {
      * @mbg.generated Tue Jan 09 11:34:57 CST 2018
      */
     public void setDistprod(String distprod) {
-        this.distprod = distprod == null ? null : distprod.trim();
+        this.distprod = distprod;
     }
 }

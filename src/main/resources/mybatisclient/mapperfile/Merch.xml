@@ -72,4 +72,11 @@
     set worksnums = #{worksnums}
     where uid = #{uid}
   </update>
+  <update id="updateMerchMsg" parameterType="pd">
+    update tb_merch
+    set merchname = #{merchname},
+    remark = #{remark},
+    statu = '0'
+    where uid = #{uid}
+  </update>
 </mapper>

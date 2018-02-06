@@ -85,4 +85,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return proportionsList; 
 	}
+
+	public Proportions getProportionsForLevel() {
+		logger.info("通过分销级别查询Proportions");
+		Proportions	proportions=null;
+		try {
+			proportions = (Proportions) daoSupport.findForObject("ProportionsMapper.getProportionsForLevel",null);
+		}catch (Exception e){
+			e.printStackTrace();
+			proportions=null;
+		}
+		return proportions;
+	}
 }

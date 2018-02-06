@@ -110,10 +110,11 @@
                      res = '<td width="50%">我是卖家</td>';
                      $("#role").append(res);
                  }else{
+                     $("#merchname").val(msg.merchname);
+                     $("#merchremark").val(msg.remark);
                      $("#role").html("");
-                     res = '<td width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td>';
+                     res = '<td width="50%"><a href="#" onclick="applyShop()">申请驳回，完善资料!</a></td>';
                      $("#role").append(res);
-                     $("#uploadwork").css("display","none");
                  }
              }
          }

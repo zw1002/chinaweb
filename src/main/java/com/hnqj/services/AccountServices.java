@@ -97,4 +97,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return account;
 	}
+
+	public Account getAccountForUsreId(String uid) {
+		logger.info("通过用户ID查询Account");
+		Account	account=null;
+		try {
+			account = (Account) daoSupport.findForObject("AccountMapper.getAccountForUsreId",uid);
+		}catch (Exception e){
+			e.printStackTrace();
+			account=null;
+		}
+		return account;
+	}
 }

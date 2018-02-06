@@ -231,7 +231,7 @@
                      $("#role").append(res);
                  }else{
                      $("#role").html("");
-                     res = '<td width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td>';
+                     res = '<td width="50%"><a href="#" onclick="applyShop()">申请驳回，完善资料后重新提交!</a></td>';
                      $("#role").append(res);
                      $("#uploadwork").css("display","none");
                  }
