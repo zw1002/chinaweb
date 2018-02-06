@@ -23,16 +23,15 @@
     <script src="<%=basePath%>/static/js/anime.min.js"></script>
     <script src="<%=basePath%>/static/js/main.js"></script>
     <script type="text/javascript">
-
-        var queryPara={data:"<%=seachTxt%>",label:"<%=seachTxt%>",worktype:'',workprice:0,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
-        $(document).ready(function () {
-            //隐藏注册/按钮登录    显示个人中心/个人空间
-            var firstname="${userinfo.getFristname()}";
-            if(firstname != ""){
-                $("#beferLogin").css("display","none");
-                $("#backLogin").css("display","block");
-            }
-
+        $(function(){
+//            $(".nav_new ul li").hover(function(){
+//                    $(this).find(".nav_list").show();
+//                    $(this).find("a.ztit").addClass("active");
+//                },function(){
+//                    $(this).find("a.ztit").removeClass("active");
+//                    $(this).find(".nav_list").hide();
+//                }
+//            );
             $('.ss_btn').click(function () {
                 var seachTxt =$('.inp_txt').val();
                 if(seachTxt==""){
@@ -43,6 +42,17 @@
                 queryPara.label=seachTxt;
                 outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
             });
+        });
+        var queryPara={data:"<%=seachTxt%>",label:"<%=seachTxt%>",worktype:'',workprice:0,downloadcount:0,newup:0,collectioncount:0,offset:0,count:20};
+        $(document).ready(function () {
+            //隐藏注册/按钮登录    显示个人中心/个人空间
+            var firstname="${userinfo.getFristname()}";
+            if(firstname != ""){
+                $("#beferLogin").css("display","none");
+                $("#backLogin").css("display","block");
+            }
+
+
             $("#sortDiv>a").click(function(){
                 $(this).parents("div").find("a").removeClass("on");
                 $(this).addClass("on");
@@ -58,9 +68,58 @@
                     queryPara.collectioncount=1;
                 outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
             });
-            outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
+
+            $('.px_box').hide();
+
+            if("${jysort}"!=""){
+                var resultVal =getAjaxData("<%=basePath%>/general/transactionRanking.do",{count:50},false);
+                outputSortInfo(resultVal)
+
+            } else if("${hxsort}"!="")
+            {
+                var resultVal =getAjaxData("<%=basePath%>/general/transactionRankings.do",{count:50},false);
+                outputSortInfo(resultVal)
+            } else if("${zjsort}"!="")
+            {
+                var resultVal =getAjaxData("<%=basePath%>/personalcenter/getPersonWorksViews.do",{count:50},false);
+                outputSortInfo(resultVal)
+            }
+            else if("${myjysort}"!="")
+            {
+                var resultVal =getAjaxData("<%=basePath%>/index/getTransaction.do",{count:50,uid:'${userinfo.getUid()}'},false);
+                outputSortInfo(resultVal);
+            }else  if("${seachTxt}" !=""){
+                $('.px_box').show();
+                outPutQueryResult( getAjaxData('<%=basePath%>/general/seachWorks.do',queryPara,true),0);
+            }
+
 
         });
+        function outputSortInfo(resultData) {
+            if(resultData!=null){
+                var gridItems="<div class=\"grid__sizer\"></div>";
+                $('.grid,.grid--type-a').html('');
+                if(resultData.length==0)
+                {
+                    $('.grid,.grid--type-a').html('未加载到数据'); $('.grid,.grid--type-a').css('height','0px');
+                    return;
+                }
+                for(var i=0;i<resultData.length;i++){
+                    gridItems+="\t<div class=\"grid__item\">\n" +
+                        "\t\t\t\t\t\t<a class=\"grid__link\" href=\"<%=basePath%>/design/toDesignDel.do?uid="+resultData[i].workid+"\" ><img class=\"grid__img\" src=\"<%=basePath%>"+resultData[i].worksamllurl+"\" alt=\"\" /></a>\n" +
+                        "                        <div class=\"list_txt_box\">\n" +
+                        "                          <h2>"+resultData[i].workname+"</h2>\n" +
+                        "                          <p><a href=\"javascript:\" class=\"zan\">"+resultData[i].ticknums+"</a> | <a href=\"javascript:\" class=\"down\">"+resultData[i].downcount+"</a></p>\n" +
+                        "                        </div>\n" +
+                        "                      \n" +
+                        "\t\t\t\t\t</div>";
+                }
+                $('.grid,.grid--type-a').html(gridItems);
+                gridInit();
+            }
+            else {$('.grid,.grid--type-a').html('未加载到数据');
+                $('.grid,.grid--type-a').css('height','0px');}
+        }
         function getAjaxData(url,para,isAsync) {
             var rtnVal=null;
             $.ajax({

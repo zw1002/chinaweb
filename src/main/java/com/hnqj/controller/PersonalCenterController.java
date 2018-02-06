@@ -416,6 +416,8 @@ public class PersonalCenterController extends  BaseController{
                 map.put("workstype",works.getWorkstype());
                 map.put("worksamllurl",works.getSamllurl());
                 map.put("workurl",works.getWorksurl());
+                map.put("downcount",works.getDowncount());
+                map.put("ticknums",works.getTicknums().toString());
                 hashMaps.add(map);
             }
             ResultUtils.write(response,hashMaps);

@@ -19,8 +19,16 @@ public class SeachsController extends BaseController{
     //跳转到搜索
     @RequestMapping(value = "/toSeachs.do")
     public String toSeachs(HttpServletRequest request, Model model){
-        String seachTxt = request.getParameter("seachTxt") == null ? "" : request.getParameter("seachTxt");
+        String seachTxt = request.getParameter("seachTxt") == null ? "  " : request.getParameter("seachTxt");
+        String jysort = request.getParameter("jysort") == null ? "" : request.getParameter("jysort");
+        String hxsort = request.getParameter("hxsort") == null ? "" : request.getParameter("hxsort");
+        String zjsort = request.getParameter("zjsort") == null ? "" : request.getParameter("zjsort");
+        String myjysort = request.getParameter("myjysort") == null ? "" : request.getParameter("myjysort");
         model.addAttribute("seachTxt", seachTxt);//搜索内容
+        model.addAttribute("jysort", jysort);//搜索内容
+        model.addAttribute("hxsort", hxsort);//搜索内容
+        model.addAttribute("zjsort", zjsort);//搜索内容
+        model.addAttribute("myjysort", myjysort);//搜索内容
         return  "seachs";
     }
 

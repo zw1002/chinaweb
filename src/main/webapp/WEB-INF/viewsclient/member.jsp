@@ -181,11 +181,11 @@
                 var str="";
                 for(var i=0;i<msg.length;i++){
                     if(msg[i].worktype.substring(0,1) == 3) {//婚秀
-                        str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].worksid+'"><div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].workurl+'" poster="" controls></video></div>'
-                                +'<div class="botm_txtd"> <p>'+msg[i].worksname+'</p> </div> </a></li>';
+                        str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].workid+'"><div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].workurl+'" poster="" controls></video></div>'
+                                +'<div class="botm_txtd"> <p>'+msg[i].workname+'</p> </div> </a></li>';
                     }else{
-                        str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].worksid+'"><img src="<%=basePath%>'+msg[i].worksamllurl+'" />'
-                                +'<div class="botm_txtd"> <p>'+msg[i].worksname+'</p> </div> </a></li>';
+                        str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].workid+'"><img src="<%=basePath%>'+msg[i].worksamllurl+'" />'
+                                +'<div class="botm_txtd"> <p>'+msg[i].workname+'</p> </div> </a></li>';
                     }
                 }
                 $("#transaction").append(str);
@@ -307,7 +307,7 @@
              </div>
              -->
              <div class="mem_ty_box">
-                 <div class="gxq_tit"><h2>我的足迹</h2> <a href="javascript:">更多>> </a></div>
+                 <div class="gxq_tit"><h2>我的足迹</h2> <a href="<%=basePath%>/seachs/toSeachs.do?zjsort=zj">更多>> </a></div>
                  
               <div class="design_list da_img mem_imgd">
               <ul id="workview" class="clearfix">
@@ -318,7 +318,7 @@
              </div>
              
              <div class="mem_ty_box">
-                 <div class="gxq_tit"><h2>最新交易动态</h2> <a href="javascript:">更多>> </a></div>
+                 <div class="gxq_tit"><h2>最新交易动态</h2> <a href="<%=basePath%>/seachs/toSeachs.do?myjysort=myjy">更多>> </a></div>
                  
               <div class="design_list da_img mem_imgd">
               <ul id="transaction" class="clearfix">

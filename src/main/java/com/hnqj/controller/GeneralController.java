@@ -403,11 +403,13 @@ public class GeneralController extends BaseController{
                 for(Dealuidchild dealuidchild:dealuidchildList){
                     Map<String, Object> map = new HashMap<>();
                     Works works=worksServices.getWorksforId(dealuidchild.getWorksid());
+                    map.put("workid",dealuidchild.getWorksid());
                     map.put("workname",works.getWorksname());
-                    map.put("samllerurl",works.getSamllurl());
+                    map.put("worksamllurl",works.getSamllurl());
                     map.put("workurl",works.getWorksurl());
                     map.put("uptime",works.getUptime());
                     map.put("downcount",works.getDowncount());
+                    map.put("ticknums",works.getTicknums().toString());
                     hashMaps.add(map);
                 }
                 ResultUtils.write(response,toDateJson(hashMaps));
@@ -437,11 +439,13 @@ public class GeneralController extends BaseController{
                 for(Dealuidchild dealuidchild:dealuidchildList){
                     Map<String, Object> map = new HashMap<>();
                     Works works=worksServices.getWorksforId(dealuidchild.getWorksid());
+                    map.put("workid",dealuidchild.getWorksid());
                     map.put("workname",works.getWorksname());
-                    map.put("samllerurl",works.getSamllurl());
+                    map.put("worksamllurl",works.getSamllurl());
                     map.put("workurl",works.getWorksurl());
                     map.put("uptime",works.getUptime());
                     map.put("downcount",works.getDowncount());
+                    map.put("ticknums",works.getTicknums().toString());
                     hashMaps.add(map);
                 }
                 ResultUtils.write(response,toDateJson(hashMaps));

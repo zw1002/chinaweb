@@ -74,16 +74,18 @@ public class IndexController extends BaseController{
             List<Map<String, Object>> hashMaps=new ArrayList<>();
             for(Dealuidchild dealuidchild:dealuidchildList){
                 Map<String, Object> map = new HashMap<>();
-                map.put("worksid",dealuidchild.getWorksid());
+                map.put("workid",dealuidchild.getWorksid());
                 Works works=worksServices.getWorksforId(dealuidchild.getWorksid());
                 if(works != null){
                     map.put("worksamllurl",works.getSamllurl());
                 }else{
                     map.put("worksamllurl","");
                 }
-                map.put("worksname",dealuidchild.getWorksname());
+                map.put("workname",dealuidchild.getWorksname());
                 map.put("worktype",works.getWorkstype());
                 map.put("worksprice",dealuidchild.getWorksprice());
+                map.put("downcount",works.getDowncount());
+                map.put("ticknums",works.getTicknums().toString());
                 Date date=dealuidchild.getAddtime();
                 long time=(new Date().getTime()-date.getTime())/(1000*60);
                 if(time > 60){

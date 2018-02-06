@@ -428,13 +428,6 @@
 											<select id="sel_bank" name="sel_bank" style="width: 150px;">
 											<option value="">请选择银行</option>
 
-											    <%--<option value="中国工商银行" selected="">中国工商银行</option>--%>
-												<%--<option value="中国建设银行">中国建设银行</option>--%>
-												<%--<option value="中国农业银行">中国农业银行</option>--%>
-												<%--<option value="中国人民银行">中国人民银行</option>--%>
-												<%--<option value="广东发展银行">广东发展银行</option>--%>
-												<%--<option value="兴业银行">兴业银行</option>--%>
-												<%--<option value="浦东发展银行">浦东发展银行</option>--%>
 											</select>
 										</div>
 										<input type="text" name="bd_address" hiddenbankAddr="${userinfo.getBankaddr()}" id="bd_address" lay-verify="title" autocomplete="off"

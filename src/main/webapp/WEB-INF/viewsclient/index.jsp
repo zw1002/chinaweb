@@ -138,7 +138,7 @@
                 var msg = eval("(" + data + ")");
                 var str="";
                 for(var i=0;i<msg.length;i++){
-                    str += '<li> <a href="#"><img style="width:70px" src="<%=basePath%>'+msg[i].samllerurl+'" /></a>'
+                    str += '<li> <a href="#"><img style="width:70px" src="<%=basePath%>'+msg[i].worksamllurl+'" /></a>'
                             +'<div class="txt_fr"> <h2><a href="#">'+msg[i].workname+'</a></h2> <p>'+msg[i].uptime+'</p> <p>下载量：'+msg[i].downcount+'</p> </div> </li>';
                 }
                 $("#jiaoyi ul").append(str);
@@ -159,7 +159,7 @@
                     var msg = eval("(" + data + ")");
                     var str="";
                     for(var i=0;i<msg.length;i++){
-                        str += '<li> <a href="#"><img src="<%=basePath%>'+msg[i].workurl+'" /></a>'
+                        str += '<li> <a href="#"><img src="<%=basePath%>'+msg[i].worksamllurl+'" /></a>'
                                 +'<div class="txt_fr"> <h2><a href="#">'+msg[i].workname+'</a></h2> <p>'+msg[i].uptime+'</p> <p>下载量：'+msg[i].downcount+'</p> </div> </li>';
                     }
                     $("#hunxiu ul").append(str);
@@ -177,7 +177,7 @@
                 var msg=eval("("+data+")");
                 var str="";
                 for(var i=0;i<msg.length;i++){
-                    str += "<li><a id='"+msg[i].worksid+"' href='<%=basePath%>/design/toDesignDel.do?uid="+msg[i].worksid+"' target='_blank'>"+msg[i].worksname+"<span class='col_f00'>￥"+msg[i].worksprice+"</span>"+msg[i].time+"</a></li>";
+                    str += "<li><a id='"+msg[i].workid+"' href='<%=basePath%>/design/toDesignDel.do?uid="+msg[i].workid+"' target='_blank'>"+msg[i].workname+"<span class='col_f00'>￥"+msg[i].worksprice+"</span>"+msg[i].time+"</a></li>";
                 }
                 $(".infoList").append(str);
                 jQuery(".txtMarquee-left").slide({mainCell:".bd ul",autoPlay:true,effect:"leftMarquee",vis:4,interTime:50});
@@ -302,7 +302,7 @@
             </ul>
         </div><!-- design_list -->
         <div class="sj_fr">
-            <div class="hong_tit"><h2>交易排行榜</h2> <a href="#">更多 ></a></div>
+            <div class="hong_tit"><h2>交易排行榜</h2> <a href="<%=basePath%>/seachs/toSeachs.do?jysort=jy">更多 ></a></div>
             <div class="phb_con" id="jyphb">
                 <div class="hd">
                     <ul></ul>
@@ -442,7 +442,8 @@
             </ul>
         </div><!-- design_list -->
         <div class="sj_fr">
-            <div class="hong_tit col_hx"><h2>婚秀排行榜</h2> <a href="#" onclick="toWedding()">更多 ></a></div>
+            <div class="hong_tit col_hx"><h2>婚秀排行榜</h2> <a href="<%=basePath%>/seachs/toSeachs.do?hxsort=hx" >更多 ></a></div>
+            <%--onclick="toWedding()"--%>
 
             <div class="phb_con" id="hxphb">
                 <div class="hd">
