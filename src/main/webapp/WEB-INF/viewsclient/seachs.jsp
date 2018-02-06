@@ -33,7 +33,7 @@
 //                }
 //            );
             $('.ss_btn').click(function () {
-                var seachTxt =$('.inp_txt').val();
+                var seachTxt =$('.inp_txt').val().trim();
                 if(seachTxt==""){
                     alert("请输入查询内容！！！");
                     return;
