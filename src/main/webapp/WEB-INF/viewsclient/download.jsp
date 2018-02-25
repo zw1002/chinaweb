@@ -14,7 +14,10 @@
 <script src="<%=basePath%>/static/js/laypage.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
-<script type="text/javascript">
+    <!--消息提醒-->
+    <script src="<%=basePath%>/static/js/jquery.noty.packaged.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>/static/js/showinfo.js"></script>
+    <script type="text/javascript">
  $(function(){
 	  $(".nav_new ul li").hover(function(){
 		     $(this).find(".nav_list").show();
@@ -33,7 +36,7 @@
  $(document).ready(function () {
      getUserMerch();
  });
- //初始化收藏数据
+ //初始化我的下载数据
  function getDownloadData(offset,count){
      $.ajax({
          url: "<%=basePath%>/personalcenter/getDownloadWorksByUserid.do",
@@ -46,12 +49,39 @@
              var msg = eval("(" + data + ")");
              var str="";
              for(var i=0;i<msg.length;i++){
-                 str += '<tr id="'+msg[i].workid+'"> <td width="120"><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].workid+'"><img src="<%=basePath%>'+msg[i].smallurl+'"></a></td>'
-                 +'<td><h2>'+msg[i].workname+'</h2> <p>[价格] ￥'+msg[i].price+'</p>'
-                 +'<p>[店铺名称] '+msg[i].merchname+'</p><p>[购买日期] '+msg[i].paydate+'</p>'
-                 +'</td><td width="50"><a href="<%=basePath%>/uploadFile/downloadFile.do?workid='+msg[i].workid+'">下载</a></td></tr>';
+                 str += '<tr> <td width="120"><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].workid+'"><img src="<%=basePath%>'+msg[i].smallurl+'"></a></td>'
+                 +'<td><h2>'+msg[i].workname+'</h2><p>[价格] ￥'+msg[i].price+'</p>'
+                 +'<p>[店铺名称] '+msg[i].merchname+'</p><p>[购买日期] '+msg[i].paydate+'</p></td>'
+                 +'<td><a id="'+msg[i].workid+'s" href="#" onclick=toEvaluate("'+msg[i].workid+'")>评价</a></td><td width="50"><a href="<%=basePath%>/uploadFile/downloadFile.do?workid='+msg[i].workid+'">下载</a></td></tr>'
+                 +'<tr id="'+msg[i].workid+'"></tr>';
              }
              $(".collect_tab table").append(str);
+         }
+     });
+ }
+ //添加评价
+ function toEvaluate(workid){
+     $("#"+workid+"s").css("display","none");
+     $("#"+workid).append('<td colspan="3"><textarea id="'+workid+'ss" style="height:50px;width:100%;border:1px solid lightgray" class="layui-input"></textarea>'
+                 +'</td><td><button onclick=subEvaluate("'+workid+'")>提交</button></td>');
+ }
+ //提交评价
+ function subEvaluate(workid){
+    var content=$("#"+workid+"ss").val();
+     $.ajax({
+         url: "<%=basePath%>/member/addLeaveMsg.do",
+         type: "POST",
+         data: {
+             workid: workid,
+             content:content
+         },
+         success: function (data) {
+             if(data!=="failed"){
+                 successInfo("评论成功!");
+                 $("#"+workid+"ss").val("");
+             }else{
+                 errorInfo("评论失败");
+             }
          }
      });
  }
@@ -156,7 +186,7 @@
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
-         <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
+         <a href="#" onclick="toIndex()"  class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="nav_new fl">
              <ul class="clearfix">
                  <li><a href="#" onclick="toIndex()" class="ztit">网站首页</a></li>
@@ -215,6 +245,7 @@
                <div class="coll_con">
                   <div class="collect_tab">
                      <table width="100%">
+
                      </table>
                   </div>
                    </div><!-- coll_con -->
@@ -223,7 +254,7 @@
 
 <script>
     var page=0;
-    var groups=9;
+    var groups=6;
     $.ajax({
         url: "<%=basePath%>/personalcenter/getDownloadWorksByUserid.do",
         type: "POST",

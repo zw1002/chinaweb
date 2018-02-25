@@ -15,6 +15,7 @@
     <script type="text/javascript" src="<%=basePath%>/static/js/common.js"></script>
     <script type="text/javascript" src="<%=basePath%>/static/js/quick_links.js"></script>
     <link href="<%=basePath%>/static/layui/css/layui.css" rel="stylesheet" type="text/css"/>
+    <script src="<%=basePath%>/static/layui/layui.js"></script>
     <link href="<%=basePath%>/static/css/base.css" rel="stylesheet" type="text/css" />
     <style>
         .layui-icon{
@@ -199,19 +200,19 @@
                 var str="";
                 for(var i=0;i<msg.length;i++){
                     if(type == "00"){
-                        str = "<li><a href='#' onclick='toDesignDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                        str = "<li><a href='<%=basePath%>/design/toDesignDel.do?uid="+msg[i].uid+"'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
                                 +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
                         $("#design").append(str);
                     }else if(type == "10"){
-                        str = "<li><a href='#' onclick='toDesignDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                        str = "<li><a href='<%=basePath%>/design/toDesignDel.do?uid="+msg[i].uid+"'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
                                 +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
                         $("#photography").append(str);
                     }else if(type == "30"){
-                        str = "<li><a href='#' onclick='toDesignDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                        str = "<li><a href='<%=basePath%>/design/toDesignDel.do?uid="+msg[i].uid+"'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
                                 +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
                         $("#wedding").append(str);
                     }else{
-                        str = "<li><a href='#' onclick='toDesignDel("+msg[i].uid+")'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
+                        str = "<li><a href='<%=basePath%>/design/toDesignDel.do?uid="+msg[i].uid+"'><img src='<%=basePath%>"+msg[i].samllurl+"'/>"
                                 +"<div class='botm_txtd'><p>"+msg[i].worksname+"</p> </div> </a></li>";
                         $("#multimedia").append(str);
                     }

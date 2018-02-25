@@ -9,7 +9,7 @@
         <result property="viewip" jdbcType="VARCHAR" column="viewip" />
     </resultMap>
     <select id="selectWorksViews" parameterType="pd" resultMap="BaseResultMap">
-        select *
+        select DISTINCT worksid
         from tb_worksviews
         where user_id= #{userid}
         order by viewtime desc

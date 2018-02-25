@@ -33,4 +33,11 @@
       distprod = #{distprod,jdbcType=VARCHAR}
     where uid = #{uid,jdbcType=VARCHAR}
   </update>
+  <!--获取当前登录用户的推荐用户信息-->
+  <select id="getDistributionByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_distribution
+    where userseltid = #{userseltid,jdbcType=VARCHAR}
+  </select>
 </mapper>

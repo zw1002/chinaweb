@@ -44,19 +44,18 @@
          ,auto: false
          ,accept:'file'
          ,exts:'mp4|cdr|psd'
-         ,number:'2'
-         ,multiple: true
+         ,number:'1'
+         //,multiple: true
          ,bindAction: '#test'
      });
      //选完文件后不自动上传
      upload.render({
          elem: '#test8'
-         ,url: '/upload/'
          ,auto: false
          ,accept:'file'
          ,exts:'jpg|png|bmp|jpeg|jif|tiff'
-         ,number:'2'
-         ,multiple: true
+         ,number:'1'
+         //,multiple: true
          ,bindAction: '#test9'
          ,before: function(obj){
              $('#demo2').html("");
@@ -180,19 +179,70 @@
                      $("#role").html("");
                      res = '<td width="50%">我是卖家</td>';
                      $("#role").append(res);
-                 }else{
+                 }else if(msg.statu == 2){
                      $("#role").html("");
                      res = '<td width="50%"><a href="#" onclick="applyShop()">成为卖家</a></td>';
+                     $("#role").append(res);
+                 }else{
+                     $("#role").html("");
+                     res = '<td width="50%"><a href="#">店铺已经冻结!</a></td>';
                      $("#role").append(res);
                  }
              }
          }
      });
  }
+    //校验表单
+    function check(){
+        var layer = layui.layer;
+        if($('#workstype').val()==""){
+            layer.msg("请选择作品类型!",{icon: 5,time:2000});
+            $(".layui-layer").css("top","200px");
+            return false;
+        }
+        if($('#worklabel').val()==""){
+            layer.msg("请输入作品标签!",{icon: 5,time:2000});
+            $(".layui-layer").css("top","200px");
+            return false;
+        }
+        if($('#price').val()==""){
+            layer.msg("请输入作品价格!",{icon: 5,time:2000});
+            $(".layui-layer").css("top","200px");
+            return false;
+        }
+        if($('#workremark').val()==""){
+            layer.msg("请输入作品简介!",{icon: 5,time:2000});
+            $(".layui-layer").css("top","200px");
+            return false;
+        }
+        var file=$(".layui-inline").eq(0).text();
+        if(file == ""){
+            layer.msg("请选择作品原件!",{icon: 5,time:2000});
+            $(".layui-layer").css("top","200px");
+            return false;
+        }else if(file.substr(file.indexOf("."),file.length) != ".cdr" && file.substr(file.indexOf("."),file.length) != ".psd"){
+            layer.msg("请选择正确格式的作品原件!",{icon: 5,time:2000});
+            $(".layui-layer").css("top","200px");
+            return false;
+        }
+        var files=$(".layui-inline").eq(1).text();
+        if(files == ""){
+            layer.msg("请选择作品缩略图!",{icon: 5,time:2000});
+            $(".layui-layer").css("top","200px");
+            return false;
+        }else if(files.substr(files.indexOf("."),files.length) != ".png" && files.substr(files.indexOf("."),files.length) != ".jpg"
+                && files.substr(files.indexOf("."),files.length) != ".tiff" && files.substr(files.indexOf("."),files.length) != ".gif"
+                && files.substr(files.indexOf("."),files.length) != ".jpeg"){
+            layer.msg("请选择正确格式的作品缩略图!",{icon: 5,time:2000});
+            $(".layui-layer").css("top","200px");
+            return false;
+        }
+    }
 </script>
 </head>
 <body>
-<input type="hidden" id="saveFile" name="saveFile" class="layui-input">
+<p id="upImgName"></p>
+<input type="hidden" id="upFileUrl" name="upFileUrl" class="layui-input">
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
@@ -259,7 +309,7 @@
                                提示：作品原件仅支持cdr、psd格式，作品预览图仅支持png、jpg、tiff、gif、jpeg格式。
                                <div class="jyzt_txt"><a href="<%=basePath%>/helpd/toHelpd.do">上传帮助中心？</a></div>
                            </div>
-                       <form action="filesUpload.do" method="POST" name="xiangmu" id="xiangmu" enctype="multipart/form-data" style="margin-top: 8px" class="layui-form batchinput-form">
+                       <form onsubmit="return check()" action="filesUpload.do" method="POST" name="xiangmu" id="xiangmu" enctype="multipart/form-data" style="margin-top: 8px" class="layui-form batchinput-form">
                            <div class="layui-form-item">
                                <label class="layui-form-label">作品类型：</label>
                                <div class="layui-input-block">

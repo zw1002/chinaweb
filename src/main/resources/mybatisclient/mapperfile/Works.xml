@@ -182,7 +182,7 @@
       AND worksname LIKE CONCAT(CONCAT('%', #{data, jdbcType=VARCHAR}),'%')
     </if>
     <if test="labels != null and labels != ''">
-       AND
+       OR
       <foreach collection="labels" index="index" item="label" open=" (" separator=" OR " close=")">
         (worklabel LIKE CONCAT('%', CONCAT(#{label}, '%')))
       </foreach>

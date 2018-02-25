@@ -87,10 +87,21 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 
 	public Proportions getProportionsForLevel() {
-		logger.info("通过分销级别查询Proportions");
+		logger.info("查询二级级别的Proportions");
 		Proportions	proportions=null;
 		try {
 			proportions = (Proportions) daoSupport.findForObject("ProportionsMapper.getProportionsForLevel",null);
+		}catch (Exception e){
+			e.printStackTrace();
+			proportions=null;
+		}
+		return proportions;
+	}
+	public Proportions getProportionsForLevels() {
+		logger.info("查询三级级别的Proportions");
+		Proportions	proportions=null;
+		try {
+			proportions = (Proportions) daoSupport.findForObject("ProportionsMapper.getProportionsForLevels",null);
 		}catch (Exception e){
 			e.printStackTrace();
 			proportions=null;

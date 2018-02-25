@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -42,7 +43,12 @@ public class PayController extends BaseController{
     DealuidchildServices dealuidchildServices;
     @Autowired
     DownloadServices downloadServices;
-
+    @Autowired
+    DistributionServices distributionServices;
+    @Autowired
+    DistrirecordServices distrirecordServices;
+    @Autowired
+    ProportionsServices proportionsServices;
     //跳转到购物车页面
     @RequestMapping(value = "/toCar.do")
     public String toCar(){
@@ -160,10 +166,10 @@ public class PayController extends BaseController{
                 AlipayUtil.ALIPAY_PUBLIC_KEY, AlipayConstants.SIGN_TYPE_RSA2);
         //AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE); //获得初始化的AlipayClient
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        //alipayRequest.setReturnUrl("http://117.158.202.179:8090/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
-        //alipayRequest.setNotifyUrl("http://117.158.202.179:8090/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
-        alipayRequest.setReturnUrl("http://47.104.163.68:3306/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
-        alipayRequest.setNotifyUrl("http://47.104.163.68:3306/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
+        alipayRequest.setReturnUrl("http://117.158.202.179:8090/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
+        alipayRequest.setNotifyUrl("http://117.158.202.179:8090/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
+        //alipayRequest.setReturnUrl("http://47.104.163.68:3306/chinaweb/pay/toDownload.do?userid="+getUser().getUid());//付款成功后跳转页面
+        //alipayRequest.setNotifyUrl("http://47.104.163.68:3306/chinaweb/pay/orderPayNotify.do");//在公共参数中设置回跳和通知地址
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\""+uuid+"\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
@@ -265,6 +271,41 @@ public class PayController extends BaseController{
                                     carpageData.put("userid",dealrecord.getPayuserid());
                                     carpageData.put("workid",workids[i]);
                                     shoppingcartServices.delShoppingcartByUseridAndWorkid(carpageData);
+                                    //添加分销记录
+                                    Distribution distribution=distributionServices.getDistributionByUserId(merch.getUserinfouid());
+                                    if(distribution != null){
+                                        PageData dispageData=new PageData();
+                                        dispageData.put("uid",UUID.randomUUID().toString());
+                                        dispageData.put("worksid",workids[i]);
+                                        dispageData.put("level","二级");
+                                        dispageData.put("userid",distribution.getUserseltid());
+                                        Proportions proportions=proportionsServices.getProportionsForLevel();
+                                        dispageData.put("proportion",proportions.getDistprod());
+                                        //float a= Float.parseFloat(proportions.getDistprod());
+                                        //double f1 = new BigDecimal(a/100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                                        //double f2 =f1 * Double.parseDouble(String.valueOf(works.getPrice()));
+                                        //dispageData.put("price",f2);
+                                        dispageData.put("addtime",new Date());
+                                        dispageData.put("referee",distribution.getParentid());
+                                        distrirecordServices.addDistrirecord(dispageData);//添加二级分销记录
+                                        Distribution distribution1=distributionServices.getDistributionByUserId(distribution.getParentid());
+                                        if(distribution1 != null){
+                                            PageData dispageData1=new PageData();
+                                            dispageData1.put("uid",UUID.randomUUID().toString());
+                                            dispageData1.put("worksid",workids[i]);
+                                            dispageData1.put("level","三级");
+                                            dispageData1.put("userid",distribution1.getUserseltid());
+                                            Proportions proportions1=proportionsServices.getProportionsForLevels();
+                                            dispageData.put("proportion",proportions1.getDistprod());
+                                            //float b= Float.parseFloat(proportions.getDistprod());
+                                            //double f3 = new BigDecimal(b/100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                                            //double f4 =f3 * Double.parseDouble(String.valueOf(works.getPrice()));
+                                            //dispageData1.put("price",f4);
+                                            dispageData1.put("addtime",new Date());
+                                            dispageData1.put("referee",distribution1.getParentid());
+                                            distrirecordServices.addDistrirecord(dispageData);//添加三级分销记录
+                                        }
+                                    }
                                 }
                                 ResultUtils.write(response,"success");
                             }

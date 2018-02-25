@@ -97,4 +97,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return iFlag;
 	}
+
+	public List<Leavemsg> getLeavemsgForWorkId(String uid) {
+		logger.info("根据作品ID查询所有Leavemsg");
+		List<Leavemsg>	leavemsgList=null;
+		try {
+			leavemsgList = (List<Leavemsg>) daoSupport.findForList("LeavemsgMapper.getLeavemsgForWorkId",uid);
+		}catch (Exception e){
+			e.printStackTrace();
+			leavemsgList=null;
+		}
+		return leavemsgList;
+	}
 }

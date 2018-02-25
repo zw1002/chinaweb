@@ -31,11 +31,18 @@
       distprod = #{distprod,jdbcType=VARCHAR}
     where uid = #{uid,jdbcType=VARCHAR}
   </update>
-  <!--通过分销级别查询Proportions-->
+  <!--查询二级Proportions-->
   <select id="getProportionsForLevel" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_proportions
     where dislevel = '2'
+  </select>
+  <!--查询三级Proportions-->
+  <select id="getProportionsForLevels" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_proportions
+    where dislevel = '3'
   </select>
 </mapper>

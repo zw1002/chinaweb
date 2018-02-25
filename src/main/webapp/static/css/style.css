@@ -321,8 +321,8 @@
 .step-progress > li.active > a,
 .step-progress > li.active > a:hover,
 .step-progress > li.active > a:focus {
-  color: #00b8f5;
-  background: transparent;
+  color: #00b8f5!important;
+  background: transparent!important;
 }
 .step-progress > li.active > a:before,
 .step-progress > li.active > a:hover:before,

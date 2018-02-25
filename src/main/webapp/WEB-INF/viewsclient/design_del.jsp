@@ -24,6 +24,44 @@
         video::-webkit-media-controls-panel {
             width: calc(100% + 30px);
         }
+        .layui-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 100%;
+        }
+
+        .touxiang {
+            float: left;
+        }
+
+        .pinglun {
+            float: left;
+            position: relative;
+            margin-left: 20px;
+            width: 1060px;
+        }
+
+        .yonghu {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .neirong {
+            margin-top: 20px;
+        }
+
+        .shijian {
+            float: right;
+            font-size: 12px;
+            color: #a7a7a7;
+        }
+
+        .pingjia {
+            width: 100%;
+            height: 100px;
+            border-bottom: 1px solid #e4e4e4;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -53,6 +91,7 @@
         document.oncontextmenu = function(){
             return false;
         }
+        getLeavelmsg();
     });
     function getDisginDel(){
         //作品ID
@@ -253,6 +292,28 @@
             document.location.href = '<%=basePath%>/signin/login.do';
         }
     }
+    //获取作品评论
+    function getLeavelmsg(){
+        var uid=$("#uid").val();
+        $.ajax({
+            url: "<%=basePath%>/member/getLeaveMsg.do",
+            type: "POST",
+            data: {
+                uid: uid
+            },
+            success: function (data) {
+                var msg=eval("("+data+")");
+                var str="";
+                for(var i=0;i<msg.length;i++) {
+                    str += '<div class="pingjia"> <div class="layui-inline touxiang">'
+                    +'<img src="<%=basePath%>'+msg[0].userpicurl+'" class="layui-circle">'
+                    +'</div> <div class="layui-inline pinglun"> <span class="yonghu">'+msg[0].username+'</span>'
+                    +'<span class="shijian">'+msg[0].time+'</span> <p class="neirong">'+msg[0].content+'</p></div></div>';
+                }
+                $("#leavmsg").append(str);
+            }
+        });
+    }
 </script>
    <header>
      <div class="top">
@@ -371,6 +432,14 @@
         <ul class="clearfix" id="interested">
            </ul>
      </div>
+         <div class="gxq_box da_img" style="height:400px;overflow:auto;">
+             <div class="gxq_tit">
+                 <h2>作品评价</h2>
+             </div>
+             <form id="leavmsg" class="layui-form" action="">
+
+             </form>
+         </div>
          <p class="sm_txt">【声明】婚秀中国网是正版商业图库，所有原创作品（含预览图）均受著作权 发保护，著作权及相关权利归上传用户所有，未经许可任何人不得擅自使用，否则将依法处理</p>
    </div><!-- wrap -->
     </div><!-- bg_f5 -->

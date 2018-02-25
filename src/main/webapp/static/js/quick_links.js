@@ -21,7 +21,8 @@ jQuery(function($){
 			title: '购物车',
 			content: '<div class="ibar_plugin_content"><div class="ibar_cart_group ibar_cart_product"><ul><li class="cart_item"><div class="cart_item_pic"><a href="#"><img src="images/pbl_1.png" /></a></div><div class="cart_item_desc"><a href="#" class="cart_item_name">商品商品商品商品商品商品商品商品商品商品</a><div class="cart_item_sku"><span>尺码：M</span></div><div class="cart_item_price"><span class="cart_price">￥700.00</span></div></div>	</li></ul></div><div class="cart_handler"><div class="cart_handler_header"><span class="cart_handler_left">共<span class="cart_price">1</span>件商品</span><span class="cart_handler_right">￥569.00</span></div><a href="#" class="cart_go_btn" target="_blank" style="color:#fff;">去购物车结算</a></div></div>',
 			init:$.noop
-		}
+		},
+	
 	};
 	
 	//showQuickPop

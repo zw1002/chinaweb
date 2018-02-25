@@ -81,7 +81,7 @@ public class IndexController extends BaseController{
                 }else{
                     map.put("worksamllurl","");
                 }
-                map.put("workname",dealuidchild.getWorksname());
+                map.put("workname",works.getWorksname());
                 map.put("worktype",works.getWorkstype());
                 map.put("worksprice",dealuidchild.getWorksprice());
                 map.put("downcount",works.getDowncount());

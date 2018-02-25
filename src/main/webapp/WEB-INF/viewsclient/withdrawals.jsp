@@ -118,11 +118,15 @@
                      $("#role").html("");
                      res = '<td width="50%">我是卖家</td>';
                      $("#role").append(res);
-                 }else{
+                 }else if(msg.statu == 2){
                      $("#role").html("");
                      res = '<td width="50%"><a href="#" onclick="applyShop()">申请驳回，完善资料后重新提交!</a></td>';
                      $("#role").append(res);
                      $("#uploadwork").css("display","none");
+                 }else{
+                     $("#role").html("");
+                     res = '<td width="50%"><a href="#">店铺已经冻结!</a></td>';
+                     $("#role").append(res);
                  }
              }
          }
@@ -252,6 +256,7 @@
                     <li id="uploadwork"><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
                     <li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
                     <li><a class="mem_icon9" href="<%=basePath%>/personalcenter/toDownload.do" onclick="persoDownload()">我的下载</a></li>
+                    <li><a class="mem_icon2" href="<%=basePath%>/qiutu/toQiutu.do">求助求图</a></li>
                     <li><a class="mem_icon2" href="#" onclick="toCollection()">收藏</a></li>
                     <li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>
                     <li><a class="mem_icon7 active" href="#" onclick="toWithdrawals()">提现</a></li>
@@ -280,7 +285,7 @@
                               <div class="layui-form-item layui-form-text">
                                   <label class="layui-form-label">身份证号：</label>
                                   <div class="layui-input-block">
-                                      <input id="iccode" name="iccode" class="layui-input">
+                                      <input autocomplete="off" lay-verify="required|identity" id="iccode" name="iccode" class="layui-input">
                                   </div>
                               </div>
                               <div class="layui-form-item layui-form-text">

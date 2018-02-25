@@ -86,4 +86,15 @@ protected final Log logger = LogFactory.getLog(getClass());
 	 return distributionList; 
 	}
 
+	public Distribution getDistributionByUserId(String uid) {
+		logger.info("获取当前登录用户的推荐用户信息");
+		Distribution	distribution=null;
+		try {
+			distribution = (Distribution) daoSupport.findForObject("DistributionMapper.getDistributionByUserId",uid);
+		}catch (Exception e){
+			e.printStackTrace();
+			distribution=null;
+		}
+		return distribution;
+	}
 }

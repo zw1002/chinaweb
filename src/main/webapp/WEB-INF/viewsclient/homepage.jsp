@@ -419,7 +419,7 @@ function getMerchData(){
              var str="";
              for(var i=0;i<msg.length;i++){
                  str +='<li> <a id="'+msg[i].worksid+'" href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].worksid+'"><img src="<%=basePath%>'+msg[i].worksamllurl+'" /></a> <div class="txt_fldd">'
-                         +'<h2><a href="#">'+msg[i].worksname+'</a></h2> <b class="col_f00">￥'+msg[i].worksprice+'</b> <p class="timed">'+msg[i].time+'</p> </div> </li>';
+                         +'<h2><a href="#">'+msg[i].workname+'</a></h2> <b class="col_f00">￥'+msg[i].worksprice+'</b> <p class="timed">'+msg[i].time+'</p> </div> </li>';
              }
              $("#transaction").append(str);
              if(flag == 1){

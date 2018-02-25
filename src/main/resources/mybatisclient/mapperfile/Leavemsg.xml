@@ -25,7 +25,7 @@
     delete from tb_leavemsg
     where uid = #{uid,jdbcType=VARCHAR}
   </delete>
-  <!--举报投诉-->
+  <!--作品留言、举报投诉-->
   <insert id="addLeavemsg" parameterType="pd">
     insert into tb_leavemsg (uid, userid, msgContent,
       msgtime, replyuserid, replycontent, 
@@ -34,10 +34,17 @@
       #{msgtime,jdbcType=TIMESTAMP}, #{replyuserid,jdbcType=VARCHAR}, #{replycontent,jdbcType=VARCHAR}, 
       #{replytime,jdbcType=TIMESTAMP},#{workid,jdbcType=VARCHAR},#{merchid,jdbcType=VARCHAR})
   </insert>
-  <!--投诉受理-->
+  <!--作品留言、投诉受理-->
   <update id="updateLeavemsgStatu" parameterType="java.lang.String">
   update tb_leavemsg
   set replycontent = '1'
   where uid=#{uid}
   </update>
+  <!--根据作品ID获取评论信息-->
+  <select id="getLeavemsgForWorkId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_leavemsg
+    where workid = #{workid,jdbcType=VARCHAR}
+  </select>
 </mapper>
