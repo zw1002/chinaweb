@@ -100,7 +100,6 @@ public class UploadFileController extends  BaseController {
             f1.mkdirs();
         }
         String uuid=UUID.randomUUID().toString();
-        int i=0;
         for(MultipartFile file:files){
             String myFileName = file.getOriginalFilename();
             String extName = "";
@@ -142,50 +141,17 @@ public class UploadFileController extends  BaseController {
                 pageData.put("price",price);
                 PageData workcountpageData = new PageData();
                 workcountpageData.put("uid",merch.getUid());
-                BufferedImage image = null;
                 try {
-                    file.transferTo(localFile);//原图
-                    if(extName.equalsIgnoreCase(".cdr") || extName.equalsIgnoreCase(".psd")) {
-                        Works works = worksServices.getWorksforId(uuid);
-                        pageData.put("uid", uuid);
-                        pageData.put("worksurl", relativePath + myFileName);
-                        pageData.put("imgsize", fileSizes + measuring);
-                        pageData.put("imgformart", extName);
-                        if (works == null) {
-                            worksServices.addWorks(pageData);
-                        } else {
-                            worksServices.updateworksurl(pageData);
-                        }
-                        int worksnums=merch.getWorksnums()+i;
-                        workcountpageData.put("worksnums",worksnums);
-                    }else if(extName.equalsIgnoreCase(".mp4")){
-                        pageData.put("uid", uuid);
-                        pageData.put("worksurl", relativePath + myFileName);
-                        pageData.put("imgsize", fileSizes + measuring);
-                        pageData.put("imgformart", extName);
-                        worksServices.addWorks(pageData);
-                        int worksnums=merch.getWorksnums()+1;
-                        workcountpageData.put("worksnums",worksnums);
-                    }else{
-                        Works works=worksServices.getWorksforId(uuid);
-                        pageData.put("uid",uuid);
-                        image = ImageIO.read(new File(savePath + myFileName));
-                        String dpinum=image.getWidth() + "x" + image.getHeight();
-                        pageData.put("dpinum",dpinum);
-                        pageData.put("watermakeurl",relativePath + myFileName);
-                        pageData.put("samllurl",relativePath +"thumb_"+ myFileName);
-                        new imageUtil().thumbnailImage(localFile,280,320);//缩略图
-                        if(works == null){
-                            worksServices.addWorks(pageData);
-                        }else{
-                            worksServices.updateWorkSamllurlandWatermakeurl(pageData);
-                        }
-                        int worksnums=merch.getWorksnums()+i;
-                        workcountpageData.put("worksnums",worksnums);
-                    }
+                    file.transferTo(localFile);//原件
+                    pageData.put("uid", uuid);
+                    pageData.put("worksurl", relativePath + myFileName);
+                    pageData.put("imgsize", fileSizes + measuring);
+                    pageData.put("imgformart", extName);
+                    worksServices.addWorks(pageData);
+                    int worksnums=merch.getWorksnums()+1;
+                    workcountpageData.put("worksnums",worksnums);
                     //修改店铺作品数量
                     merchServices.updateWorkNums(workcountpageData);
-                    i++;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -222,6 +188,147 @@ public class UploadFileController extends  BaseController {
                 ResponseUtil.downloadFile(response, newfile, destFileName);
         } catch (Exception e) {
             ResultUtils.writeFailed(response);
+        }
+        return null;
+    }
+    /**
+     * 图片文件上传
+     */
+    @RequestMapping("/uploadPhoto.do")
+    @ResponseBody
+    public Object uploadPhoto(@RequestParam(value = "file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {
+        logger.info("uploadPhoto");
+        String HOMEPATH = request.getSession().getServletContext().getRealPath("/") + "static/uploadImg/";
+        DateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+        String today = dateFormate.format(new Date());
+        String UPLOADDIR = "upload" + File.separator;
+        String savePath = HOMEPATH + UPLOADDIR
+                + today + File.separator;
+        String relativePath = "/static/uploadImg/"+UPLOADDIR + today + File.separator;
+        String path = "";
+        String uid="";
+        File f1 = new File(savePath);
+        if (!f1.exists()) {
+            f1.mkdirs();
+        }
+        for(MultipartFile file:files){
+            Long time = new Date().getTime();
+            String myFileName = file.getOriginalFilename();
+            String extName = "";
+            if (myFileName.trim() != "") {
+                long byteSize = file.getSize();
+                //重命名上传后的文件名
+                if (myFileName.lastIndexOf(".") >= 0) {
+                    extName = myFileName.substring(myFileName.lastIndexOf("."));
+                }
+                File localFile = new File(savePath + myFileName);//上传文件是真实名称
+                String str=relativePath.replace("\\","/");
+                path = str + myFileName;
+                uid=UUID.randomUUID().toString();
+                try {
+                    file.transferTo(localFile);
+                    PageData pageData=new PageData();
+                    pageData.put("uid",uid);
+                    BufferedImage image  = ImageIO.read(new File(savePath + myFileName));
+                    String dpinum=image.getWidth() + "x" + image.getHeight();
+                    pageData.put("dpinum",dpinum);
+                    pageData.put("watermakeurl",relativePath + myFileName);
+                    pageData.put("samllurl",relativePath +"thumb_"+ myFileName);
+                    new imageUtil().thumbnailImage(localFile,280,320);//缩略图
+                    int flag=worksServices.addWorks(pageData);
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    if(flag == 1){
+                        map.put("uid",uid);
+                    }else{
+                        map.put("uid","false");
+                    }
+                    return map;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+    /**
+     * 图片文件上传
+     */
+    @RequestMapping("/uploadPhotos.do")
+    @ResponseBody
+    public Object uploadPhotos(@RequestParam(value = "file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) {
+        logger.info("uploadPhoto");
+        String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
+        String worktype = request.getParameter("worktype") == null ? "" : request.getParameter("worktype");
+        String workremark = request.getParameter("workremark") == null ? "" : request.getParameter("workremark");
+        String price = request.getParameter("price") == null ? "" : request.getParameter("price");
+        String workclassification = request.getParameter("workclassification") == null ? "" : request.getParameter("workclassification");
+        String worklabel = request.getParameter("worklabel") == null ? "" : request.getParameter("worklabel");
+        String HOMEPATH = request.getSession().getServletContext().getRealPath("/") + "static/uploadImg/";
+        DateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+        String today = dateFormate.format(new Date());
+        String savePath = HOMEPATH + UPLOADDIR
+                + today + File.separator;
+        String relativePath = "/static/uploadImg/"+UPLOADDIR + today + File.separator;
+        File f1 = new File(savePath);
+        if (!f1.exists()) {
+            f1.mkdirs();
+        }
+        for(MultipartFile file:files){
+            String myFileName = file.getOriginalFilename();
+            String extName = "";
+            if (myFileName.trim() != "") {
+                long byteSize = file.getSize();
+                //重命名上传后的文件名
+                if (myFileName.lastIndexOf(".") >= 0) {
+                    extName = myFileName.substring(myFileName.lastIndexOf("."));
+                }
+                File localFile = new File(savePath + myFileName);//上传文件是真实名称
+                BigDecimal fileSize = null;
+                String measuring = "";
+                double fileSizes=0;
+                if (byteSize >= 1024 * 1024) {
+                    double f = byteSize * 1.0 / (1024 * 1000);
+                    fileSize = new BigDecimal(f);
+                    fileSizes = fileSize.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    measuring = "MB";
+                } else {
+                    double f = byteSize * 1.0 / (1024);
+                    fileSize = new BigDecimal(f);
+                    fileSizes = fileSize.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    measuring = "KB";
+                }
+                PageData pageData = new PageData();
+                pageData.put("worksname",myFileName.substring(0,myFileName.indexOf(".")));
+                pageData.put("workstype",workclassification);
+                pageData.put("uptime",new Date());
+                pageData.put("worklabel",worklabel);
+                pageData.put("downcount",0);
+                pageData.put("favcount",0);
+                pageData.put("displayflag",0);
+                pageData.put("delflag",0);
+                pageData.put("ticknums",0);
+                pageData.put("oknums",0);
+                pageData.put("workremark",workremark);
+                Merch merch=merchServices.getMerchForUserId(getUser().getUid());
+                pageData.put("merchid",merch.getUid());
+                pageData.put("price",price);
+                PageData workcountpageData = new PageData();
+                workcountpageData.put("uid",merch.getUid());
+                try {
+                    file.transferTo(localFile);//原件
+                    pageData.put("uid", uid);
+                    pageData.put("worksurl", relativePath + myFileName);
+                    pageData.put("imgsize", fileSizes + measuring);
+                    pageData.put("imgformart", extName);
+                    worksServices.updateByPrimaryKey(pageData);
+                    int worksnums=merch.getWorksnums()+1;
+                    workcountpageData.put("worksnums",worksnums);
+                    //修改店铺作品数量
+                    merchServices.updateWorkNums(workcountpageData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return null;
     }

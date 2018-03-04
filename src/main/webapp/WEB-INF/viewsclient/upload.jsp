@@ -19,7 +19,26 @@
 <script src="<%=basePath%>/static/layui/layui.js"></script>
 <script src="<%=basePath%>/static/js/form.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/ajaxFileUpload.js"></script>
-<script type="text/javascript">
+    <style type="text/css">
+        .container{
+            width: 200px;
+            height: 20px;
+            margin-top: -22px;
+        }
+        #progress{
+            height: 20px;
+            background-color: #e94653;
+            display: inline-block;
+            color: white;
+        }
+        #progress2{
+            height: 20px;
+            background-color: #e94653;
+            display: inline-block;
+            color: white;
+        }
+    </style>
+    <script type="text/javascript">
  $(function(){
 	  $(".nav_new ul li").hover(function(){
 		     $(this).find(".nav_list").show();
@@ -35,12 +54,14 @@
      getUserMerch();
  });
  //上传
+ /*
  layui.use('upload', function() {
      var $ = layui.jquery;
      var upload = layui.upload;
+     var layer = layui.layer;
      upload.render({
          elem: '#test5'
-         ,url: '/upload/'
+         //,url: '/upload/'
          ,auto: false
          ,accept:'file'
          ,exts:'mp4|cdr|psd'
@@ -68,6 +89,7 @@
          }
      });
  });
+ */
  //根据作品类型获取作品分类下拉列表
  layui.use(['layer', 'form'], function() {
      var form = layui.form;
@@ -81,13 +103,14 @@
              });
              form.render('select'); //这个很重要
          });
+         /*
          if(data.value == 30){
              $("#upsamll").css("display","none");
          }else{
              $("#upsamll").css("display","block");
          }
+         */
      });
-
  });
  //根据作品分类获取标签下拉列表
  layui.use(['layer', 'form'], function() {
@@ -215,34 +238,158 @@
             $(".layui-layer").css("top","200px");
             return false;
         }
-        var file=$(".layui-inline").eq(0).text();
-        if(file == ""){
-            layer.msg("请选择作品原件!",{icon: 5,time:2000});
-            $(".layui-layer").css("top","200px");
-            return false;
-        }else if(file.substr(file.indexOf("."),file.length) != ".cdr" && file.substr(file.indexOf("."),file.length) != ".psd"){
-            layer.msg("请选择正确格式的作品原件!",{icon: 5,time:2000});
-            $(".layui-layer").css("top","200px");
-            return false;
+        var file=document.getElementById('file').files[0];
+        var file2=document.getElementById('file2').files[0];
+        var workstype=$("#workstype").val();
+        if(workstype == 30){
+            if(!file){
+                layer.msg("请选择作品原件!",{icon: 5,time:2000});
+                $(".layui-layer").css("top","200px");
+                return false;
+            }
+        }else{
+            if(!file){
+                layer.msg("请选择作品原件!",{icon: 5,time:2000});
+                $(".layui-layer").css("top","200px");
+                return false;
+            }
+            if(!file2){
+                layer.msg("请选择缩略图!",{icon: 5,time:2000});
+                $(".layui-layer").css("top","200px");
+                return false;
+            }
         }
-        var files=$(".layui-inline").eq(1).text();
-        if(files == ""){
-            layer.msg("请选择作品缩略图!",{icon: 5,time:2000});
-            $(".layui-layer").css("top","200px");
-            return false;
-        }else if(files.substr(files.indexOf("."),files.length) != ".png" && files.substr(files.indexOf("."),files.length) != ".jpg"
-                && files.substr(files.indexOf("."),files.length) != ".tiff" && files.substr(files.indexOf("."),files.length) != ".gif"
-                && files.substr(files.indexOf("."),files.length) != ".jpeg"){
-            layer.msg("请选择正确格式的作品缩略图!",{icon: 5,time:2000});
-            $(".layui-layer").css("top","200px");
-            return false;
-        }
+        uploadFile();
     }
+ function uploadFile() {
+     var file=document.getElementById('file').files[0];
+     var file2=document.getElementById('file2').files[0];
+     var workstype=$('#workstype').val();
+     if(workstype == 30){
+         if(file){
+             if(file.type.indexOf("video/") != -1){//类型为婚秀，并且原件是视频文件，不上传缩略图
+                 var workstype=$("#workstype").val();
+                 var worklabel=$("#worklabel").val();
+                 var price=$("#price").val();
+                 var workremark=$("#workremark").val();
+                 var workclassification=$("#workclassification").val();
+                 $("#jindu").css("display","block");
+                 var fd = new FormData();
+                 fd.append("file", document.getElementById('file').files[0]);
+                 fd.append("workstype", workstype);
+                 fd.append("worklabel", worklabel);
+                 fd.append("price", price);
+                 fd.append("workremark", workremark);
+                 fd.append("workclassification", workclassification);
+                 var xhr = new XMLHttpRequest();
+                 xhr.upload.addEventListener("progress", uploadProgress, false);
+                 xhr.addEventListener("load", uploadComplete, false);
+                 xhr.addEventListener("error", uploadFailed, false);
+                 xhr.addEventListener("abort", uploadCanceled, false);
+                 xhr.open("POST", "<%=basePath%>/uploadFile/filesUpload.do");//修改成自己的接口
+                 xhr.send(fd);
+             }else{
+                 if(file){
+                     if(file2){
+                         uploadFile2();
+                     }else{
+                         alert("请选择缩略图");
+                     }
+
+                 }else{
+                     alert("请选择原件");
+                 }
+             }
+         }else{
+             alert("请选择原件");
+         }
+     }else{
+         if(file){
+             if(file2){
+                 uploadFile2();
+             }else{
+                 alert("请选择缩略图");
+             }
+
+         }else{
+             alert("请选择原件");
+         }
+     }
+ }
+ function uploadFile2() {
+     $("#jindu").css("display","block");
+     var fd = new FormData();
+     var file=document.getElementById('file').files[0];
+     var file2=document.getElementById('file2').files[0];
+     if(file2){
+         if(file){
+             fd.append("file", document.getElementById('file2').files[0]);
+             var xhr = new XMLHttpRequest();
+             xhr.addEventListener("load", uploadComplete2, false);
+             xhr.open("POST", "<%=basePath%>/uploadFile/uploadPhoto.do");//修改成自己的接口
+             xhr.send(fd);
+             document.getElementById('progress2').innerHTML = '100%';
+             document.getElementById('progress2').style.width = '100%';
+         }else{
+             alert("请选择原图");
+         }
+     }else{
+         alert("请选择缩略图");
+     }
+ }
+ function uploadProgress(evt) {
+     if (evt.lengthComputable) {
+         var percent = Math.round(evt.loaded * 100 / evt.total);
+         document.getElementById('progress').innerHTML = percent.toFixed(2) + '%';
+         document.getElementById('progress').style.width = percent.toFixed(2) + '%';
+     }
+     else {
+         document.getElementById('progress').innerHTML = 'unable to compute';
+     }
+ }
+ function uploadComplete(evt) {
+     /* 服务器端返回响应时候触发event事件*/
+     alert("上传成功");
+     document.location.href = '<%=basePath%>/uploadFile/toUpload.do';
+     document.getElementById('upFileUrl').innerHTML = evt.target.responseText;
+ }
+ function uploadComplete2(evt) {
+     /* 服务器端返回响应时候触发event事件*/
+     //alert(evt.target.responseText);
+     //document.getElementById('upFileUrll').innerHTML = evt.target.responseText;
+     $("#jindu1").css("display","block");
+     var msg=eval("("+evt.target.responseText+")");
+     var fd = new FormData();
+     var workstype=$("#workstype").val();
+     var worklabel=$("#worklabel").val();
+     var price=$("#price").val();
+     var workremark=$("#workremark").val();
+     var workclassification=$("#workclassification").val();
+     fd.append("file", document.getElementById('file').files[0]);
+     fd.append("uid", msg.uid);
+     fd.append("workstype", workstype);
+     fd.append("worklabel", worklabel);
+     fd.append("price", price);
+     fd.append("workremark", workremark);
+     fd.append("workclassification", workclassification);
+     var xhr = new XMLHttpRequest();
+     xhr.upload.addEventListener("progress", uploadProgress, false);
+     xhr.addEventListener("load", uploadComplete, false);
+     xhr.addEventListener("error", uploadFailed, false);
+     xhr.addEventListener("abort", uploadCanceled, false);
+     xhr.open("POST", "<%=basePath%>/uploadFile/uploadPhotos.do");//修改成自己的接口
+     xhr.send(fd);
+ }
+ function uploadFailed(evt) {
+     alert("There was an error attempting to upload the file.");
+ }
+ function uploadCanceled(evt) {
+     alert("The upload has been canceled by the user or the browser dropped the connection.");
+ }
 </script>
 </head>
 <body>
 <p id="upImgName"></p>
-<input type="hidden" id="upFileUrl" name="upFileUrl" class="layui-input">
    <header>
      <div class="top">    
       <div class="top_wid logo_con">
@@ -293,6 +440,7 @@
                     <li><a class="mem_icon1 active" href="#" onclick="toUpload()">上传作品</a></li>
                     <li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
                     <li><a class="mem_icon9" href="<%=basePath%>/personalcenter/toDownload.do" onclick="persoDownload()">我的下载</a></li>
+                    <li><a class="mem_icon2" href="<%=basePath%>/qiutu/toQiutu.do">求助求图</a></li>
                     <li><a class="mem_icon2" href="#" onclick="toCollection()">收藏</a></li>
                     <li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>
                     <li><a class="mem_icon7" href="#" onclick="toWithdrawals()">提现</a></li>
@@ -305,11 +453,11 @@
                    <div class="jy_tab_con">
                        <!-- 设计 -->
                        <div style="margin-top: -20px">
-                           <div class="hei40px">
-                               提示：作品原件仅支持cdr、psd格式，作品预览图仅支持png、jpg、tiff、gif、jpeg格式。
+                           <div style="color: #d72f3d" class="hei40px">
+                               提示：上传的作品原件是视频时，不用选择缩略图!!!。
                                <div class="jyzt_txt"><a href="<%=basePath%>/helpd/toHelpd.do">上传帮助中心？</a></div>
                            </div>
-                       <form onsubmit="return check()" action="filesUpload.do" method="POST" name="xiangmu" id="xiangmu" enctype="multipart/form-data" style="margin-top: 8px" class="layui-form batchinput-form">
+                       <form action="" method="POST" name="xiangmu" id="xiangmu" enctype="multipart/form-data" style="margin-top: 8px" class="layui-form batchinput-form">
                            <div class="layui-form-item">
                                <label class="layui-form-label">作品类型：</label>
                                <div class="layui-input-block">
@@ -341,30 +489,31 @@
                                    <textarea id="worklabel" name="worklabel" placeholder="以逗号分隔，标签总数不能超过10个" class="layui-textarea"></textarea>
                                </div>
                            </div>
-
-                           <div class="layui-form-item layui-form-text">
+                            <div class="layui-form-item layui-form-text">
                                <label class="layui-form-label">作品简介：</label>
-                               <div class="layui-input-block">
+                               <div style="width: 775px;margin-left: 110px" class="lay ui-input-block">
                                    <textarea id="workremark" name="workremark" class="layui-textarea"></textarea>
                                </div>
                            </div>
                            <div class="layui-upload">
                                <label class="layui-form-label">作品原件：</label>
-                               <button type="button" class="layui-btn layui-btn-normal" id="test5">选择文件</button>
+                               <!--<button type="button" class="layui-btn layui-btn-normal" id="test5">选择文件</button>-->
+                               <input type="file" name="file" id="file">
+                               <div id="jindu" style="display:none" class='container'>
+                                   <span style="width:230px;text-align: center" id="progress"></span>
+                               </div>
                            </div>
                            <div id="upsamll" style="margin-top: 20px" class="layui-upload">
                                <label style="width:84px;margin-left: -4px" class="layui-form-label">作品缩略图：</label>
-                               <button style="" type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
-                               <button type="button" class="layui-btn" id="test9">图片预览</button>
-                               <blockquote id="test10" class="layui-elem-quote layui-quote-nm" style="margin-top: 15px;margin-left: 108px;">
-                                   预览图：
-                                   <div class="layui-upload-list" id="demo2"></div>
-                               </blockquote>
-                           </div>
-                           <div class="anniu">
-                               <button type="submit" style="margin-left: 450px" class="layui-btn layui-btn-normal">提交</button>
+                               <input type="file" name="file" id="file2">
+                               <div id="jindu1" style="display:none" class='container'>
+                                   <span style="width:230px;text-align: center" id="progress2"></span>
+                               </div>
                            </div>
                            </form>
+                           <div class="anniu">
+                               <button onclick="check()" style="margin-top: 10px" class="layui-btn layui-btn-normal">提交</button>
+                           </div>
                            </div>
                        <!-- 摄影 -->
                        <ul id="alreadyPurchased">

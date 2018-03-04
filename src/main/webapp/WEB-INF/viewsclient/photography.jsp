@@ -189,7 +189,7 @@
   }
   //跳转到求助求图页面
   function toHelp(){
-      document.location.href = '<%=basePath%>/help/toHelp.do';
+      document.location.href = '<%=basePath%>/helpd/toHelp.do';
   }
   //跳转到注册页面
   function toRegister(){

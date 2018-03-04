@@ -157,8 +157,13 @@
                 var str="";
                 for(var i=0;i<msg.length;i++){
                     if(msg[i].workstype.substring(0,1) == 3) {//婚秀
-                        str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].workid+'"><div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].workurl+'" poster="" controls></video></div>'
-                                +'<div class="botm_txtd"> <p>'+msg[i].workname+'</p> </div> </a></li>';
+                        if(msg[i].worksamllurl == ""){
+                            str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].workid+'"><div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].workurl+'" poster=""></video></div>'
+                                    +'<div class="botm_txtd"> <p>'+msg[i].workname+'</p> </div> </a></li>';
+                        }else{
+                            str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].workid+'"><img src="<%=basePath%>'+msg[i].worksamllurl+'" />'
+                                    +'<div class="botm_txtd"> <p>'+msg[i].workname+'</p> </div> </a></li>';
+                        }
                     }else{
                         str += '<li><a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].workid+'"><img src="<%=basePath%>'+msg[i].worksamllurl+'" />'
                         +'<div class="botm_txtd"> <p>'+msg[i].workname+'</p> </div> </a></li>';

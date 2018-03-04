@@ -33,6 +33,7 @@
                  document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
              });
      getUserMerch();
+     getAuthentication();
  });
  //跳转到首页
  function toIndex(){
@@ -79,6 +80,16 @@
  function toWithdrawals(){
      var uid="${userinfo.getUid()}";
      document.location.href = '<%=basePath%>/withdrawals/toWithdrawals.do?uid='+uid;
+ }
+ //查看用户认证状态
+ function getAuthentication(){
+     var iccode="${userinfo.getIccode()}";
+     var idpic="${userinfo.getIdpic()}";
+     if(iccode == "" || idpic == ""){
+        $("#toOpenShop").css("display","none");
+     }else{
+         $("#toAuthentication").css("display","none");
+     }
  }
  //获取会员店铺信息
  function getUserMerch(){
@@ -197,6 +208,7 @@
                 <ul>
                     <li id="uploadwork"><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
                     <li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
+                    <li><a class="mem_icon2" href="<%=basePath%>/qiutu/toQiutu.do">求助求图</a></li>
                     <li><a class="mem_icon2" href="#" onclick="toCollection()">收藏</a></li>
                     <li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>
                     <li><a class="mem_icon7" href="#" onclick="toWithdrawals()">提现</a></li>
@@ -206,7 +218,8 @@
            </div><!-- wid260px -->
            <div class="wid925px fr">
                <div class="tran_con">
-                   <div class="jy_tab_con">
+                   <h4 id="toAuthentication" style="color: red">你还没有认证，现在去认证?<a href="<%=basePath%>/persondata/toPersonData.do">-->去认证</a></h4>
+                   <div id="toOpenShop" class="jy_tab_con">
                        <!-- 设计 -->
                        <div style="margin-top: -20px">
                        <form style="margin-top: 8px" class="layui-form batchinput-form">
@@ -223,7 +236,7 @@
                                </div>
                            </div>
                            <div class="anniu">
-                               <button id="submerch" onclick="subMerch()" style="margin-left: 450px" class="layui-btn layui-btn-normal">提交</button>
+                               <button id="submerch" onclick="subMerch()" style="margin-left: 100px" class="layui-btn layui-btn-normal">提交</button>
                            </div>
                            </form>
                            </div>

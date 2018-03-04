@@ -136,7 +136,7 @@
 			margin-top: 10px;
 		}
 		.Tmingzi {
-			margin-left: 15px;
+			margin-left: 25px;
 			margin-top: 10px;
 		}
 		.layui-layer-btn a {
@@ -150,6 +150,17 @@
 		}
 		.shanchu:hover {
 			cursor: pointer;
+		}
+		.container{
+			width: 200px;
+			height: 20px;
+			margin-top: -22px;
+		}
+		#progress{
+			height: 20px;
+			background-color: #e94653;
+			display: inline-block;
+			color: white;
 		}
 	</style>
 	<script>
@@ -169,6 +180,9 @@
 				$("#maiduan").css("color", "#fff");
 			});
 			getUserMerch();
+			getMyGraph();
+			getCollectionGraph();
+			getCollectionSubmission();
 		});
 		$(function() {
 			layui.use(['form','layer'], function() {
@@ -292,6 +306,171 @@
 		function applyShop(){
 			document.location.href = '<%=basePath%>/applyshop/toApplyShop.do';
 		}
+		//根据作品类型获取作品分类下拉列表
+		layui.use(['layer', 'form','laydate'], function() {
+			var form = layui.form;
+			var laydate = layui.laydate;
+			//常规用法
+			laydate.render({
+				elem: '#endtime'
+			});
+			form.on('select(graphtype)', function(data){
+				$.getJSON("<%=basePath%>/personalcenter/getWorkClassification.do?workstype="+data.value, function(data){
+					var msg=eval(data);
+					$("#graphclassification").html("");
+					$.each(msg, function(name, value) {
+						var varItem2 = new Option(value.keyname,value.keyvalue);
+						$("#graphclassification").append(varItem2);
+					});
+					form.render('select'); //这个很重要
+				});
+			});
+		});
+		//校验表单
+		function check(){
+			var layer = layui.layer;
+			if($('#graphtype').val()==""){
+				layer.msg("请选择任务类别!",{icon: 5,time:2000});
+				$(".layui-layer").css("top","200px");
+				return false;
+			}
+			if($('#graphtitle').val()==""){
+				layer.msg("请输入任务标题!",{icon: 5,time:2000});
+				$(".layui-layer").css("top","200px");
+				return false;
+			}
+			if($('#graphdetail').val()==""){
+				layer.msg("请输入需求详情!",{icon: 5,time:2000});
+				$(".layui-layer").css("top","200px");
+				return false;
+			}
+			if($('#moneyreward').val()==""){
+				layer.msg("请输入任务赏金!",{icon: 5,time:2000});
+				$(".layui-layer").css("top","200px");
+				return false;
+			}
+			if($('#endtime').val()==""){
+				layer.msg("请输入任务截止时间!",{icon: 5,time:2000});
+				$(".layui-layer").css("top","200px");
+				return false;
+			}
+			var file=document.getElementById('file').files[0];
+			if(!file){
+				layer.msg("请选择任务附件!",{icon: 5,time:2000});
+				$(".layui-layer").css("top","200px");
+				return false;
+			}
+			fabu();
+		}
+		function fabu(){
+			$("#jindu1").css("display","block");
+			var fd = new FormData();
+			var graphtype=$("#graphtype").val();
+			var graphclassification=$("#graphclassification").val();
+			var graphtitle=$("#graphtitle").val();
+			var graphdetail=$("#graphdetail").val();
+			var moneyreward=$("#moneyreward").val();
+			var endtime=$("#endtime").val();
+			fd.append("file", document.getElementById('file').files[0]);
+			fd.append("graphtype", graphtype);
+			fd.append("graphclassification", graphclassification);
+			fd.append("graphtitle", graphtitle);
+			fd.append("graphdetail", graphdetail);
+			fd.append("moneyreward", moneyreward);
+			fd.append("endtime", endtime);
+			var xhr = new XMLHttpRequest();
+			xhr.upload.addEventListener("progress", uploadProgress, false);
+			xhr.addEventListener("load", uploadComplete, false);
+			xhr.addEventListener("error", uploadFailed, false);
+			xhr.addEventListener("abort", uploadCanceled, false);
+			xhr.open("POST", "<%=basePath%>/graph/filesUpload.do");//修改成自己的接口
+			xhr.send(fd);
+		}
+		function uploadProgress(evt) {
+			if (evt.lengthComputable) {
+				var percent = Math.round(evt.loaded * 100 / evt.total);
+				document.getElementById('progress').innerHTML = percent.toFixed(2) + '%';
+				document.getElementById('progress').style.width = percent.toFixed(2) + '%';
+			}
+			else {
+				document.getElementById('progress').innerHTML = 'unable to compute';
+			}
+		}
+		function uploadComplete(evt) {
+			if(evt.target.responseText.indexOf("true")){
+				alert("发布成功");
+				document.location.href = '<%=basePath%>/qiutu/toQiutu.do';
+			}else{
+				alert("发布失败");
+			}
+		}
+		function uploadFailed(evt) {
+			alert("There was an error attempting to upload the file.");
+		}
+		function uploadCanceled(evt) {
+			alert("The upload has been canceled by the user or the browser dropped the connection.");
+		}
+		//我的任务
+		function getMyGraph(){
+			$.ajax({
+				url: "<%=basePath%>/graph/getMyGraph.do",
+				type: "POST",
+				success: function (data) {
+					if(data!=="failed"){
+						var msg = eval("(" + data + ")");
+						var res = "";
+						for(var i=0;i<msg.length;i++){
+							res += '<div class="layui-row"><div class="layui-col-xs9 shuoming">'
+									+'<div class="grid-demo"> <p style="color: #EC971F;font-weight: 600;">￥'+msg[i].moneyreward+'</p> <p><strong>标题：</strong>'+msg[i].graphtitle+'</p>'
+									+'<p><strong>任务类别：</strong>'+msg[i].graphtype+'&nbsp;&nbsp;&nbsp;&nbsp;<strong>任务分类：</strong>'+msg[i].graphclassification+'</p><p><strong>发布时间：</strong>'+msg[i].addtime+'&nbsp;&nbsp;&nbsp;&nbsp;<strong>收藏量：</strong>'+msg[i].favcount+'&nbsp;&nbsp;&nbsp;&nbsp;<strong>点击量：</strong>'+msg[i].ticknums+'</p> </div> </div> <div class="layui-col-xs1">'
+									+'<div class="grid-demo "> <a href="<%=basePath%>/submission/toTouGao.do?uid='+msg[i].uid+'" class="layui-btn caozuo">详情</a> </div> </div> </div>';
+						}
+						$("#myGraph").append(res);
+					}
+				}
+			});
+		}
+		//获取任务收藏
+		function getCollectionGraph(){
+			$.ajax({
+				url: "<%=basePath%>/graph/getCollectionGraph.do",
+				type: "POST",
+				success: function (data) {
+					if(data!=="failed"){
+						var msg = eval("(" + data + ")");
+						var res = "";
+						for(var i=0;i<msg.length;i++){
+							res += '<div class="layui-row"><div class="layui-col-xs2 suoluotu"> <div class="grid-demo grid-demo-bg1">'
+									+'<img src="<%=basePath%>/static/images/pbl_1.png"> </div> </div> <div class="layui-col-xs8 shuoming"> <div class="grid-demo">'
+									+'<p style="color: #EC971F;font-weight: 600;">￥'+msg[i].moneyreward+'</p> <p>'+msg[i].graphtitle+'</p> <p>任务类别:'+msg[i].graphtype+'&nbsp;&nbsp;&nbsp;&nbsp;任务分类:'+msg[i].graphclassification+'</p> <p>收藏时间:'+msg[i].addtime+'</p> </div> </div>'
+									+'<div class="layui-col-xs1"> <div class="grid-demo "> <button class="layui-btn caozuo">详情</button> </div> </div> </div>';
+						}
+						$("#collectionGraph").append(res);
+					}
+				}
+			});
+		}
+		//获取稿件收藏
+		function getCollectionSubmission(){
+			$.ajax({
+				url: "<%=basePath%>/graph/getCollectionSubmission.do",
+				type: "POST",
+				success: function (data) {
+					if(data!=="failed"){
+						var msg = eval("(" + data + ")");
+						var res = "";
+						for(var i=0;i<msg.length;i++){
+							res += '<div class="layui-row"> <div class="layui-col-xs2 suoluotu"> <div class="grid-demo grid-demo-bg1"> <img src="<%=basePath%>/static/images/pbl_1.png">'
+									+'</div> </div> <div class="layui-col-xs6 shuoming"> <div class="grid-demo"> <p style="color: #EC971F;font-weight: 600;">￥'+msg[i].moneyreward+'</p>'
+									+'<p>'+msg[i].graphtitle+'</p> <p>稿件名称:'+msg[i].worksname+'&nbsp;&nbsp;稿件格式:'+msg[i].imgformart+'&nbsp;&nbsp;稿件颜色模式:'+msg[i].colrmodel+'</p> <p>收藏时间:'+msg[i].addtime+'</p> </div> </div> <div class="layui-col-xs2 Tid">'
+									+'<div class="grid-demo grid-demo-bg1"> <img src="<%=basePath%>'+msg[i].userpicurl+'"> <p class="Tmingzi">'+msg[i].username+'</p> </div> </div>'
+									+'<div class="layui-col-xs1"> <div class="grid-demo "> <button class="layui-btn caozuo">详情</button> </div> </div> </div>';
+						}
+						$("#collectionSubmission").append(res);
+					}
+				}
+			});
+		}
 	</script>
 </head>
 <body>
@@ -318,7 +497,6 @@
 				<input name="" type="text" placeholder="请输入搜索内容" class="inp_txt">
 				<input type="submit" value="搜 索" class="ss_btn" />
 			</div>
-			<a href="javascript:" class="sc_btn wygt"><img src="<%=basePath%>/static/images/icon_ft2.png" height="14" width="14" /> 我要改图</a>
 		</div>
 	</div>
 	<!-- top -->
@@ -333,7 +511,6 @@
 						<img src="<%=basePath%>${userinfo.getUsrpicurl()}" />
 						<h2>${userinfo.getFristname()}</h2>
 					</div>
-
 					<div class="mj_tab">
 						<table width="100%">
 							<tr id="role">
@@ -349,7 +526,7 @@
 						<li id="uploadwork"><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
 						<li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
 						<li><a class="mem_icon9" href="<%=basePath%>/personalcenter/toDownload.do" onclick="persoDownload()">我的下载</a></li>
-						<li><a class="mem_icon2" href="<%=basePath%>/qiutu/toQiutu.do">求助求图</a></li>
+						<li><a class="mem_icon2 active" href="<%=basePath%>/qiutu/toQiutu.do">求助求图</a></li>
 						<li><a class="mem_icon2" href="#" onclick="toCollection()">收藏</a></li>
 						<li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>
 						<li><a class="mem_icon7" href="#" onclick="toWithdrawals()">提现</a></li>
@@ -372,7 +549,7 @@
 					<div class="jy_tab_con">
 						<!--发布任务-->
 						<ul>
-							<form class="layui-form" action="">
+							<form class="layui-form" action="" method="POST" enctype="multipart/form-data">
 								<div class="fytd_box">
 									<div class="hei40px" style="color: #ffbb76;">
 										提示：提交任务虚满足以下条件:1.可用于金额大于等于当前任务金额;2.账户没有被冻结;
@@ -433,195 +610,102 @@
 								</div>
 								<div class="jiange"></div>
 								<div class="layui-form-item">
-
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>任务分类</label>
 									<div class="layui-input-inline">
-										<select name="quiz1">
-
-											<option>一类</option>
-											<option>一类1</option>
-											<option>一类2</option>
+										<select lay-filter="graphtype" name="graphtype" id="graphtype" lay-verify="required">
+											<option value=""></option>
+											<option value="00">设计</option>
+											<option value="10">摄影</option>
+											<option value="20">道具</option>
+											<option value="30">婚秀</option>
 										</select>
 									</div>
 									<div class="layui-input-inline">
-										<select name="quiz2">
-
-											<option value="杭州">二类</option>
-											<option value="宁波">二类1</option>
-											<option value="温州">二类2</option>
-											<option value="温州">二类3</option>
-											<option value="温州">二类4</option>
+										<select lay-filter="graphclassification" name="graphclassification" id="graphclassification" lay-verify="required">
 										</select>
 									</div>
 
 								</div>
 								<div class="layui-form-item">
-
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>任务标题</label>
 									<div class="layui-input-block">
-										<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请准确填写需求图片的标题，20字以内" class="layui-input">
+										<input type="text" name="graphtitle" id="graphtitle" lay-verify="graphtitle" autocomplete="off" placeholder="请准确填写需求图片的标题，20字以内" class="layui-input">
 									</div>
-
 								</div>
 								<div class="layui-form-item">
-
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>需求详情</label>
 									<div class="layui-input-block">
-										<textarea placeholder="请输入内容" class="layui-textarea"></textarea>
-										<div class="xuqiu">
-											<button class="layui-btn layui-btn-primary">+选择附件</button>
-											<span>上传zip,rar或7z压缩包，大小不超过50M</span>
-											<button class="layui-btn layui-btn-primary chankao"><i style="font-size: 24px;" class="layui-icon"></i>需求模板参考</button>
+										<textarea placeholder="注意：多条记录已中文分号分号“；”分割" id="graphdetail" name="graphdetail" class="layui-textarea"></textarea>
+										<input style="margin-top: 20px" type="file" name="file" id="file">
+										<div id="jindu" style="display:none" class='container'>
+											<span style="width:230px;text-align: center" id="progress"></span>
 										</div>
 									</div>
-
 								</div>
 								<div class="jiange"></div>
+								<!--
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>征集模式</label>
 									<button type="button" class="layui-btn goumai" id="goumai">购买使用权</button>
 									<button type="button" class="layui-btn maiduan" id="maiduan">买断版权</button>
 									<div class="layui-form-item yongtu" id="yongtu">
-
 										<label class="layui-form-label">作品用途</label>
-
 										<div class="layui-input-inline">
 											<select name="quiz2">
-
 												<option value="杭州">用于广告</option>
 												<option value="宁波">用于明信片</option>
 												<option value="温州">用于产品包装</option>
 											</select>
 										</div>
-
 									</div>
 								</div>
+								-->
 								<div class="layui-form-item">
 									<div class="layui-inline">
 										<label class="layui-form-label"><span style="color: #C9302C;">*</span>赏金设置</label>
 										<div class="layui-input-inline" style="width: 345px;">
-											<input type="text" name="price_min" placeholder="请输入金额" autocomplete="off" class="layui-input">
+											<input type="text" id="moneyreward" name="moneyreward" placeholder="请输入金额" autocomplete="off" class="layui-input">
 										</div>
 										<div class="layui-form-mid">元/件</div>
+										<!--
 										<div class="layui-input-inline" style="width: 345px;">
 											<input type="text" name="price_max" placeholder="件数只允许输入1（含）以上的正整数" autocomplete="off" class="layui-input">
 										</div>
 										<div class="layui-form-mid">件</div>
+										-->
 									</div>
 									<div class="hei40px" style="margin-left: 100px;color: #ffbb76;">
 										温馨提示：任务赏金偏低会影响投稿数量及质量，请合理设定任务赏金
 									</div>
 								</div>
 								<div class="layui-form-item">
-
-									<label class="layui-form-label"><span style="color: #C9302C;">*</span>投稿时间</label>
-									<div class="layui-input-block">
-										<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="投稿时间不得小于3天" class="layui-input">
-
+									<label style="width: 90px;margin-left: -10px;" class="layui-form-label"><span style="color: #C9302C;">*</span>投稿截止时间</label>
+									<div class="layui-inline">
+										<div class="layui-input-inline">
+											<input type="text" class="layui-input" id="endtime" name="endtime" placeholder="yyyy-MM-dd">
+										</div>
 									</div>
-
 								</div>
-								<div class="layui-form-item">
-
-									<label class="layui-form-label"><span style="color: #C9302C;">*</span>QQ</label>
-									<div class="layui-input-block">
-										<input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" value="123456789">
-
-									</div>
-
-								</div>
+								<!--
 								<div class="layui-form-item" style="height: 40px">
 									<label class="layui-form-label" style="width: 130px;"></label>
-
 									<div class="layui-input-block">
 										<input type="checkbox" name="like1[write]" lay-skin="primary" title="《婚秀协议》《婚秀协议》《婚秀协议》《婚秀协议》《婚秀协议》" checked="">
 										<div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary"><span>《婚秀协议》《婚秀协议》《婚秀协议》《婚秀协议》《婚秀协议》</span><i class="layui-icon"></i></div>
 									</div>
 								</div>
-								<div class="anniu">
-									<button class="layui-btn layui-btn-warm fabu">发布</button>
-								</div>
+								-->
 							</form>
-
+							<div class="anniu">
+								<button onclick="check()" class="layui-btn layui-btn-warm fabu">发布</button>
+							</div>
 						</ul>
 						<!--我的任务-->
 						<ul>
-							<form class="layui-form" action="">
-								<div class="layui-row">
-									<!--<div class="layui-col-xs1 xuanzhong" style="" >
-
-<input type="checkbox" name="like1[write]" lay-skin="primary"  checked="">
-
-                </div>-->
-									<div class="layui-col-xs2 suoluotu">
-										<div class="grid-demo grid-demo-bg1">
-											<img src="<%=basePath%>/static/images/pbl_1.png">
-										</div>
-									</div>
-									<div class="layui-col-xs9 shuoming">
-										<div class="grid-demo">
-											<p style="color: #EC971F;font-weight: 600;">￥3000.00</p>
-											<p>柯城科创园写字楼的logo设计</p>
-											<p>编号:201801091314657</p>
-											<p>收藏:2018-02-07 10:41:22</p>
-										</div>
-									</div>
-
-									<div class="layui-col-xs1">
-										<div class="grid-demo ">
-											<button class="layui-btn caozuo">详情</button>
-										</div>
-									</div>
-
-								</div>
-								<div class="layui-row">
-									<div class="layui-col-xs2 suoluotu">
-										<div class="grid-demo grid-demo-bg1">
-											<img src="<%=basePath%>/static/images/pbl_1.png">
-										</div>
-									</div>
-									<div class="layui-col-xs9 shuoming">
-										<div class="grid-demo">
-											<p style="color: #EC971F;font-weight: 600;">￥3000.00</p>
-											<p>柯城科创园写字楼的logo设计</p>
-											<p>编号:201801091314657</p>
-											<p>收藏:2018-02-07 10:41:22</p>
-										</div>
-									</div>
-
-									<div class="layui-col-xs1">
-										<div class="grid-demo ">
-											<button class="layui-btn caozuo">详情</button>
-										</div>
-									</div>
-
-								</div>
-								<div class="layui-row">
-									<div class="layui-col-xs2 suoluotu">
-										<div class="grid-demo grid-demo-bg1">
-											<img src="<%=basePath%>/static/images/pbl_1.png">
-										</div>
-									</div>
-									<div class="layui-col-xs9 shuoming">
-										<div class="grid-demo">
-											<p style="color: #EC971F;font-weight: 600;">￥3000.00</p>
-											<p>柯城科创园写字楼的logo设计</p>
-											<p>编号:201801091314657</p>
-											<p>收藏:2018-02-07 10:41:22</p>
-										</div>
-									</div>
-
-									<div class="layui-col-xs1">
-										<div class="grid-demo ">
-											<button class="layui-btn caozuo">详情</button>
-										</div>
-									</div>
-
-								</div>
+							<form id="myGraph" class="layui-form" action="">
 							</form>
 						</ul>
 						<!--我的稿件-->
-
 						<ul>
 							<form class="layui-form" action="">
 								<div class="layui-row">
@@ -715,100 +799,14 @@
 						</ul>
 						<!--任务收藏-->
 						<ul>
-							<form class="layui-form" action="">
-								<div class="layui-row">
-									<div class="layui-col-xs6 xuanzhong1" style="">
+							<form id="collectionGraph" class="layui-form" action="">
 
-										<input type="checkbox" name="like1[write]" lay-skin="primary" checked=""> 全选
-									</div>
-									<div class="layui-col-xs6 " style="">
-
-										<div class="grid-demo shanchu">
-											<span>删除</span>
-										</div>
-
-									</div>
-								</div>
-								<div class="layui-row">
-
-									<div class="layui-col-xs1 xuanzhong" style="">
-
-										<input type="checkbox" name="like1[write]" lay-skin="primary" checked="">
-
-									</div>
-									<div class="layui-col-xs2 suoluotu">
-										<div class="grid-demo grid-demo-bg1">
-											<img src="<%=basePath%>/static/images/pbl_1.png">
-										</div>
-									</div>
-									<div class="layui-col-xs8 shuoming">
-										<div class="grid-demo">
-											<p style="color: #EC971F;font-weight: 600;">￥3000.00</p>
-											<p>柯城科创园写字楼的logo设计</p>
-											<p>编号:201801091314657</p>
-											<p>收藏:2018-02-07 10:41:22</p>
-										</div>
-									</div>
-
-									<div class="layui-col-xs1">
-										<div class="grid-demo ">
-											<button class="layui-btn caozuo">详情</button>
-										</div>
-									</div>
-
-								</div>
 							</form>
 						</ul>
 						<!--稿件收藏-->
 						<ul>
-							<form class="layui-form" action="">
-								<div class="layui-row">
-									<div class="layui-col-xs6 xuanzhong1" style="">
+							<form id="collectionSubmission" class="layui-form" action="">
 
-										<input type="checkbox" name="like1[write]" lay-skin="primary" checked=""> 全选
-									</div>
-									<div class="layui-col-xs6 " style="">
-
-										<div class="grid-demo shanchu">
-											<span>删除</span>
-										</div>
-
-									</div>
-								</div>
-								<div class="layui-row">
-									<div class="layui-col-xs1 xuanzhong" style="">
-
-										<input type="checkbox" name="like1[write]" lay-skin="primary" checked="">
-
-									</div>
-									<div class="layui-col-xs2 suoluotu">
-										<div class="grid-demo grid-demo-bg1">
-											<img src="<%=basePath%>/static/images/pbl_1.png">
-										</div>
-									</div>
-									<div class="layui-col-xs6 shuoming">
-										<div class="grid-demo">
-											<p style="color: #EC971F;font-weight: 600;">￥3000.00</p>
-											<p>柯城科创园写字楼的logo设计</p>
-											<p>编号:201801091314657</p>
-											<p>收藏:2018-02-07 10:41:22</p>
-										</div>
-									</div>
-									<div class="layui-col-xs2 Tid">
-										<div class="grid-demo grid-demo-bg1">
-											<img src="<%=basePath%>/static/images/pbl_1.png">
-											<p class="Tmingzi">laoliadmin</p>
-										</div>
-
-									</div>
-
-									<div class="layui-col-xs1">
-										<div class="grid-demo ">
-											<button class="layui-btn caozuo">详情</button>
-										</div>
-									</div>
-
-								</div>
 							</form>
 						</ul>
 					</div>

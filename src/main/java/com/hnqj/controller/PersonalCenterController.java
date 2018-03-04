@@ -410,15 +410,17 @@ public class PersonalCenterController extends  BaseController{
             List<WorksViews> worksViewsList=worksViewsServices.getAllWorksViews(pageData);
             for(WorksViews worksViews:worksViewsList){
                 Works works=worksServices.getWorksforId(worksViews.getWorksid());
-                Map<String, Object> map = new HashMap<>();
-                map.put("workname",works.getWorksname());
-                map.put("workid",works.getUid());
-                map.put("workstype",works.getWorkstype());
-                map.put("worksamllurl",works.getSamllurl());
-                map.put("workurl",works.getWorksurl());
-                map.put("downcount",works.getDowncount());
-                map.put("ticknums",works.getTicknums().toString());
-                hashMaps.add(map);
+                if(works != null){
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("workname",works.getWorksname());
+                    map.put("workid",works.getUid());
+                    map.put("workstype",works.getWorkstype());
+                    map.put("worksamllurl",works.getSamllurl());
+                    map.put("workurl",works.getWorksurl());
+                    map.put("downcount",works.getDowncount());
+                    map.put("ticknums",works.getTicknums().toString());
+                    hashMaps.add(map);
+                }
             }
             ResultUtils.write(response,hashMaps);
         }catch(Exception e){

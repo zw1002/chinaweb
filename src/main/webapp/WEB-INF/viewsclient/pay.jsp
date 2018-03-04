@@ -229,7 +229,7 @@
 
 														<span><img src="<%=basePath%>/static/images/share_icon3.png">&nbsp;&nbsp;支付宝支付</span>
 														<span><img src="<%=basePath%>/static/images/share_icon2.png">&nbsp;&nbsp;微信支付</span>
-														<span><img src="<%=basePath%>/static/images/share_icon2.png">&nbsp;&nbsp;银联支付</span>
+														<span><img src="<%=basePath%>/static/images/share_icon5.png">&nbsp;&nbsp;银联支付</span>
 													</p>
 
 												</div>

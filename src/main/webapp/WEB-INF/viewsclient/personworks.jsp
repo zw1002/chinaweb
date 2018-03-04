@@ -119,12 +119,18 @@
              var msg = eval("(" + data + ")");
              for(var i=0;i<msg.length;i++){
                  if(msg[i].workstype.substring(0,1) == 3) {//婚秀
-                     str += '<li '+msg[i].uid+'><div class="btn_pos"><a href="#" onclick="offShelf('+msg[i].uid+')">下架</a></div>'
-                             +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
-                             +'<div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].worksurl+'" poster="" controls></video></div>'
-                             +'</a><h2>'+msg[i].worksname+'</h2><p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                     if(msg[i].samllurl == ""){
+                         str += "<li id="+msg[i].uid+"><div class='btn_pos'><a href='#' onclick=offShelf('"+msg[i].uid+"')>下架</a></div>"
+                                 +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'">'
+                                 +'<div class="video_box"><video width="100%" height="280"  src="<%=basePath%>'+msg[i].worksurl+'" poster=""></video></div>'
+                                 +'</a><h2>'+msg[i].worksname+'</h2><p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                     }else{
+                         str += "<li id="+msg[i].uid+"><div class='btn_pos'><a href='#' onclick=offShelf('"+msg[i].uid+"')>下架</a></div>"
+                                 +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'"><img src="<%=basePath%>'+msg[i].samllurl+'" /></a><h2>'+msg[i].worksname+'</h2>'
+                                 +'<p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
+                     }
                  }else{
-                     str += '<li '+msg[i].uid+'><div class="btn_pos"><a href="#" onclick="offShelf('+msg[i].uid+')">下架</a></div>'
+                     str += "<li id="+msg[i].uid+"><div class='btn_pos'><a href='#' onclick=offShelf('"+msg[i].uid+"')>下架</a></div>"
                              +'<a href="<%=basePath%>/design/toDesignDel.do?uid='+msg[i].uid+'"><img src="<%=basePath%>'+msg[i].samllurl+'" /></a><h2>'+msg[i].worksname+'</h2>'
                              +'<p class="small_txt"><span class="sc_icon">收藏：'+msg[i].favcount+'</span>&nbsp; &nbsp; |&nbsp; &nbsp; <span class="yzx_icon">已下载：'+msg[i].downcount+'</span></p> </li>';
                  }
@@ -147,21 +153,21 @@
  }
     //作品下架
     function offShelf(workid){
-        $.ajax({
-            url: "<%=basePath%>/personworks/workOffShelf.do",
-            type: "POST",
-            data: {
-                workid: workid
-            },
-            success: function (data) {
-                if(data!=="failed"){
-                    $("#"+workid).css("display","none");
-                    alert("作品下架成功!");
-                }else{
-                    alert("作品下架失败!");
+            $.ajax({
+                url: "<%=basePath%>/personworks/workOffShelf.do",
+                type: "POST",
+                data: {
+                    workid: workid
+                },
+                success: function (data) {
+                    if(data!=="failed"){
+                        $("#"+workid).css("display","none");
+                        alert("作品下架成功!");
+                    }else{
+                        alert("作品下架失败!");
+                    }
                 }
-            }
-        });
+            });
     }
  //获取会员店铺信息
  function getUserMerch(){

@@ -122,7 +122,7 @@
                 }
                 for(var i=0;i<resultData.length;i++){
                     gridItems+="\t<div class=\"grid__item\">\n" +
-                        "\t\t\t\t\t\t<a class=\"grid__link\" href=\"<%=basePath%>/design/toDesignDel.do?uid="+resultData[i].uid+"\"><div class=\"video_box\"><video name=\"video\" width=\"100%\" height=\"220\"  src=\"<%=basePath%>"+resultData[i].relworksurl+"\" poster=\"\" controls></video></div></a>\n" +
+                        "\t\t\t\t\t\t<a class=\"grid__link\" href=\"<%=basePath%>/design/toDesignDel.do?uid="+resultData[i].uid+"\"><div class=\"video_box\"><video name=\"video\" width=\"100%\" height=\"220\"  src=\"<%=basePath%>"+resultData[i].relworksurl+"\" poster=\"\"></video></div></a>\n" +
                         "                        <div class=\"list_txt_box\">\n" +
                         "                          <h2>"+resultData[i].worksname+"</h2>\n" +
                         "                          <p><a href=\"javascript:\" class=\"zan\">"+resultData[i].ticknums+"</a> | <a href=\"javascript:\" class=\"down\">"+resultData[i].downcount+"</a></p>\n" +
@@ -199,7 +199,7 @@
   }
   //跳转到求助求图页面
   function toHelp(){
-      document.location.href = '<%=basePath%>/help/toHelp.do';
+      document.location.href = '<%=basePath%>/helpd/toHelp.do';
   }
   //跳转到注册页面
   function toRegister(){

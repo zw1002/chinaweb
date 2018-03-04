@@ -12,35 +12,67 @@
 <link href="<%=basePath%>/static/css/index.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery1.42.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.SuperSlide.2.1.1.js"></script>
+    <!--消息提醒-->
+    <script type="text/javascript" src="<%=basePath%>/static/js/showinfo.js"></script>
+    <script type="text/javascript" src="<%=basePath%>/static/js/jquery.noty.packaged.js"></script>
+    <script type="text/javascript" src="<%=basePath%>/static/js/jquery.noty.packaged.min.js"></script>
     <script type="text/javascript">
         $(function () {
-
             $('.ss_btn').click(function () {
                 document.location.href = '<%=basePath%>/seachs/toSeachs.do?seachTxt='+$('.inp_txt').val();
             });
-        })
+        });
+        $(document).ready(function () {
+            //隐藏注册/按钮登录    显示个人中心/个人空间
+            var firstname="${userinfo.getFristname()}";
+            if(firstname != ""){
+                $("#beferLogin").css("display","none");
+                $("#backLogin").css("display","block");
+            }
+        });
+        //跳转到注册页面
+        function toRegister(){
+            document.location.href = '<%=basePath%>/signin/register.do';
+        }
+        //跳转到登录页面
+        function toLogin(){
+            document.location.href = '<%=basePath%>/signin/login.do';
+        }
+        //跳转到会员中心页面
+        function toMember(){
+            document.location.href = '<%=basePath%>/member/toMember.do';
+        }
+        //跳转到会员空间页面
+        function toHomepage(){
+            var uid="${userinfo.getUid()}";
+            document.location.href = '<%=basePath%>/homepage/toHomepage.do?uid='+uid;
+        }
+        //发布任务
+        function addGraph(){
+            var firstname="${userinfo.getFristname()}";
+            if(firstname != ""){
+                document.location.href = '<%=basePath%>/qiutu/toQiutu.do';
+            }else{
+                document.location.href = '<%=basePath%>/signin/login.do';
+            }
+        }
     </script>
 </head>
-
 <body>
    <header>
      <div class="top">
-     
       <div class="top_line">
          <div class="top_wid">
             欢迎来到婚秀中国网
-            
-            <!-- 登录前 -->
-            <div class="top_pos">
-              <a href="login.jsp">登录</a>|<a href="regist.jsp">注册</a>
-            </div>
-            
-            <!-- 登录后 -->
-            <div class="top_pos" style="display:none;">
-              <a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.jsp" class="sc_icon">我要上传</a>|<a href="collection_2.jsp">我的收藏（<span class="col_f00">2</span>）</a>
-            </div>
-            
-            
+             <!-- 登录前 -->
+             <div id="beferLogin" class="top_pos">
+                 <a href="#" onclick="toLogin()">登录</a>|<a href="#" onclick="toRegister()">注册</a>
+             </div>
+             <!-- 登录后 -->
+             <div id="backLogin" class="top_pos" style="display:none;">
+                 <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>|<a href="<%=basePath%>/pay/toCar.do">购物车</a>
+                 <!--<a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.html" class="sc_icon">我要上传</a>|<a href="collection_2.html">我的收藏（<span class="col_f00">2</span>）</a>-->
+             </div>
          </div>
       </div><!-- top_line -->
       
@@ -92,15 +124,17 @@
                 <td><div class="lc_bg">买家选稿</div></td>
                 <td>＞</td>
                 <td><div class="lc_bg2">中标公示</div></td>
-                <td>＞</td>
+                <!--
+                 <td>＞</td>
                 <td><div class="lc_bg2">买家评论</div></td>
+                -->
                 <td>＞</td>
                 <td><div class="lc_bg2">任务结束</div></td>
                
              </tr>
           
           </table>
-           <a href="javascript:" class="fb_btnd">我要发布任务</a>
+           <a href="#" onclick="addGraph()" class="fb_btnd">我要发布任务</a>
        </div>
        
    </div><!-- hlx_banner -->
@@ -303,14 +337,9 @@ function toFree(){
 }
 //跳转到求助求图页面
 function toHelp(){
-    document.location.href = '<%=basePath%>/help/toHelp.do';
+    document.location.href = '<%=basePath%>/helpd/toHelp.do';
 }
  </script>
-
-          
-          
-          
-          
            <!-- 优秀投稿会员 -->
           <div class="help_txt">
             <h2><a href="javascript:">优秀投稿会员</a></h2>
@@ -455,14 +484,8 @@ function toHelp(){
           <script type="text/javascript">
 		jQuery(".cases_con").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"left",autoPlay:true,vis:4,trigger:"click"});
 		</script>
-        
-   
-   
      </div><!-- wrap -->
    </div><!-- bg_f5 -->
-   
-   
-   
    <!-- 公共底部 -->
    <footer>
      <div class="wrap">
@@ -478,18 +501,15 @@ function toHelp(){
               <dt>关于婚秀中国</dt>
               <dd><a href="<%=basePath%>/helpd/toHelpd.do">婚秀中国简介</a></dd>
           </dl>
-          <dl >
+          <dl>
              <dt>联系我们</dt>
              <dd>客服电话：<b class="col_f00">400-879-51747</b></dd>
-             
           </dl>
-          
           <div class="botm_fr">
             <img src="<%=basePath%>/static/images/logo.png" height="62" width="217" />
             <p>婚庆行业专业的咨询平台</p>
             <div class="zx_box"><img src="<%=basePath%>/static/images/zx_pic.png" height="17" width="22" />咨询时间：8:30-17:00</div>
           </div>
-      
         </div>
       </div>
    </footer>

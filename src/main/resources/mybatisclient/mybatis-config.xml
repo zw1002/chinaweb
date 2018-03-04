@@ -52,6 +52,11 @@
         <typeAlias type="com.hnqj.model.PropsImage" alias="PropsImage"/>
         <typeAlias type="com.hnqj.model.Shoppingcart" alias="Shoppingcart"/>
         <typeAlias type="com.hnqj.model.Download" alias="Download"/>
-            <typeAlias type="com.hnqj.model.WorksViews" alias="WorksViews"/>
+        <typeAlias type="com.hnqj.model.WorksViews" alias="WorksViews"/>
+        <typeAlias type="com.hnqj.model.Graph" alias="Graph"/>
+        <typeAlias type="com.hnqj.model.Submission" alias="Submission"/>
+        <typeAlias type="com.hnqj.model.Graphleavingmsg" alias="Graphleavingmsg"/>
+            <typeAlias type="com.hnqj.model.Collectiongraph" alias="Collectiongraph"/>
+            <typeAlias type="com.hnqj.model.Collectionsubmission" alias="Collectionsubmission"/>
     </typeAliases>
 </configuration>

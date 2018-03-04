@@ -72,7 +72,6 @@ public class PersonWorksController extends BaseController{
         logger.info("workOffShelf");
         try{
             String workid = request.getParameter("workid") == null ? "" : request.getParameter("workid");
-            worksServices.delWorksByFid(workid);
             Works works=worksServices.getWorksforId(workid);
             Merch merch=merchServices.getMerchforId(works.getMerchid());
             int worksnums=merch.getWorksnums()-1;
@@ -81,6 +80,7 @@ public class PersonWorksController extends BaseController{
             pageData.put("uid",merch.getUid());
             //修改店铺作品数
             merchServices.updateWorkNums(pageData);
+            worksServices.delWorksByFid(workid);
             ResultUtils.writeSuccess(response);
         }catch (Exception e){
             logger.error("workOffShelf e="+e.getMessage());

@@ -270,7 +270,7 @@
     }
     //跳转到求助求图页面
     function toHelp(){
-        document.location.href = '<%=basePath%>/help/toHelp.do';
+        document.location.href = '<%=basePath%>/helpd/toHelp.do';
     }
     //跳转到会员中心页面
     function toMember(){

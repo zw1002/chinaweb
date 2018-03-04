@@ -59,15 +59,12 @@
       #{ticknums,jdbcType=INTEGER}, #{oknums,jdbcType=INTEGER}, #{workremark,jdbcType=VARCHAR}, 
       #{worklabel,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.hnqj.model.Works">
+  <update id="updateByPrimaryKey" parameterType="pd">
     update tb_works
     set workstype = #{workstype,jdbcType=VARCHAR},
       worksname = #{worksname,jdbcType=VARCHAR},
       uptime = #{uptime,jdbcType=TIMESTAMP},
-      samllurl = #{samllurl,jdbcType=VARCHAR},
       worksurl = #{worksurl,jdbcType=VARCHAR},
-      watermakeurl = #{watermakeurl,jdbcType=VARCHAR},
-      dpinum = #{dpinum,jdbcType=VARCHAR},
       imgsize = #{imgsize,jdbcType=VARCHAR},
       imgformart = #{imgformart,jdbcType=VARCHAR},
       colrmodel = #{colrmodel,jdbcType=VARCHAR},
@@ -224,6 +221,11 @@
     set worksurl = #{worksurl}
     imgsize = #{imgsize},
     imgformart = #{imgformart},
+    where uid = #{uid}
+  </update>
+  <update id="updateworksurls"  parameterType="pd">
+    update tb_works
+    set uptime = #{uptime}
     where uid = #{uid}
   </update>
   <!--修改Works水印图地址和缩略图-->

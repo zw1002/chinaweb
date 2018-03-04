@@ -221,4 +221,28 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return iFlag;
 	}
+
+	public int updateworksurls(PageData pageData) {
+		logger.info("修改测试");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("WorksMapper.updateworksurls",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
+
+	public int updateByPrimaryKey(PageData pageData) {
+		logger.info("修改");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.update("WorksMapper.updateByPrimaryKey",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
 }

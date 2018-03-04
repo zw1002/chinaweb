@@ -275,7 +275,7 @@
 					<a href="#" onclick="toHomepage()" class="kj_lj">个人空间 ></a>
 					<div class="tx_infor" >
 						<img  src="<%=basePath%>${userinfo.getUsrpicurl()}"/>
-						<h2>${userinfo.getSmname()}</h2>
+						<h2>${userinfo.getFristname()}</h2>
 					</div>
 					<div class="mj_tab">
 						<table width="100%">
@@ -288,7 +288,7 @@
 				<div class="mem_nav">
 					<h2>个人中心</h2>
 					<ul>
-						<li><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
+						<li id="uploadwork"><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
 						<li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
 						<li><a class="mem_icon9" href="<%=basePath%>/personalcenter/toDownload.do" onclick="persoDownload()">我的下载</a></li>
 						<li><a class="mem_icon2" href="<%=basePath%>/qiutu/toQiutu.do">求助求图</a></li>
@@ -336,26 +336,26 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>昵称</label>
 									<div class="layui-input-block">
-										<input type="text" name="txt_nc" id="txt_nc" lay-verify="required" autocomplete="off" class="layui-input jinzhi" value="${userinfo.getSmname()}">
+										<input type="text" name="txt_nc" id="txt_nc" lay-verify="required" autocomplete="off" class="layui-input dianhua" value="${userinfo.getSmname()}">
 									</div>
 
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>Email</label>
 									<div class="layui-input-block">
-										<input type="text" name="txt_email" id="txt_email" lay-verify="required|email" autocomplete="off" value="${userinfo.getEmail()}" placeholder="123@qq.com" class="layui-input jinzhi" >
+										<input type="text" name="txt_email" id="txt_email" lay-verify="required|email" autocomplete="off" value="${userinfo.getEmail()}" placeholder="123@qq.com" class="layui-input dianhua" >
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>QQ</label>
 									<div class="layui-input-block">
-										<input type="text" name="txt_qq" id="txt_qq" lay-verify="title|number" autocomplete=" off"value="${userinfo.getQqid()}" placeholder="123" class="layui-input jinzhi" >
+										<input type="text" name="txt_qq" id="txt_qq" lay-verify="title|number" autocomplete=" off"value="${userinfo.getQqid()}" placeholder="123" class="layui-input dianhua" >
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>Msn</label>
 									<div class="layui-input-block">
-										<input type="text" name="txt_msn" id="txt_msn" lay-verify="title" autocomplete="off" value="${userinfo.getMsnid()}" placeholder="123******" class="layui-input jinzhi" >
+										<input type="text" name="txt_msn" id="txt_msn" lay-verify="title" autocomplete="off" value="${userinfo.getMsnid()}" placeholder="123******" class="layui-input dianhua" >
 									</div>
 								</div>
 								<div class="layui-form-item">

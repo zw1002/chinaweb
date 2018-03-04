@@ -116,7 +116,12 @@
                     var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.watermakeurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
                 }else if(msg.workstype.substring(0,1) == 3) {//婚秀
                     $("#wedding").attr("class","active");
-                    var str="<div class='video_box'><video width='100%' height='720'  src='<%=basePath%>"+msg.worksurl+"' poster='' controls></video></div>";
+                    if(msg.watermakeurl == undefined){
+                        var str="<div class='video_box'><video id='video' width='100%' height='720'  src='<%=basePath%>"+msg.worksurl+"' poster='' controls></video></div>";
+                        setInterval("refershVideo()", 10000); //每隔10秒刷新点击量
+                    }else{
+                        var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.watermakeurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
+                    }
                 }else{//免费
                     $("#free").attr("class","active");
                     var str="<li> <a style='height:720px' href='<%=basePath%>"+msg.watermakeurl+"' title='点击查看大图' alt=''target='_blank'><img src='<%=basePath%>"+msg.watermakeurl+"' /></a></li>";
@@ -138,6 +143,12 @@
                 userid=msg.userid;
             }
         });
+    }
+    //初始化视频
+    function refershVideo(){
+        var myVideo = document.getElementById('video');
+        myVideo.currentTime = 0;    //属性设置或返回音频/视频播放的当前位置（以秒计）。当设置该属性时，播放会跳跃到指定的位置。
+        myVideo.pause();
     }
     //感兴趣推荐
     function interested(){
@@ -408,11 +419,11 @@
                        <td  colspan="2" id="uptime"></td>
                    </tr>
                    <tr>
-                      <td  colspan="2"><p class="fl">分享到：</p>
+                      <!--<td  colspan="2"><p class="fl">分享到：</p>
                       <div class="bdsharebuttonbox fl"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a></div>
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["weixin","qzone","tsina","tqq","renren"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
 </script>   
-                      </td>
+                      </td>-->
                    </tr>
                 </table>
               </div> 

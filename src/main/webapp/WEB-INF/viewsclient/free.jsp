@@ -180,7 +180,7 @@
   }
   //跳转到免费下载页面
   function toFree(){
-      document.location.href = '<%=basePath%>/free/toFree.do';
+      document.location.href = '<%=basePath%>/helpd/toHelp.do';
   }
   //跳转免费下载页面
   function toFreeDel(uid){

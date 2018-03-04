@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/helpd")
 public class HelpController extends BaseController{
+    //跳转到求图页面
+    @RequestMapping(value = "/toHelp.do")
+    public String toHelp(){
+        return  "help";
+    }
     //跳转到客服中心页面
     @RequestMapping(value = "/toHelpd.do")
     public String toHelpd(){
