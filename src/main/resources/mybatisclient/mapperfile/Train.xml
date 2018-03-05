@@ -24,11 +24,20 @@
     teruid, trainname, traintime, trainaddress, phone, logoimg, topflag, price, delflag,
     legtime, coursename, trainclass, trainmethod, traincontent, endtime, creator, createtime
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="getTrainForId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_train
     where teruid = #{teruid,jdbcType=VARCHAR}
+  </select>
+  <select id="getAllTrain" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_train where delflag=&apos;0&apos;
+    ORDER BY createtime DESC
+    <if test="count != null and count >0">
+      LIMIT #{offset},#{count}
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tb_train
@@ -73,9 +82,9 @@
     select
     <include refid="Base_Column_List" />
     from tb_train
-    where delflag = '0'
+    where delflag = &apos;0&apos;
     <if test="flag != null and flag != ''">
-      and topflag = '1'
+      and topflag = &apos;1&apos;
     </if>
   </select>
 </mapper>

@@ -728,7 +728,7 @@
                             return;
 						}
                         $.ajax({
-                            url: "<%=basePath%>/general/sendSMS.do",
+                            url: "<%=basePath%>/general/sendSMSGet.do",
                             type: "POST",
                             async:false,
                             data: {mobile:$('#bd_phone').val()},
