@@ -556,7 +556,7 @@ public class GeneralController extends BaseController{
             if (flag < 100000) {
                 flag += 100000;
             }
-            String content = "婚秀网短信验证码：" + flag;
+            String content = "【婚秀网】短信验证码：" + flag;
             URL url = new URL("http://www.sms-cly.cn/smsSend.do?");
             StringBuffer sb = new StringBuffer();
             sb.append("username=clyhxkj");
@@ -619,6 +619,7 @@ public class GeneralController extends BaseController{
     {
         logger.info("sendSMSGet");
         String mobileStr = request.getParameter("mobile") == null ? "" : request.getParameter("mobile");
+        String contentStr = request.getParameter("txt") == null ? "" : request.getParameter("txt");
         if(mobileStr.equals("")) {
 
             ResultUtils.write(response, "000000");
@@ -632,8 +633,9 @@ public class GeneralController extends BaseController{
             if (flag < 100000) {
                 flag += 100000;
             }
-            String content = "婚秀网短信验证码：" + flag;
-
+            String content = "【婚秀网】短信验证码：" + flag;
+             if(!contentStr.equals(""))
+                 content="【婚秀网】提示："+contentStr;
             StringBuffer sb = new StringBuffer("http://sms-cly.cn/smsSend.do?");
             sb.append("username=clyhxkj");
             sb.append("&password=f6f5696da081db645bb4ddec96663f70");
@@ -651,11 +653,12 @@ public class GeneralController extends BaseController{
             long lnid = Long.valueOf(result);
 
             in.close();
-            if (lnid > 0)
+            if (lnid > 0) {
                 ResultUtils.write(response, flag);
+            }
             else
                 ResultUtils.write(response, "000000");
-
+            System.out.println("rtnVal:"+lnid+"      randomNum:"+flag);
         }catch (Exception e){
             logger.error("sendSMSGet e="+e.getMessage());
             ResultUtils.write(response,"000000");
