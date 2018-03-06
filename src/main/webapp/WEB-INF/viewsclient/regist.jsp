@@ -58,6 +58,7 @@
                           <li><div class="inp_bg"><input id="account" name="account" type="text" placeholder="账号"></div></li>
                           <li><div class="inp_bg"><input id="password" name="password"  type="password" placeholder="密码"></div></li>
                           <li><div class="inp_bg"><input id="passwords" name="passwords" type="password" placeholder="重复密码"></div></li>
+                          <li><div class="inp_bg"><input id="qqid" name="qqid" type="text" placeholder="QQ"></div></li>
                           <!--
                           <li><div class="inp_bg"><input name="" type="text" placeholder="邮箱"></div></li>
                           <li><div class="inp_bg"><input name="" type="text"  placeholder="QQ"></div></li>
@@ -65,8 +66,8 @@
                           <a href="javascript:" class="yzm_btn">获取验证码</a>
                           </li>
                           -->
-                          <input name="bb" type="checkbox" class="fx_wid" value="" checked>阅读并同意《婚秀中国网服务协议》《委托代收付款协议》
-                          <input type="submit" value="注册并登录" class="login_btn" />
+                          <input name="bb" id="bb" type="checkbox" class="fx_wid" value="">阅读并同意《婚秀中国网服务协议》《委托代收付款协议》
+                          <input type="submit" id="ordinaryregister" value="注册并登录" class="login_btn" />
                       </ul>
                    </div>
                 </form>
@@ -152,26 +153,34 @@
     });
     //普通注册提交
     function ordinarySubmit(){
-        var fristname=$("#fristname").val();
-        var account=$("#account").val();
-        var password=$("#password").val();
-        $.ajax({
-            url:"<%=basePath%>/signin/registerSubmit.do",
-            type:"POST",
-            data:{
-                fristname:fristname,
-                account:account,
-                password:password
-            },
-            success:function(data){
-                if(data!=="failed"){
-                    successInfo("注册成功，三秒后跳转到登录页面");
-                    setTimeout("toLogin()","3000");  //3000毫秒后执行函数，只执行一次。
-                }else{
-                    errorInfo("注册失败");
+        var result=$("input[id='bb']").is(':checked');
+        if(result){
+            $("#ordinaryregister").attr("disabled",true);
+            var fristname=$("#fristname").val();
+            var account=$("#account").val();
+            var password=$("#password").val();
+            var qqid=$("#qqid").val();
+            $.ajax({
+                url:"<%=basePath%>/signin/registerSubmit.do",
+                type:"POST",
+                data:{
+                    fristname:fristname,
+                    account:account,
+                    password:password,
+                    qqid:qqid
+                },
+                success:function(data){
+                    if(data!=="failed"){
+                        successInfo("注册成功，三秒后跳转到登录页面");
+                        setTimeout("toLogin()","3000");  //3000毫秒后执行函数，只执行一次。
+                    }else{
+                        errorInfo("注册失败");
+                    }
                 }
-            }
-        })
+            });
+        }else{
+            alert("请同意婚秀中国网服务协议");
+        }
     }
     //跳转到登录页面
     function toLogin(){

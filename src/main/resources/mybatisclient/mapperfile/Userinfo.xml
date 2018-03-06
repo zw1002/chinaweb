@@ -22,10 +22,12 @@
     <result property="bankaddr" jdbcType="VARCHAR" column="bankaddr" />
     <result property="sex" jdbcType="VARCHAR" column="sex" />
     <result property="sfzdate" jdbcType="VARCHAR" column="sfzdate" />
+    <result property="bidnums" jdbcType="INTEGER" column="bidnums" />
+    <result property="winningbid" jdbcType="DOUBLE" column="winningbid" />
   </resultMap>
   <sql id="Base_Column_List">
     uid, fristname, telephone, iccode, usrpicurl,idpic, idpicback,smname,email,qqid,msnid,
-    ofphone,zhiye,label,address,weibo,bankcode,bankaddr,sfzdate,sex
+    ofphone,zhiye,label,address,weibo,bankcode,bankaddr,sfzdate,sex,bidnums,winningbid
   </sql>
   <select id="getUserinfoForId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -58,6 +60,8 @@
     <if test="bankaddr != null">      ,bankaddr    </if>
     <if test="sex != null">      ,sex    </if>
     <if test="sfzdate != null">      ,sfzdate    </if>
+    <if test="sfzdate != null">      ,bidnums    </if>
+    <if test="sfzdate != null">      ,winningbid    </if>
     )
     values (#{uid,jdbcType=VARCHAR}
     <if test="fristname != null">      ,#{fristname,jdbcType=VARCHAR}   </if>
@@ -79,6 +83,8 @@
     <if test="bankaddr != null">     ,  #{bankaddr,jdbcType=VARCHAR}   </if>
     <if test="sex != null">       ,#{sex,jdbcType=VARCHAR}    </if>
     <if test="sfzdate != null">      , #{sfzdate,jdbcType=VARCHAR}    </if>
+    <if test="sfzdate != null">      , #{bidnums,jdbcType=INTEGER}    </if>
+    <if test="sfzdate != null">      , #{winningbid,jdbcType=DOUBLE}    </if>
     )
   </insert>
   <update id="updateUserinfo" parameterType="pd">
@@ -160,4 +166,13 @@
     set passwd = #{passwd,jdbcType=VARCHAR}
     where userid = #{userid,jdbcType=VARCHAR}
   </update>
+  <!--查询优秀投稿用户-->
+  <select id="getSubmissionUser" parameterType="pd" resultMap="BaseResultMap">
+    select * from tb_userinfo
+    where bidnums != '0'
+    order by bidnums desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
 </mapper>

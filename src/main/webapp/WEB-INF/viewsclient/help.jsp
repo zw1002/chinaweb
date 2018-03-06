@@ -29,6 +29,10 @@
                 $("#beferLogin").css("display","none");
                 $("#backLogin").css("display","block");
             }
+            getHighMoneyGraph();
+            getHotGraph();
+            getNewGraph();
+            getSubmissionUser();
         });
         //跳转到注册页面
         function toRegister(){
@@ -55,6 +59,97 @@
             }else{
                 document.location.href = '<%=basePath%>/signin/login.do';
             }
+        }
+        //初始化高金额任务数据
+        function getHighMoneyGraph(){
+            var count=4;
+            $.ajax({
+                url: "<%=basePath%>/helpd/getHighMoneyGraph.do",
+                type: "POST",
+                data:{
+                    count:count
+                },
+                success: function (data) {
+                    if(data!=="failed"){
+                        var msg = eval("(" + data + ")");
+                        var res = "";
+                        for(var i=0;i<msg.length;i++){
+                            res += '<li> <h2>￥'+msg[i].moneyreward+' <span class="tg_bg">投稿中</span></h2>'
+                                    +'<p>'+msg[i].graphtitle+'</p> <a href="<%=basePath%>/submission/toTouGao.do?uid='+msg[i].uid+'" class="cy_btnd">立即参与</a> </li>';
+                        }
+                        $("#highMoneyGraph").append(res);
+                    }
+                }
+            });
+        }
+        //初始化热门任务
+        function getHotGraph(){
+            var count=8;
+            $.ajax({
+                url: "<%=basePath%>/helpd/getHotGraph.do",
+                type: "POST",
+                data:{
+                    count:count
+                },
+                success: function (data) {
+                    if(data!=="failed"){
+                        var msg = eval("(" + data + ")");
+                        var res = "";
+                        for(var i=0;i<msg.length;i++){
+                            res += '<li> <h2><b class="">￥'+msg[i].moneyreward+'</b> '+msg[i].graphtitle+'</h2>'
+                                    +'<p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p><a href="<%=basePath%>/submission/toTouGao.do?uid='+msg[i].uid+'" class="ljcy_btn">立即参与</a></li>';
+                        }
+                        $("#hotGraph").append(res);
+                        $("#hotGraph").append('<div class="clear"></div>');
+                    }
+                }
+            });
+        }
+        //初始化最新任务
+        function getNewGraph(){
+            var count=8;
+            $.ajax({
+                url: "<%=basePath%>/helpd/getNewGraph.do",
+                type: "POST",
+                data:{
+                    count:count
+                },
+                success: function (data) {
+                    if(data!=="failed"){
+                        var msg = eval("(" + data + ")");
+                        var res = "";
+                        for(var i=0;i<msg.length;i++){
+                            res += '<li> <h2><b class="">￥'+msg[i].moneyreward+'</b> '+msg[i].graphtitle+'</h2>'
+                                    +'<p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p><a href="#" class="ljcy_btn">立即参与</a></li>';
+                        }
+                        $("#newGraph").append(res);
+                        $("#newGraph").append('<div class="clear"></div>');
+                    }
+                }
+            });
+        }
+        //初始化优秀投稿会员
+        function getSubmissionUser(){
+            var count=10;
+            $.ajax({
+                url: "<%=basePath%>/helpd/getSubmissionUser.do",
+                type: "POST",
+                data:{
+                    count:count
+                },
+                success: function (data) {
+                    if(data!=="failed"){
+                        var msg = eval("(" + data + ")");
+                        var res = "";
+                        for(var i=0;i<msg.length;i++){
+                            res += '<li> <a href="#"> <img src="<%=basePath%>'+msg[i].userpicurl+'" />'
+                                    +'<h2>'+msg[i].username+'</h2> <p>中标：'+msg[i].bidnums+'  </p> <p>收入：<span class="col_f00">￥'+msg[i].winningbid+'</span></p> </a> </li>';
+                        }
+                        $("#submissionuser").append(res);
+                        jQuery(".tg_condf").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"left",autoPlay:true,vis:5,trigger:"click"});
+                    }
+                }
+            });
         }
     </script>
 </head>
@@ -154,37 +249,14 @@
    
    <div class="bg_f5">
       <div class="wrap">
-      
           <!-- 高金额任务 -->
           <div class="help_txt">
             <h2>高金额任务</h2>
             <a href="javascript:" class="more_btn">更多></a>
           </div>
-           
-          
           <div class="gerw_list">
-            <ul class="clearfix">
-                <li>
-                  <h2>￥1500.00 <span class="tg_bg">投稿中</span></h2>
-                  <p>容县第二人民医院logo 设计</p>
-                  <a href="javascript:" class="cy_btnd">立即参与</a>
-                </li>
-                <li>
-                  <h2>￥3000.00 <span class="tg_bg">投稿中</span></h2>
-                  <p>logo图形+中式婚礼秀</p>
-                  <a href="javascript:" class="cy_btnd">立即参与</a>
-                </li>
-                <li>
-                  <h2>￥1300.00 <span class="tg_bg">投稿中</span></h2>
-                  <p>融于文化有限公司logo设计</p>
-                  <a href="javascript:" class="cy_btnd">立即参与</a>
-                </li>
-                <li>
-                  <h2>￥2400.00 <span class="tg_bg">投稿中</span></h2>
-                  <p>创新有限公司logo设计</p>
-                  <a href="javascript:" class="cy_btnd">立即参与</a>
-                </li>
-            
+            <ul id="highMoneyGraph" class="clearfix">
+
             </ul>
           </div>
           
@@ -196,119 +268,26 @@
                        <li class="on"><a href="javascript:">热门任务</a></li>
                        <li><a href="javascript:">最新任务</a></li>
                     </ul>
-                    
                     <a href="javascript:" class="more_btn">更多></a>
                  </div>
-               
              <div class="task_box">
                <ul>  
                <div class="task_ul">
-                  <ul >
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      
-                      <div class="clear"></div>
-                      
+                  <ul id="hotGraph">
+
+
                   </ul>
                </div>
-              
-             
               </ul>
-             
-             
-              <ul>  
+              <ul>
                <div class="task_ul">
-                  <ul >
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好222...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      <li>
-                        <h2><b class="">￥500.00</b> 餐饮门头招牌设计只差一个好...  </h2>
-                        <p><img src="<%=basePath%>/static/images/icon_tg.png" /> 已托管  93人投稿  1天18小时后停止交稿</p>
-                        <a href="#" class="ljcy_btn">立即参与</a>
-                      </li>
-                      
-                      <div class="clear"></div>
-                      
+                  <ul id="newGraph">
+
+
                   </ul>
                </div>
-              
-         
               </ul>
-               
-               
           </div>
-          
 <script type="text/javascript">
 jQuery(".task_con").slide({titCell:".task_nav li",mainCell:".task_box", trigger:"click"})
 //跳转到首页
@@ -343,86 +322,22 @@ function toHelp(){
            <!-- 优秀投稿会员 -->
           <div class="help_txt">
             <h2><a href="javascript:">优秀投稿会员</a></h2>
-            <a href="javascript:" class="zcf_btn">现在注册成为供稿者 ></a>
+            <a href="<%=basePath%>/signin/register.do" class="zcf_btn">现在注册成为供稿者 ></a>
           </div>
-          
+
           <div class="tg_condf">
               <div class="hd">
 				<a class="next"></a>
 				<a class="prev"></a>
 			 </div>
-             
              <div class="tg_listd bd">
-                 <ul>
-                     <li>
-                     <a href="homepage.jsp">
-                        <img src="<%=basePath%>/static/images/head_img2.png" />
-                        <h2>不忘初心</h2>
-                        <p>中标：24  </p>
-                        <p>收入：<span class="col_f00">￥2000</span></p> 
-                     </a>
-                     </li>
-                     <li>
-                     <a href="homepage.jsp">
-                        <img src="<%=basePath%>/static/images/sytk_pic1.png" />
-                        <h2>不忘初心</h2>
-                        <p>中标：24  </p>
-                        <p>收入：<span class="col_f00">￥2000</span></p> 
-                     </a>
-                     </li>
-                     <li>
-                     <a href="homepage.jsp">
-                        <img src="<%=basePath%>/static/images/sytk_pic2.png" />
-                        <h2>不忘初心</h2>
-                        <p>中标：24  </p>
-                        <p>收入：<span class="col_f00">￥2000</span></p> 
-                     </a>
-                     </li>
-                     <li>
-                     <a href="homepage.jsp">
-                        <img src="<%=basePath%>/static/images/sytk_pic3.png" />
-                        <h2>不忘初心</h2>
-                        <p>中标：24  </p>
-                        <p>收入：<span class="col_f00">￥2000</span></p> 
-                     </a>
-                     </li>
-                     <li>
-                     <a href="homepage.jsp">
-                        <img src="<%=basePath%>/static/images/sytk_pic4.png" />
-                        <h2>不忘初心</h2>
-                        <p>中标：24  </p>
-                        <p>收入：<span class="col_f00">￥2000</span></p> 
-                     </a>
-                     </li>
-                     <li>
-                     <a href="homepage.jsp">
-                        <img src="<%=basePath%>/static/images/sytk_pic5.png" />
-                        <h2>不忘初心</h2>
-                        <p>中标：24  </p>
-                        <p>收入：<span class="col_f00">￥2000</span></p> 
-                     </a>
-                     </li>
-                     <li>
-                     <a href="homepage.jsp">
-                        <img src="<%=basePath%>/static/images/sytk_pic6.png" />
-                        <h2>不忘初心</h2>
-                        <p>中标：24  </p>
-                        <p>收入：<span class="col_f00">￥2000</span></p> 
-                     </a>
-                     </li>
-                     <li>
-                     <a href="homepage.jsp">
-                        <img src="<%=basePath%>/static/images/sytk_pic7.png" />
-                        <h2>不忘初心</h2>
-                        <p>中标：24  </p>
-                        <p>收入：<span class="col_f00">￥2000</span></p> 
-                     </a>
-                     </li>
+                 <ul id="submissionuser">
+
                  </ul>
             </div>
-          
+
           </div>
-           
+
             <script type="text/javascript">
 		jQuery(".tg_condf").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"left",autoPlay:true,vis:5,trigger:"click"});
 		</script>
@@ -431,15 +346,15 @@ function toHelp(){
          <!-- 优质成功案例 -->
           <div class="help_txt">
             <h2><a href="javascript:">优质成功案例</a></h2>
-            <a href="javascript:" class="zcf_btn">现在去发布任务吧 ></a>
+            <a href="#" onclick="addGraph()" class="zcf_btn">现在去发布任务吧 ></a>
           </div>
-          
+
           <div class="cases_con">
                <div class="hd">
 				<a class="next"></a>
 				<a class="prev"></a>
 			 </div>
-          
+
              <div class="bd">
                 <ul> 
                     <li>

@@ -334,9 +334,9 @@
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label class="layui-form-label"><span style="color: #C9302C;">*</span>昵称</label>
+									<label class="layui-form-label"><span style="color: #C9302C;">*</span>用户名</label>
 									<div class="layui-input-block">
-										<input type="text" name="txt_nc" id="txt_nc" lay-verify="required" autocomplete="off" class="layui-input dianhua" value="${userinfo.getSmname()}">
+										<input type="text" name="txt_nc" id="txt_nc" lay-verify="required" autocomplete="off" class="layui-input dianhua" value="${userinfo.getFristname()}">
 									</div>
 
 								</div>
@@ -352,7 +352,7 @@
 										<input type="text" name="txt_qq" id="txt_qq" lay-verify="title|number" autocomplete=" off"value="${userinfo.getQqid()}" placeholder="123" class="layui-input dianhua" >
 									</div>
 								</div>
-								<div class="layui-form-item">
+								<div style="display: none" class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>Msn</label>
 									<div class="layui-input-block">
 										<input type="text" name="txt_msn" id="txt_msn" lay-verify="title" autocomplete="off" value="${userinfo.getMsnid()}" placeholder="123******" class="layui-input dianhua" >
@@ -501,7 +501,7 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label" style="width: 130px;">身份证到期时间&nbsp;:&nbsp;</label>
 									<div class="layui-input-block">
-										<input type="text" name="sfzdate" id="sfzdate" value="${userinfo.getSfzdate()}" lay-verify="required|date" autocomplete="off" class="layui-input dianhua" placeholder="请输入身份证有效日期 如：2018-01-22">
+										<input type="text" name="sfzdate" id="sfzdate" value="${userinfo.getSfzdate()}" lay-verify="required|date" autocomplete="off" class="layui-input dianhua">
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -591,11 +591,16 @@
                 })
 			</script>
 			<script>
-                layui.use(['laydate','laypage','form','table','layer','upload'], function() {
+                layui.use(['laydate','laypage','form','table','layer','upload','laydate'], function() {
                     var laydate = layui.laydate,form = layui.form,upload = layui.upload;
                     var $=layui.jquery;
                     var layer = layui.layer;
                     var table = layui.table;
+					var laydate = layui.laydate;
+					//常规用法
+					laydate.render({
+						elem: '#sfzdate'
+					});
                     //执行一个laydate实例
                     laydate.render({
                         elem: '#date1' //指定元素

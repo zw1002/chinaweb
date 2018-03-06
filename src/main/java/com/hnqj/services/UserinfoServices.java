@@ -114,4 +114,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return iFlag;
 	}
+
+	public List<Userinfo> getSubmissionUser(PageData pageData) {
+		logger.info("查询优秀投稿用户");
+		List<Userinfo>	userinfoList=null;
+		try {
+			userinfoList = (List<Userinfo>) daoSupport.findForList("UserinfoMapper.getSubmissionUser",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			userinfoList=null;
+		}
+		return userinfoList;
+	}
 }

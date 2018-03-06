@@ -25,6 +25,8 @@ public class CollectionController extends  BaseController {
     CollectiongraphServices collectiongraphServices;
     @Autowired
     CollectionsubmissionServices collectionsubmissionServices;
+    @Autowired
+    GraphServices graphServices;
 
     /**
      * 收藏任务
@@ -42,6 +44,13 @@ public class CollectionController extends  BaseController {
             pageData.put("collectionuserid", getUser().getUid());
             pageData.put("addtime", new Date());
             pageData.put("flag", 1);
+            Graph graph=graphServices.getGraphforId(uid);
+            int count=graph.getFavcount();
+            int counts=count+1;
+            PageData graphData=new PageData();
+            graphData.put("uid",uid);
+            graphData.put("favcount",counts);
+            graphServices.updateGraphFavcount(graphData);
             int flag=collectiongraphServices.addCollectiongraph(pageData);
             if(flag == 1){
                 ResultUtils.writeSuccess(response);
@@ -96,6 +105,7 @@ public class CollectionController extends  BaseController {
             pageData.put("collectionuserid", getUser().getUid());
             pageData.put("addtime", new Date());
             pageData.put("flag", 1);
+
             int flag=collectionsubmissionServices.addCollectionsubmission(pageData);
             if(flag == 1){
                 ResultUtils.writeSuccess(response);

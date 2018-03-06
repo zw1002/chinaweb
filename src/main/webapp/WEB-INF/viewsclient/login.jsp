@@ -132,6 +132,7 @@
                     $("#password").val("");
                     errorInfo("账号或密码错误");
                     $(".noty_text").css("color","red");
+                    $(".noty_text").css("font-size","17");
                 }
             }
         })

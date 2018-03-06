@@ -97,4 +97,64 @@ protected final Log logger = LogFactory.getLog(getClass());
 		}
 		return graphList;
 	}
+
+	public List<Graph> getAllGraphOrderByMoney(PageData pagedata) {
+		logger.info("根据个数查询高额Graph");
+		List<Graph>	graphList=null;
+		try {
+			graphList = (List<Graph>) daoSupport.findForList("GraphMapper.getAllGraphOrderByMoney",pagedata);
+		}catch (Exception e){
+			e.printStackTrace();
+			graphList=null;
+		}
+		return graphList;
+	}
+
+	public List<Graph> getAllGraphOrderByHot(PageData pageData) {
+		logger.info("根据个数查询最热Graph");
+		List<Graph>	graphList=null;
+		try {
+			graphList = (List<Graph>) daoSupport.findForList("GraphMapper.getAllGraphOrderByHot",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			graphList=null;
+		}
+		return graphList;
+	}
+
+	public List<Graph> getAllGraphOrderByNew(PageData pageData) {
+		logger.info("根据个数查询最新Graph");
+		List<Graph>	graphList=null;
+		try {
+			graphList = (List<Graph>) daoSupport.findForList("GraphMapper.getAllGraphOrderByNew",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			graphList=null;
+		}
+		return graphList;
+	}
+
+	public int updateGraphTicknums(PageData pageData) {
+		logger.info("修改任务点击量");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.delete("GraphMapper.updateGraphTicknums",pageData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
+
+	public int updateGraphFavcount(PageData graphData) {
+		logger.info("修改任务收藏量");
+		int iFlag =0;
+		try {
+			iFlag = (int) daoSupport.delete("GraphMapper.updateGraphFavcount",graphData);
+		}catch (Exception e){
+			e.printStackTrace();
+			iFlag=0;
+		}
+		return iFlag;
+	}
 }

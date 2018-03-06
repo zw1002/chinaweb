@@ -35,14 +35,14 @@
 
         <div class="top_line">
             <div class="top_wid">
-                欢迎来到婚秀中国网
+                ${userinfo.getFristname()}     欢迎来到婚秀中国网
                 <!-- 登录前 -->
                 <div id="beferLogin" class="top_pos">
                     <a href="#" onclick="toLogin()">登录</a>|<a href="#" onclick="toRegister()">注册</a>
                 </div>
                 <!-- 登录后 -->
                 <div id="backLogin" class="top_pos" style="display:none;">
-                    <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>|<a href="<%=basePath%>/pay/toCar.do">购物车</a>
+                    <a href="#" onclick="toMember()">会员中心</a>|<a href="#" onclick="toHomepage()">会员空间</a>|<a id="car" href="<%=basePath%>/pay/toCar.do"></a>|<a href="<%=basePath%>/signin/signout.do">退出</a>
                     <!--<a href="pay.html" class="vip_lj">成为VIP</a>|<a href="upload.html" class="sc_icon">我要上传</a>|<a href="collection_2.html">我的收藏（<span class="col_f00">2</span>）</a>-->
                 </div>
             </div>
@@ -99,6 +99,7 @@
         var firstname="${userinfo.getFristname()}";
         if(firstname != ""){
             $("#beferLogin").css("display","none");
+            $("#car").text("购物车(${carcount})");
             $("#backLogin").css("display","block");
         }
         //轮播图---有问题--图片全填充，会向下平铺，失去特效

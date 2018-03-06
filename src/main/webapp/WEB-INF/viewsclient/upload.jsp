@@ -262,6 +262,8 @@
         uploadFile();
     }
  function uploadFile() {
+     $("#subupload").text("等待上传");
+     $("#subupload").attr("disabled",true);
      var file=document.getElementById('file').files[0];
      var file2=document.getElementById('file2').files[0];
      var workstype=$('#workstype').val();
@@ -512,7 +514,7 @@
                            </div>
                            </form>
                            <div class="anniu">
-                               <button onclick="check()" style="margin-top: 10px" class="layui-btn layui-btn-normal">提交</button>
+                               <button id="subupload" onclick="check()" style="margin-top: 10px" class="layui-btn layui-btn-normal">提交</button>
                            </div>
                            </div>
                        <!-- 摄影 -->
