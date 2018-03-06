@@ -2,8 +2,10 @@ package com.hnqj.controller;
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
 import com.hnqj.model.Account;
+import com.hnqj.model.Shoppingcart;
 import com.hnqj.model.Userinfo;
 import com.hnqj.services.AccountServices;
+import com.hnqj.services.ShoppingcartServices;
 import com.hnqj.services.UserinfoServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static com.hnqj.core.CreateCode.createcode;
 import static com.hnqj.core.EncodeUtil.encodeMD5;
@@ -35,6 +34,8 @@ public class SignInController extends BaseController{
     AccountServices accountServices;
     @Autowired
     UserinfoServices userinfoServices;
+    @Autowired
+    ShoppingcartServices shoppingcartServices;
     //跳转到首页
     @RequestMapping(value = "/index.do")
     public String index(){
@@ -64,10 +65,11 @@ public class SignInController extends BaseController{
         String fristname = request.getParameter("fristname") == null ? "" : request.getParameter("fristname");
         String account = request.getParameter("account") == null ? "" : request.getParameter("account");
         String password = request.getParameter("password") == null ? "" : request.getParameter("password");
+        String qqid = request.getParameter("qqid") == null ? "" : request.getParameter("qqid");
         String userid=UUID.randomUUID().toString();
         //生成推荐二维码
-        String content="http://117.158.202.179:8090/chinaweb/general/toRegister.do?uid="+userid;
-        //String content="http://47.104.163.68:3306/chinaweb/general/toRegister.do?uid="+userid;
+        //String content="http://117.158.202.179:8090/chinaweb/general/toRegister.do?uid="+userid;
+        String content="http://47.104.163.68:3306/chinaweb/general/toRegister.do?uid="+userid;
         String imgname= String.valueOf(new Date().getTime());
         String path = request.getSession().getServletContext().getRealPath("/") +"static/uploadImg/"+imgname+".png";
         createcode(content,path);
@@ -85,6 +87,9 @@ public class SignInController extends BaseController{
         PageData userpageData=new PageData();
         userpageData.put("uid",userid);
         userpageData.put("fristname",fristname);
+        userpageData.put("bidnums",0);
+        userpageData.put("winningbid",0);
+        userpageData.put("qqid",qqid);
         userpageData.put("usrpicurl","/static/images/head_img2.png");//用户注册默认头像
         try{
             accountServices.addAccount(accountPageData);
@@ -115,6 +120,8 @@ public class SignInController extends BaseController{
         Map<String, String> map = new HashMap<>();
         if (userinfo!=null) {
             request.getSession().setAttribute("userinfo",userinfo);
+            List<Shoppingcart> shoppingcartList=shoppingcartServices.getShoppingcartForUserId(userinfo.getUid());
+            request.getSession().setAttribute("carcount",shoppingcartList.size());//个人购物车数量
             map.put("state", "true");
             map.put("msg", "登录成功");
         }else{
@@ -123,6 +130,15 @@ public class SignInController extends BaseController{
         }
         ResultUtils.write(response,map);
         return null;
+    }
+    /**
+     * 退出
+     * @return
+     */
+    @RequestMapping("/signout.do")
+    public String signout() {
+        this.getSession().invalidate();
+        return "index";
     }
     /**
      * 校验账号唯一性

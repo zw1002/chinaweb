@@ -83,8 +83,8 @@ public class GeneralController extends BaseController{
         String usercode = request.getParameter("usercode") == null ? "" : request.getParameter("usercode");
         String userid=UUID.randomUUID().toString();
         //生成个人推荐二维码
-        String content="http://117.158.202.179:8090/chinaweb/general/toRegister.do?uid="+userid;
-        //String content="http://47.104.163.68:3306/chinaweb/general/toRegister.do?uid="+userid;
+        //String content="http://117.158.202.179:8090/chinaweb/general/toRegister.do?uid="+userid;
+        String content="http://47.104.163.68:3306/chinaweb/general/toRegister.do?uid="+userid;
         String imgname= String.valueOf(new Date().getTime());
         String path = request.getSession().getServletContext().getRealPath("/") +"static/uploadImg/"+imgname+".png";
         createcode(content,path);

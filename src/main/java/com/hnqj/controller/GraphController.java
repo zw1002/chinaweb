@@ -93,6 +93,7 @@ public class GraphController extends  BaseController {
                 pageData.put("displayflag",0);
                 pageData.put("delflag",0);
                 pageData.put("ticknums",0);
+                pageData.put("submissionnums",0);
                 pageData.put("endtime",endtime);
                 pageData.put("userid",getUser().getUid());
                 try {

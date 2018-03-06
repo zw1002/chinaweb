@@ -45,6 +45,14 @@ public class SubmissionController extends  BaseController {
     @RequestMapping(value = "/toTouGao.do")
     public String toTouGao(HttpServletRequest request, Model model){
         String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
+        //为任务添加点击量
+        Graph graph=graphServices.getGraphforId(uid);
+        int count=graph.getTicknums();
+        int counts=count+1;
+        PageData pageData=new PageData();
+        pageData.put("uid",uid);
+        pageData.put("ticknums",counts);
+        graphServices.updateGraphTicknums(pageData);
         model.addAttribute("uid",uid);//任务ID
         return  "tougao";
     }

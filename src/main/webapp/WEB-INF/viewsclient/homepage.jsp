@@ -42,6 +42,12 @@
              });
 	 });
  $(document).ready(function () {
+     //店铺会员ID
+     var uid=$("#uid").val();
+     var uids="${userinfo.getUid()}";
+     if(uid == uids){
+        $("#member").css("display","block");
+     }
      getUserInfoData();
      getUserMerch();
      getUserFocus();
@@ -474,7 +480,7 @@ function getMerchData(){
          <a href="#" onclick="toIndex()" class="fl"><img src="<%=basePath%>/static/images/logo.png" height="62" width="217" /></a>
          <div class="nav_new fl">
              <ul class="clearfix">
-                 <li><a href="#" onclick="toIndex()" class="ztit">网站首页</a></li>
+                 <li style="display:none;" id="member"><a href="<%=basePath%>/member/toMember.do" class="ztit">个人中心</a></li>
                  <li><a href="javascript:" class="all_fl ztit">所有分类</a>
                      <div class="nav_list">
                          <a href="#" onclick="toDesign()">设 计</a>
