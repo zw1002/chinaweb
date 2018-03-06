@@ -607,4 +607,68 @@ public class GeneralController extends BaseController{
         }
         return null;
     }
+
+    /**
+     * 短信发送接口 /general/sendSMSGet.do?mobile=
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/sendSMSGet.do")
+    public String sendSMSGet(HttpServletRequest request, HttpServletResponse response)
+    {
+        logger.info("sendSMSGet");
+        String mobileStr = request.getParameter("mobile") == null ? "" : request.getParameter("mobile");
+        if(mobileStr.equals("")) {
+
+            ResultUtils.write(response, "000000");
+            return  null;
+        }
+        BufferedReader in = null;
+        try {
+            //(int)((Math.random()*9+1)*100000));
+            //六位随机数100000--999999
+            int flag = new Random().nextInt(999999);
+            if (flag < 100000) {
+                flag += 100000;
+            }
+            String content = "婚秀网短信验证码：" + flag;
+
+            StringBuffer sb = new StringBuffer("http://sms-cly.cn/smsSend.do?");
+            sb.append("username=clyhxkj");
+            sb.append("&password=f6f5696da081db645bb4ddec96663f70");
+            sb.append("&mobile="+mobileStr);
+            sb.append("&content="+URLEncoder.encode(content,"utf-8"));
+            //sb.append("&dstime=");
+            URL url = new URL(sb.toString());
+            URLConnection conn = url.openConnection();
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.connect();
+            in = new BufferedReader(new InputStreamReader(url.openStream()));
+            //读取返回参数
+            String result = in.readLine();
+            long lnid = Long.valueOf(result);
+
+            in.close();
+            if (lnid > 0)
+                ResultUtils.write(response, flag);
+            else
+                ResultUtils.write(response, "000000");
+
+        }catch (Exception e){
+            logger.error("sendSMSGet e="+e.getMessage());
+            ResultUtils.write(response,"000000");
+        }
+        finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
+    }
 }
