@@ -126,6 +126,7 @@
         //排行榜
         transactionRanking();
         transactionRankings();
+        trainSortRanking();
     });
     //交易排行榜
     function transactionRanking(){
@@ -145,6 +146,39 @@
                 }
                 $("#jiaoyi ul").append(str);
                 jQuery("#jyphb").slide({titCell:".hd ul",mainCell:"#jiaoyi ul",autoPage:true,effect:"top",autoPlay:true,vis:4,trigger:"click"});
+            }
+        });
+    }
+    //名师排行榜
+    function trainSortRanking(){
+        var count=10
+        $("#mdm_con ul").html("");
+        $.ajax({
+            url: "<%=basePath%>/trainMgr/GetTrainList.do",
+            type: "POST",
+            data: {
+                offest:0,count:count
+            },
+            success: function (data) {
+                data=  JSON.parse(data)
+                if(data.code !=undefined) {
+                    if (data.code == "0000") {
+                        var str="";
+                        for (var i = 0; i < data.res.length; i++) {
+                            str += ' <li>\n' +
+        '                                <a href="<%=basePath%>/trainMgr/toTrainDetails.do?tuid='+data.res[i].teruid+'">' +
+                                '<img src="<%=basePath%>'+data.res[i].logoimg+'" /></a>\n' +
+        '                                <div class="txt_fr">\n' +
+        '                                    <h2><a href="<%=basePath%>/trainMgr/toTrainDetails.do?tuid='+data.res[i].teruid+'">'+data.res[i].trainname+'</a></h2>\n' +
+        '                                    <p>'+data.res[i].createtime.substr(0,10)+'</p>\n' +
+        '                                    <p>'+data.res[i].coursename+'</p>\n' +
+        '                                </div>\n' +
+        '                            </li>';
+                        }
+                    }
+                    $("#mdm_con ul").append(str);
+                    jQuery("#mdm_con").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"top",autoPlay:true,vis:4,trigger:"click"});
+                }
             }
         });
     }
@@ -343,12 +377,12 @@
 
 
             <div class="sj_fr">
-                <div class="hong_tit col_mdm"><h2>名师面对面</h2> <a href="#">更多 ></a></div>
+                <div class="hong_tit col_mdm"><h2>名师面对面</h2> <a href="<%=basePath%>/trainMgr/toTrainList.do">更多 ></a></div>
                 <div class="phb_con" id="mdm_con">
                     <div class="hd">
                         <ul></ul>
                     </div>
-                    <div class="hxphb bd">
+                    <div class="hxphb bd" >
                         <ul>
                             <li>
                                 <a href="design_del.html"><img src="<%=basePath%>/static/images/sytk_pic5.png" /></a>
